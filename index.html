@@ -4,24 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Focus watches how you work, captures context automatically, and builds workflows for you. Work happens. Focus handles the rest.">
+  <meta name="theme-color" content="#1C2B1E">
   <title>Focus — Work happens. Focus handles the rest.</title>
   <link rel="icon" type="image/png" href="assets/focus-icon-128.png">
   <link rel="apple-touch-icon" href="assets/focus-icon-128.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --dark: #1C2B1E;
+      --dark-soft: #243528;
       --sage: #5A8A5E;
+      --sage-hover: #4d7a51;
       --sage-light: #C8D9C4;
+      --sage-glow: rgba(90, 138, 94, 0.35);
       --off-white: #F0F4EF;
+      --surface: #FFFFFF;
       --text-dark: #1C2B1E;
       --text-mid: #4A5E4C;
-      --text-light: rgba(240, 244, 239, 0.85);
-      --text-muted: rgba(240, 244, 239, 0.65);
-      --card-shadow: 0 4px 24px rgba(28, 43, 30, 0.06);
-      --radius: 16px;
+      --text-light: rgba(240, 244, 239, 0.92);
+      --text-muted: rgba(240, 244, 239, 0.62);
+      --border: rgba(200, 217, 196, 0.55);
+      --border-dark: rgba(200, 217, 196, 0.12);
+      --shadow-sm: 0 1px 2px rgba(28, 43, 30, 0.04);
+      --shadow-md: 0 8px 32px rgba(28, 43, 30, 0.08);
+      --shadow-lg: 0 24px 64px rgba(28, 43, 30, 0.12);
+      --radius: 20px;
+      --radius-md: 14px;
       --radius-sm: 10px;
-      --max-width: 1120px;
-      --section-pad: clamp(4rem, 8vw, 7rem);
+      --max-width: 1160px;
+      --nav-height: 72px;
+      --section-pad: clamp(5rem, 10vw, 8rem);
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,119 +44,199 @@
     html {
       scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--font);
       color: var(--text-dark);
       line-height: 1.6;
       background: var(--off-white);
     }
 
     img, svg { display: block; max-width: 100%; }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
     .container {
-      width: min(var(--max-width), calc(100% - 3rem));
+      width: min(var(--max-width), calc(100% - 2.5rem));
       margin-inline: auto;
     }
 
-    /* ── Logo ── */
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(28, 43, 30, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-dark);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
     .logo {
       display: inline-flex;
       align-items: center;
-      gap: 0.65rem;
-      font-weight: 600;
+      gap: 0.6rem;
+      font-weight: 700;
       font-size: 1.05rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
+      color: #fff;
     }
 
-    .logo-mark,
-    .focus-icon {
+    .logo-mark {
+      width: 34px;
+      height: 34px;
       flex-shrink: 0;
-      display: block;
       object-fit: contain;
     }
 
-    .logo-mark { width: 36px; height: 36px; }
     .logo-mark.sm { width: 28px; height: 28px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-cta {
+      padding: 0.55rem 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+    }
 
     /* ── Buttons ── */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.85rem 1.75rem;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
       border-radius: 999px;
-      font-size: 0.95rem;
+      font-size: 0.9375rem;
       font-weight: 600;
+      font-family: inherit;
       border: none;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .btn:hover { transform: translateY(-1px); }
+    .btn:hover { transform: translateY(-2px); }
     .btn:active { transform: translateY(0); }
 
     .btn-primary {
       background: var(--sage);
       color: #fff;
-      box-shadow: 0 4px 20px rgba(90, 138, 94, 0.35);
+      box-shadow: 0 4px 20px var(--sage-glow);
     }
 
     .btn-primary:hover {
-      background: #4d7a51;
-      box-shadow: 0 6px 28px rgba(90, 138, 94, 0.45);
+      background: var(--sage-hover);
+      box-shadow: 0 8px 32px var(--sage-glow);
     }
 
     .btn-primary:disabled {
-      opacity: 0.6;
+      opacity: 0.65;
       cursor: not-allowed;
       transform: none;
     }
 
-    .link-secondary {
-      color: var(--sage-light);
-      font-weight: 500;
-      font-size: 0.95rem;
-      border-bottom: 1px solid rgba(200, 217, 196, 0.35);
-      padding-bottom: 2px;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-
-    .link-secondary:hover {
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      border-color: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
-    /* ── Section base ── */
-    section {
-      padding-block: var(--section-pad);
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.28);
     }
+
+    /* ── Section utilities ── */
+    section { padding-block: var(--section-pad); }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 1px;
+    }
+
+    .eyebrow.light { color: var(--sage-light); }
 
     .section-title {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-      max-width: 28ch;
+      font-size: clamp(1.875rem, 4.5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      max-width: 22ch;
     }
 
     .section-title.center {
       text-align: center;
-      max-width: 32ch;
+      max-width: 28ch;
       margin-inline: auto;
     }
 
-    /* ── Scroll fade-in ── */
+    .section-lead {
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      color: var(--text-mid);
+      line-height: 1.7;
+      max-width: 52ch;
+      margin-top: 1.25rem;
+    }
+
+    .section-lead.center {
+      text-align: center;
+      margin-inline: auto;
+    }
+
     .fade-in {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .fade-in.visible {
@@ -149,119 +244,289 @@
       transform: translateY(0);
     }
 
+    .fade-in.delay-1 { transition-delay: 0.08s; }
+    .fade-in.delay-2 { transition-delay: 0.16s; }
+    .fade-in.delay-3 { transition-delay: 0.24s; }
+
     /* ── Hero ── */
     .hero {
       background: var(--dark);
       color: var(--text-light);
       min-height: 100svh;
-      display: flex;
-      flex-direction: column;
+      padding-top: var(--nav-height);
       position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-bg::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 70% 20%, rgba(90, 138, 94, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(200, 217, 196, 0.06) 0%, transparent 50%);
-      pointer-events: none;
+        radial-gradient(ellipse 70% 55% at 85% 15%, rgba(90, 138, 94, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 35% at 5% 75%, rgba(200, 217, 196, 0.08) 0%, transparent 50%);
     }
 
-    .hero-header {
-      padding: 2rem 0;
-      position: relative;
-      z-index: 1;
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200, 217, 196, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 217, 196, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
     }
-
-    .hero-header .logo { color: #fff; }
 
     .hero-body {
-      flex: 1;
-      display: flex;
-      align-items: center;
       position: relative;
       z-index: 1;
-      padding-bottom: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: center;
+      min-height: calc(100svh - var(--nav-height));
+      padding-block: clamp(3rem, 6vw, 5rem);
     }
 
-    .hero-content {
-      max-width: 680px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.25rem, 6vw, 3.75rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.08;
-      color: #fff;
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.85rem 0.4rem 0.5rem;
+      background: rgba(90, 138, 94, 0.15);
+      border: 1px solid rgba(90, 138, 94, 0.3);
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--sage-light);
       margin-bottom: 1.5rem;
     }
 
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage);
+      box-shadow: 0 0 12px var(--sage);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6.5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--sage-light) 0%, var(--sage) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     .hero-sub {
-      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      font-size: clamp(1.0625rem, 2.2vw, 1.2rem);
       color: var(--text-light);
-      line-height: 1.65;
-      max-width: 540px;
-      margin-bottom: 2.5rem;
+      line-height: 1.7;
+      max-width: 46ch;
+      margin-bottom: 2.25rem;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1rem;
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .hero-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .hero-card-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .hero-card-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hero-task {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .hero-task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .hero-task-item.active {
+      border-color: rgba(90, 138, 94, 0.4);
+      background: rgba(90, 138, 94, 0.08);
+    }
+
+    .hero-task-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 2px solid rgba(200, 217, 196, 0.3);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .hero-task-item.active .hero-task-check {
+      background: var(--sage);
+      border-color: var(--sage);
+    }
+
+    .hero-task-text {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .hero-task-meta {
+      font-size: 0.6875rem;
+      color: var(--sage);
+      font-weight: 600;
+      margin-top: 0.35rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-float {
+      position: absolute;
+      bottom: -1rem;
+      left: -1.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .hero-float-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--sage-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--sage);
     }
 
     /* ── Problem ── */
-    .problem {
-      background: var(--off-white);
-    }
+    .problem { background: var(--off-white); }
 
-    .problem .section-title {
-      color: var(--text-dark);
+    .problem-header {
       margin-bottom: 3.5rem;
-      max-width: 36ch;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
     .card {
-      background: #fff;
+      background: var(--surface);
       border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--card-shadow);
-      border: 1px solid rgba(200, 217, 196, 0.5);
+      padding: 2rem 1.75rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(90, 138, 94, 0.35);
     }
 
     .card-icon {
       width: 48px;
       height: 48px;
-      border-radius: 12px;
-      background: var(--sage-light);
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sage-light) 0%, rgba(200, 217, 196, 0.5) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.35rem;
       color: var(--sage);
     }
 
     .card h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.65rem;
-      color: var(--text-dark);
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
       letter-spacing: -0.02em;
     }
 
     .card p {
-      font-size: 0.95rem;
+      font-size: 0.9375rem;
       color: var(--text-mid);
       line-height: 1.65;
     }
@@ -272,127 +537,122 @@
       color: var(--text-light);
     }
 
-    .how .section-title {
-      color: #fff;
+    .how-header {
       text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .how-header .section-title {
+      color: #fff;
       max-width: none;
-      margin-bottom: 3.5rem;
+      margin-inline: auto;
+    }
+
+    .how-header .section-lead {
+      color: var(--text-muted);
     }
 
     .steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .steps::after {
+      content: "";
+      position: absolute;
+      top: 2.75rem;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(90, 138, 94, 0.35), transparent);
+      pointer-events: none;
     }
 
     .step {
       position: relative;
-      padding: 1.75rem;
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(200, 217, 196, 0.12);
+      padding: 1.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-dark);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .step:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(90, 138, 94, 0.25);
     }
 
     .step-num {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--sage);
-      margin-bottom: 1rem;
-    }
-
-    .step-icon {
-      width: 44px;
-      height: 44px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: rgba(90, 138, 94, 0.2);
+      border: 2px solid rgba(90, 138, 94, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
       color: var(--sage-light);
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
     }
 
     .step h3 {
-      font-size: 1.05rem;
-      font-weight: 600;
+      font-size: 1.0625rem;
+      font-weight: 700;
       color: #fff;
       margin-bottom: 0.5rem;
       letter-spacing: -0.02em;
     }
 
     .step p {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       color: var(--text-muted);
       line-height: 1.6;
     }
 
-    /* connector line between steps (desktop only) */
-    @media (min-width: 901px) {
-      .steps {
-        position: relative;
-      }
-      .steps::before {
-        content: "";
-        position: absolute;
-        top: 3.2rem;
-        left: 12%;
-        right: 12%;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(200, 217, 196, 0.2), transparent);
-        pointer-events: none;
-      }
-    }
-
     /* ── Collaboration ── */
-    .collab {
-      background: var(--off-white);
-    }
+    .collab { background: var(--off-white); }
 
     .collab-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1fr 1.05fr;
+      gap: clamp(2.5rem, 6vw, 5rem);
       align-items: center;
     }
 
-    .collab-text .section-title {
-      margin-bottom: 1.25rem;
-      max-width: 22ch;
-    }
-
-    .collab-text p {
-      font-size: 1.05rem;
-      color: var(--text-mid);
-      line-height: 1.7;
-      max-width: 44ch;
-    }
+    .collab-text .section-title { max-width: 18ch; }
 
     .slack-card {
-      background: #fff;
+      background: var(--surface);
       border-radius: var(--radius);
-      box-shadow: var(--card-shadow), 0 0 0 1px rgba(28, 43, 30, 0.06);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
       overflow: hidden;
     }
 
     .slack-header {
-      padding: 0.85rem 1.25rem;
-      background: #350d36;
+      padding: 0.9rem 1.25rem;
+      background: linear-gradient(135deg, #350d36 0%, #4a154b 100%);
       color: #fff;
-      font-size: 0.85rem;
+      font-size: 0.8125rem;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .slack-header svg { opacity: 0.7; }
+    .slack-header svg { opacity: 0.75; flex-shrink: 0; }
 
     .slack-body {
-      padding: 1.25rem;
+      padding: 1.35rem;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.15rem;
     }
 
     .slack-msg {
@@ -404,12 +664,12 @@
     .slack-avatar {
       width: 36px;
       height: 36px;
-      border-radius: 8px;
+      border-radius: 10px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
+      font-size: 0.6875rem;
       font-weight: 700;
       color: #fff;
     }
@@ -420,11 +680,8 @@
       overflow: hidden;
     }
 
-    .slack-avatar.focus .focus-icon {
-      width: 36px;
-      height: 36px;
-    }
-    .slack-avatar.user { background: #6b5b95; }
+    .slack-avatar.focus img { width: 36px; height: 36px; }
+    .slack-avatar.user { background: linear-gradient(135deg, #6b5b95, #8b7ab5); }
 
     .slack-msg-content { flex: 1; min-width: 0; }
 
@@ -432,102 +689,160 @@
       display: flex;
       align-items: baseline;
       gap: 0.5rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
     }
 
     .slack-name {
       font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--text-dark);
+      font-size: 0.875rem;
     }
 
     .slack-time {
-      font-size: 0.75rem;
-      color: #888;
+      font-size: 0.6875rem;
+      color: #999;
     }
 
     .slack-text {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       color: var(--text-mid);
       line-height: 1.55;
     }
 
     .slack-text code {
       background: var(--off-white);
-      padding: 0.1em 0.35em;
-      border-radius: 4px;
+      padding: 0.15em 0.4em;
+      border-radius: 5px;
       font-size: 0.85em;
+      font-family: ui-monospace, monospace;
     }
 
     /* ── About ── */
     .about {
       background: var(--dark);
       color: var(--text-light);
+    }
+
+    .about-card {
+      max-width: 680px;
+      margin-inline: auto;
       text-align: center;
+      padding: 3rem 2.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+    }
+
+    .about-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-hover) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto 1.75rem;
+      letter-spacing: -0.02em;
     }
 
     .about .section-title {
       color: #fff;
       max-width: none;
       margin-inline: auto;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .about p {
-      font-size: 1.05rem;
+      font-size: 1.0625rem;
       color: var(--text-light);
       line-height: 1.75;
-      max-width: 58ch;
-      margin-inline: auto;
       margin-bottom: 1.75rem;
     }
 
-    .about a {
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       color: var(--sage-light);
-      font-weight: 500;
-      border-bottom: 1px solid rgba(200, 217, 196, 0.3);
-      padding-bottom: 2px;
-      transition: color 0.2s ease;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(200, 217, 196, 0.25);
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
-    .about a:hover { color: #fff; }
-
-    /* ── Waitlist ── */
-    .waitlist {
-      background: var(--sage);
+    .about-link:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(200, 217, 196, 0.4);
       color: #fff;
     }
 
+    /* ── Waitlist ── */
+    .waitlist {
+      background: linear-gradient(160deg, var(--sage) 0%, #4a7560 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .waitlist::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 100% 0%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
     .waitlist-inner {
-      max-width: 520px;
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
       margin-inline: auto;
       text-align: center;
     }
 
     .waitlist h2 {
-      font-size: clamp(1.75rem, 4vw, 2.25rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
+      font-size: clamp(1.875rem, 4vw, 2.375rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
       margin-bottom: 0.75rem;
     }
 
     .waitlist-sub {
-      font-size: 1.05rem;
-      opacity: 0.9;
-      margin-bottom: 2.5rem;
-      line-height: 1.6;
+      font-size: 1.0625rem;
+      opacity: 0.92;
+      margin-bottom: 2.25rem;
+      line-height: 1.65;
+    }
+
+    .waitlist-form-wrap {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius);
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-align: left;
     }
 
     .waitlist-form {
-      text-align: left;
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
 
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
     .form-group label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.8125rem;
       font-weight: 600;
       margin-bottom: 0.4rem;
       opacity: 0.95;
@@ -537,27 +852,28 @@
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 0.75rem 1rem;
-      border: 2px solid rgba(255, 255, 255, 0.25);
+      padding: 0.8rem 1rem;
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
       border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 0.9375rem;
       font-family: inherit;
-      transition: border-color 0.2s ease, background 0.2s ease;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
 
     .form-group input::placeholder,
     .form-group textarea::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.45);
     }
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
       outline: none;
-      border-color: rgba(255, 255, 255, 0.6);
-      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
     }
 
     .form-group select {
@@ -575,12 +891,12 @@
     }
 
     .form-group textarea {
-      min-height: 100px;
+      min-height: 96px;
       resize: vertical;
     }
 
     .waitlist-form .btn-primary {
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
       width: 100%;
       background: #fff;
       color: var(--sage);
@@ -589,14 +905,14 @@
 
     .waitlist-form .btn-primary:hover {
       background: var(--off-white);
-      box-shadow: 0 6px 28px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
 
     .form-error {
       background: rgba(0, 0, 0, 0.2);
       border-radius: var(--radius-sm);
       padding: 0.75rem 1rem;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       display: none;
     }
 
@@ -604,31 +920,44 @@
 
     .form-success {
       display: none;
-      padding: 2rem;
+      padding: 2.5rem 1.5rem;
       text-align: center;
     }
 
     .form-success.visible { display: block; }
 
+    .form-success-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      color: #fff;
+    }
+
     .form-success h3 {
       font-size: 1.5rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 0.5rem;
+      letter-spacing: -0.03em;
     }
 
     .form-success p {
       opacity: 0.9;
-      font-size: 1.05rem;
+      font-size: 1.0625rem;
     }
 
-    .waitlist-form.hidden { display: none; }
+    .waitlist-form-wrap.hidden { display: none; }
 
     /* ── Footer ── */
     .footer {
       background: var(--dark);
       color: var(--text-muted);
-      padding: 2.5rem 0;
-      border-top: 1px solid rgba(200, 217, 196, 0.08);
+      padding: 2.75rem 0;
+      border-top: 1px solid var(--border-dark);
     }
 
     .footer-inner {
@@ -644,8 +973,9 @@
     .footer-links {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       gap: 0.5rem 1.25rem;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
     }
 
     .footer-links a {
@@ -655,109 +985,164 @@
 
     .footer-links a:hover { color: #fff; }
 
-    .footer-links span { opacity: 0.3; }
+    .footer-links span { opacity: 0.25; }
 
     .footer-copy {
       width: 100%;
       text-align: center;
-      font-size: 0.8rem;
-      opacity: 0.5;
-      margin-top: 0.5rem;
+      font-size: 0.8125rem;
+      opacity: 0.45;
+      margin-top: 0.75rem;
     }
 
     /* ── Responsive ── */
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
+      .hero-body { grid-template-columns: 1fr; }
+      .hero-visual { order: -1; max-width: 480px; }
+      .hero-float { display: none; }
       .cards { grid-template-columns: 1fr; }
       .steps { grid-template-columns: 1fr 1fr; }
-      .collab-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .steps::after { display: none; }
+      .collab-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 600px) {
       .container { width: calc(100% - 2rem); }
       .steps { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn { width: 100%; }
       .footer-inner { flex-direction: column; text-align: center; }
+      .about-card { padding: 2rem 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { transition: opacity 0.3s ease; transform: none; }
+      .hero-badge-dot, .hero-float { animation: none; }
+      .btn:hover, .card:hover { transform: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════
-       HERO
-       ═══════════════════════════════════════════ -->
-  <section class="hero" id="top">
-    <header class="hero-header">
-      <div class="container">
-        <a href="#top" class="logo" aria-label="Focus home">
-          <img
-            class="logo-mark"
-            src="assets/focus-icon-128.png"
-            srcset="assets/focus-icon-36.png 108w, assets/focus-icon-128.png 256w"
-            sizes="36px"
-            width="36"
-            height="36"
-            alt=""
-          >
-          Focus
-        </a>
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="logo" aria-label="Focus home">
+        <img
+          class="logo-mark"
+          src="assets/focus-icon-128.png"
+          srcset="assets/focus-icon-36.png 108w, assets/focus-icon-128.png 256w"
+          sizes="34px"
+          width="34"
+          height="34"
+          alt=""
+        >
+        Focus
+      </a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#collab">Collaboration</a>
+        <a href="#about">About</a>
+        <a href="#waitlist" class="btn btn-primary nav-cta">Join waitlist</a>
       </div>
-    </header>
+    </div>
+  </nav>
 
-    <div class="hero-body">
-      <div class="container">
-        <div class="hero-content fade-in">
-          <h1>Work happens. Focus handles the rest.</h1>
-          <p class="hero-sub">Focus watches how you work, captures everything around your tasks, and quietly builds the automation — so you don't have to.</p>
-          <div class="hero-actions">
-            <a href="#waitlist" class="btn btn-primary">Join the waitlist</a>
-            <a href="#how" class="link-secondary">Learn more</a>
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-grid"></div>
+    </div>
+
+    <div class="container hero-body">
+      <div class="hero-content fade-in">
+        <div class="hero-badge">
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          Now building in public
+        </div>
+        <h1>Work happens. <em>Focus</em> handles the rest.</h1>
+        <p class="hero-sub">Focus watches how you work, captures everything around your tasks, and quietly builds the automation — so you don't have to.</p>
+        <div class="hero-actions">
+          <a href="#waitlist" class="btn btn-primary">Join the waitlist</a>
+          <a href="#how" class="btn btn-ghost">See how it works</a>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-in delay-1">
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <img class="hero-card-icon" src="assets/focus-icon-36.png" width="40" height="40" alt="">
+            <div>
+              <div class="hero-card-title">Q3 pricing rollout</div>
+              <div class="hero-card-sub">Focus is watching · 3 resources captured</div>
+            </div>
           </div>
+          <div class="hero-task">
+            <div class="hero-task-item active">
+              <div class="hero-task-check" aria-hidden="true"></div>
+              <div>
+                <div class="hero-task-text">Draft internal announcement email</div>
+                <div class="hero-task-meta">Pattern detected · ready to automate</div>
+              </div>
+            </div>
+            <div class="hero-task-item">
+              <div class="hero-task-check" aria-hidden="true"></div>
+              <div class="hero-task-text">Schedule customer email for Thursday</div>
+            </div>
+            <div class="hero-task-item">
+              <div class="hero-task-check" aria-hidden="true"></div>
+              <div class="hero-task-text">Pull context from Slack + Notion</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float" aria-hidden="true">
+          <div class="hero-float-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Workflow ready to run
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       THE PROBLEM
-       ═══════════════════════════════════════════ -->
+  <!-- Problem -->
   <section class="problem" id="problem">
     <div class="container">
-      <h2 class="section-title fade-in">You already know what should be automated. You just never have time to do it.</h2>
+      <div class="problem-header fade-in">
+        <span class="eyebrow">The problem</span>
+        <h2 class="section-title">You already know what should be automated. You just never have time to do it.</h2>
+      </div>
       <div class="cards">
-        <article class="card fade-in">
+        <article class="card fade-in delay-1">
           <div class="card-icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 6v6l4 2"/>
-              <path d="M8 3l-1 2M16 3l1 2M4 8L2 9M22 8l-2 1"/>
             </svg>
           </div>
           <h3>Context is scattered</h3>
           <p>Slack threads, Notion docs, Jira tickets, emails — your task context lives everywhere except where you're working.</p>
         </article>
 
-        <article class="card fade-in">
+        <article class="card fade-in delay-2">
           <div class="card-icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4v5h5"/>
-              <path d="M20 20v-5h-5"/>
-              <path d="M20 4l-8 8"/>
-              <path d="M4 20l8-8"/>
+              <path d="M4 4v5h5"/><path d="M20 20v-5h-5"/>
+              <path d="M20 4l-8 8"/><path d="M4 20l8-8"/>
             </svg>
           </div>
           <h3>Repetition goes unresolved</h3>
           <p>Every executor has a graveyard of tasks they meant to automate. Someday never comes.</p>
         </article>
 
-        <article class="card fade-in">
+        <article class="card fade-in delay-3">
           <div class="card-icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
               <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              <line x1="19" y1="8" x2="23" y2="12"/>
-              <line x1="23" y1="8" x2="19" y2="12"/>
             </svg>
           </div>
           <h3>Collaboration is friction</h3>
@@ -767,56 +1152,32 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       HOW IT WORKS
-       ═══════════════════════════════════════════ -->
+  <!-- How it works -->
   <section class="how" id="how">
     <div class="container">
-      <h2 class="section-title fade-in">The Focus Loop</h2>
+      <div class="how-header fade-in">
+        <span class="eyebrow light">How it works</span>
+        <h2 class="section-title center">The Focus Loop</h2>
+        <p class="section-lead center">Four steps. Zero extra work from you.</p>
+      </div>
       <div class="steps">
-        <article class="step fade-in">
-          <div class="step-num">01</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          </div>
+        <article class="step fade-in delay-1">
+          <div class="step-num">1</div>
           <h3>Watch</h3>
           <p>Focus observes your actions as you work, passively, in the background.</p>
         </article>
-
-        <article class="step fade-in">
-          <div class="step-num">02</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-          </div>
+        <article class="step fade-in delay-2">
+          <div class="step-num">2</div>
           <h3>Capture</h3>
           <p>Resources, conversations, and context are automatically gathered around the task.</p>
         </article>
-
-        <article class="step fade-in">
-          <div class="step-num">03</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-          </div>
+        <article class="step fade-in delay-3">
+          <div class="step-num">3</div>
           <h3>Recognise</h3>
           <p>Intent is identified. The same pattern surfaces when it detects matching work ahead.</p>
         </article>
-
         <article class="step fade-in">
-          <div class="step-num">04</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="5 3 19 12 5 21 5 3"/>
-            </svg>
-          </div>
+          <div class="step-num">4</div>
           <h3>Execute</h3>
           <p>The workflow runs. You approve or it runs silently.</p>
         </article>
@@ -824,18 +1185,17 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       COLLABORATION
-       ═══════════════════════════════════════════ -->
+  <!-- Collaboration -->
   <section class="collab" id="collab">
     <div class="container">
       <div class="collab-grid">
         <div class="collab-text fade-in">
+          <span class="eyebrow">Collaboration</span>
           <h2 class="section-title">No new tools. No context switches.</h2>
-          <p>Focus meets your team where they already are. When it needs a quick answer, it reaches out in Slack — not another dashboard, not another login. Your colleague replies in the thread. Focus picks it up and keeps going.</p>
+          <p class="section-lead">Focus meets your team where they already are. When it needs a quick answer, it reaches out in Slack — not another dashboard, not another login. Your colleague replies in the thread. Focus picks it up and keeps going.</p>
         </div>
 
-        <div class="slack-card fade-in" aria-label="Example Slack conversation">
+        <div class="slack-card fade-in delay-1" aria-label="Example Slack conversation">
           <div class="slack-header">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/></svg>
             Direct message
@@ -843,7 +1203,7 @@
           <div class="slack-body">
             <div class="slack-msg">
               <div class="slack-avatar focus" aria-hidden="true">
-                <img class="focus-icon" src="assets/focus-icon-36.png" width="36" height="36" alt="">
+                <img src="assets/focus-icon-36.png" width="36" height="36" alt="">
               </div>
               <div class="slack-msg-content">
                 <div class="slack-msg-header">
@@ -867,7 +1227,7 @@
 
             <div class="slack-msg">
               <div class="slack-avatar focus" aria-hidden="true">
-                <img class="focus-icon" src="assets/focus-icon-36.png" width="36" height="36" alt="">
+                <img src="assets/focus-icon-36.png" width="36" height="36" alt="">
               </div>
               <div class="slack-msg-content">
                 <div class="slack-msg-header">
@@ -883,71 +1243,73 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       ABOUT / FOUNDER
-       ═══════════════════════════════════════════ -->
+  <!-- About -->
   <section class="about" id="about">
     <div class="container fade-in">
-      <h2 class="section-title">Built by someone who lived this problem</h2>
-      <p>Focus was built by Lalit Nankani — Senior Staff Engineer and Engineering Manager with 9+ years in fintech and distributed systems. Focus exists because the best person to automate something is always the least motivated to do it.</p>
-      <a href="mailto:lit@withfocus.io">lit@withfocus.io</a>
+      <div class="about-card">
+        <div class="about-avatar" aria-hidden="true">LN</div>
+        <h2 class="section-title">Built by someone who lived this problem</h2>
+        <p>Focus is built by Lalit Nankani — Senior Staff Engineer and Engineering Manager with 9+ years in fintech and distributed systems. Focus exists because the best person to automate something is always the least motivated to do it.</p>
+        <a href="mailto:lit@withfocus.io" class="about-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          lit@withfocus.io
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       WAITLIST
-       ═══════════════════════════════════════════ -->
+  <!-- Waitlist -->
   <section class="waitlist" id="waitlist">
     <div class="container">
       <div class="waitlist-inner fade-in">
         <h2>Be the first to use Focus.</h2>
         <p class="waitlist-sub">We are building Focus in public. Join the waitlist and we will keep you close.</p>
 
-        <!--
-          FORMSPREE SETUP:
-          Replace YOUR_FORM_ID below with your actual Formspree form ID.
-          Example: https://formspree.io/f/xrgwkpzq  →  action="https://formspree.io/f/xrgwkpzq"
-        -->
-        <form
-          id="waitlist-form"
-          class="waitlist-form"
-          action="https://formspree.io/f/mykqpryn"
-          method="POST"
-        >
-          <div class="form-group">
-            <label for="name">Full name <span aria-hidden="true">*</span></label>
-            <input type="text" id="name" name="name" required placeholder="Jane Smith" autocomplete="name">
-          </div>
+        <div class="waitlist-form-wrap" id="form-wrap">
+          <form
+            id="waitlist-form"
+            class="waitlist-form"
+            action="https://formspree.io/f/mykqpryn"
+            method="POST"
+          >
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full name</label>
+                <input type="text" id="name" name="name" required placeholder="Jane Smith" autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="email">Work email</label>
+                <input type="email" id="email" name="email" required placeholder="you@company.com" autocomplete="email">
+              </div>
+            </div>
 
-          <div class="form-group">
-            <label for="email">Work email <span aria-hidden="true">*</span></label>
-            <input type="email" id="email" name="email" required placeholder="you@company.com" autocomplete="email">
-          </div>
+            <div class="form-group">
+              <label for="role">Role</label>
+              <select id="role" name="role" required>
+                <option value="" disabled selected>Select your role</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Architect">Architect</option>
+                <option value="Engineering Manager">Engineering Manager</option>
+                <option value="Product Manager">Product Manager</option>
+                <option value="Founder">Founder</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-          <div class="form-group">
-            <label for="role">Role</label>
-            <select id="role" name="role" required>
-              <option value="" disabled selected>Select your role</option>
-              <option value="Engineer">Engineer</option>
-              <option value="Architect">Architect</option>
-              <option value="Engineering Manager">Engineering Manager</option>
-              <option value="Product Manager">Product Manager</option>
-              <option value="Founder">Founder</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="pain">What's your biggest workflow pain? <span style="opacity:0.65">(optional)</span></label>
+              <textarea id="pain" name="pain" placeholder="e.g. Every sprint I manually compile status updates from five different tools…"></textarea>
+            </div>
 
-          <div class="form-group">
-            <label for="pain">What's your biggest workflow pain? <span style="opacity:0.7">(optional)</span></label>
-            <textarea id="pain" name="pain" placeholder="e.g. Every sprint I manually compile status updates from five different tools…"></textarea>
-          </div>
-
-          <div id="form-error" class="form-error" role="alert"></div>
-
-          <button type="submit" class="btn btn-primary" id="submit-btn">Join the waitlist</button>
-        </form>
+            <div id="form-error" class="form-error" role="alert"></div>
+            <button type="submit" class="btn btn-primary" id="submit-btn">Join the waitlist</button>
+          </form>
+        </div>
 
         <div id="form-success" class="form-success" role="status">
+          <div class="form-success-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
           <h3>You're on the list.</h3>
           <p>We'll be in touch.</p>
         </div>
@@ -955,9 +1317,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       FOOTER
-       ═══════════════════════════════════════════ -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
@@ -985,7 +1345,15 @@
 
   <script>
     (function () {
-      /* ── Scroll fade-in ── */
+      /* Nav scroll state */
+      var nav = document.getElementById('nav');
+      function onScroll() {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      /* Scroll fade-in */
       var fadeEls = document.querySelectorAll('.fade-in');
       if ('IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
@@ -995,14 +1363,13 @@
               observer.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
+        }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
         fadeEls.forEach(function (el) { observer.observe(el); });
       } else {
         fadeEls.forEach(function (el) { el.classList.add('visible'); });
       }
 
-      /* ── Smooth scroll for anchor links ── */
+      /* Smooth scroll */
       document.querySelectorAll('a[href^="#"]').forEach(function (link) {
         link.addEventListener('click', function (e) {
           var target = document.querySelector(link.getAttribute('href'));
@@ -1013,8 +1380,9 @@
         });
       });
 
-      /* ── Waitlist form (Formspree AJAX) ── */
+      /* Waitlist form */
       var form = document.getElementById('waitlist-form');
+      var formWrap = document.getElementById('form-wrap');
       var errorEl = document.getElementById('form-error');
       var successEl = document.getElementById('form-success');
       var submitBtn = document.getElementById('submit-btn');
@@ -1034,7 +1402,7 @@
           })
             .then(function (res) {
               if (res.ok) {
-                form.classList.add('hidden');
+                formWrap.classList.add('hidden');
                 successEl.classList.add('visible');
                 return;
               }
