@@ -28,15 +28,10 @@ echo "Verifying domain ${DOMAIN} is in your GoDaddy account…"
 godaddy domain get "${DOMAIN}" >/dev/null
 
 echo "Setting apex A records for GitHub Pages…"
-payload="["
-for ip in "${GITHUB_A[@]}"; do
-  if [[ "${payload}" != "[" ]]; then payload+=","; fi
-  payload+='{"data":"'"${ip}"'","ttl":600}'
+godaddy dns set "${DOMAIN}" A @ "${GITHUB_A[0]}" --ttl 600
+for ip in "${GITHUB_A[@]:1}"; do
+  godaddy dns add "${DOMAIN}" A @ "${ip}" --ttl 600
 done
-payload+="]"
-godaddy raw PUT "/v1/domains/${DOMAIN}/records/A/@" \
-  -H "Content-Type: application/json" \
-  -d "${payload}"
 
 echo "Setting www CNAME → ${WWW_CNAME}…"
 godaddy dns set "${DOMAIN}" CNAME www "${WWW_CNAME}" --ttl 600
