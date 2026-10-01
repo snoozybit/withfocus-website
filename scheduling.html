@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="How Focus turns a Slack message into work: Decide, claim, route vs start, and host brain jobs.">
+  <meta name="theme-color" content="#1C2B1E">
+  <title>Focus — Scheduling & claim loop</title>
+  <link rel="icon" type="image/png" href="assets/focus-icon-128.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #142018;
+      --ink-soft: #243528;
+      --sage: #5A8A5E;
+      --sage-deep: #3f6b43;
+      --sage-wash: #d8e6d6;
+      --paper: #eef3ec;
+      --surface: #f7faf6;
+      --white: #ffffff;
+      --muted: #5a6e5c;
+      --line: #c5d6c2;
+      --amber: #9a7b32;
+      --amber-wash: #f3e8c8;
+      --rose: #8f4d45;
+      --rose-wash: #f3d9d5;
+      --sky: #3d6f8a;
+      --sky-wash: #d5e6ef;
+      --font: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #dce8da 0%, transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, #d5e2d8 0%, transparent 50%),
+        var(--paper);
+    }
+    a { color: var(--sage-deep); }
+    .wrap {
+      width: min(1080px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 1.5rem 0 4rem;
+    }
+    header.top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand img { width: 36px; height: 36px; }
+    .brand strong {
+      font-size: 1.15rem;
+      letter-spacing: -.02em;
+    }
+    .brand span {
+      display: block;
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: .1rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.55rem, 3vw, 2rem);
+      letter-spacing: -.03em;
+      line-height: 1.15;
+    }
+    .lead {
+      margin: .55rem 0 0;
+      max-width: 42rem;
+      color: var(--muted);
+      font-size: .98rem;
+      line-height: 1.5;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin: 1.25rem 0 1rem;
+    }
+    .tab {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink-soft);
+      font: 600 .82rem var(--font);
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s, transform .15s;
+    }
+    .tab:hover { border-color: var(--sage); }
+    .tab[aria-selected="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #f0f4ef;
+    }
+    .panel { display: none; animation: in .28s ease; }
+    .panel.active { display: block; }
+    @keyframes in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 1rem;
+    }
+    @media (max-width: 860px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.1rem 1.2rem 1.2rem;
+      box-shadow: 0 10px 30px rgba(20, 32, 24, .04);
+    }
+    .card h2 {
+      margin: 0 0 .35rem;
+      font-size: 1.05rem;
+      letter-spacing: -.02em;
+    }
+    .card .sub {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.45;
+    }
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .75rem;
+      align-items: start;
+      padding: .7rem .8rem;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: var(--surface);
+      opacity: .45;
+      transition: opacity .25s, border-color .25s, background .25s;
+    }
+    .step.on {
+      opacity: 1;
+      border-color: var(--sage);
+      background: #f3f8f2;
+    }
+    .step.dim { opacity: .28; }
+    .badge {
+      font-family: var(--mono);
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: .28rem .45rem;
+      border-radius: 7px;
+      background: var(--sage-wash);
+      color: var(--sage-deep);
+      white-space: nowrap;
+    }
+    .badge.amber { background: var(--amber-wash); color: var(--amber); }
+    .badge.rose { background: var(--rose-wash); color: var(--rose); }
+    .badge.sky { background: var(--sky-wash); color: var(--sky); }
+    .step h3 {
+      margin: 0;
+      font-size: .92rem;
+    }
+    .step p {
+      margin: .2rem 0 0;
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1rem;
+    }
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: .65rem 1rem;
+      font: 600 .86rem var(--font);
+      cursor: pointer;
+      background: var(--ink);
+      color: #f0f4ef;
+    }
+    .btn.secondary {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .btn:disabled { opacity: .45; cursor: default; }
+    .scenario {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: .9rem;
+    }
+    .chip {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--white);
+      border-radius: 999px;
+      padding: .4rem .75rem;
+      font: 600 .78rem var(--font);
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+    .chip[aria-pressed="true"] {
+      background: var(--sage-wash);
+      border-color: var(--sage);
+      color: var(--sage-deep);
+    }
+    .callout {
+      border-left: 3px solid var(--sage);
+      padding: .15rem 0 .15rem .85rem;
+      margin: .85rem 0 0;
+      font-size: .88rem;
+      line-height: 1.45;
+      color: var(--ink-soft);
+    }
+    .callout strong { color: var(--ink); }
+    .myth {
+      display: grid;
+      gap: .65rem;
+    }
+    .myth row, .myth .row {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: .75rem;
+      align-items: start;
+      padding: .75rem;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 600;
+      padding: .25rem .4rem;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .tag.no { background: var(--rose-wash); color: var(--rose); }
+    .tag.yes { background: var(--sage-wash); color: var(--sage-deep); }
+    .tag.kinda { background: var(--amber-wash); color: var(--amber); }
+    .myth p { margin: 0; font-size: .86rem; line-height: 1.45; color: var(--muted); }
+    .myth p b { color: var(--ink); font-weight: 600; }
+    .sm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+      align-items: center;
+      justify-content: center;
+      margin: .4rem 0 1rem;
+      min-height: 3.2rem;
+    }
+    .node {
+      font-family: var(--mono);
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .55rem .7rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--white);
+      color: var(--muted);
+      transition: all .2s;
+    }
+    .node.live {
+      border-color: var(--sage);
+      background: var(--sage-wash);
+      color: var(--sage-deep);
+      transform: translateY(-2px);
+    }
+    .node.fail {
+      border-color: var(--rose);
+      background: var(--rose-wash);
+      color: var(--rose);
+    }
+    .arrow {
+      color: var(--line);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .arrow.live { color: var(--sage); }
+    .demo-box {
+      font-family: var(--mono);
+      font-size: .8rem;
+      line-height: 1.55;
+      background: var(--ink);
+      color: #d8e6d6;
+      border-radius: 12px;
+      padding: .9rem 1rem;
+      overflow-x: auto;
+    }
+    .demo-box .hi { color: #9ad19e; }
+    .demo-box .lo { color: #7a8f7c; }
+    .demo-box .warn { color: #e0c078; }
+    .toggle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: .85rem;
+    }
+    label.tog {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .4rem .7rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    label.tog input { accent-color: var(--sage); }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+    }
+    @media (max-width: 700px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+    .compare .card { margin: 0; box-shadow: none; }
+    .compare h3 {
+      margin: 0 0 .4rem;
+      font-size: .95rem;
+    }
+    .compare ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.45;
+    }
+    .compare li { margin: .25rem 0; }
+    footer.note {
+      margin-top: 1.75rem;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/">
+        <img src="assets/focus-icon-128.png" alt="">
+        <div>
+          <strong>Focus</strong>
+          <span>Internal explainer · scheduling loop</span>
+        </div>
+      </a>
+      <div>
+        <h1>How a Slack message becomes work</h1>
+        <p class="lead">Interactive walkthrough of Decide, claim rounds, route vs start, and host job states. Core-brain Decide is <em>not</em> an LLM.</p>
+      </div>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" aria-selected="true" data-tab="flow">1 · Flow</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="decide">2 · Decide</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="claim">3 · Claiming</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="jobs">4 · Job states</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="myths">5 · Myths</button>
+    </div>
+
+    <!-- FLOW -->
+    <section class="panel active" id="panel-flow" role="tabpanel">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Play the path</h2>
+          <p class="sub">Pick a scenario, then step through. Highlight shows where control sits.</p>
+          <div class="scenario" id="scenario">
+            <button class="chip" aria-pressed="true" data-scenario="iris">Owner Iris DM</button>
+            <button class="chip" aria-pressed="false" data-scenario="peer-listen">Channel · listener exists</button>
+            <button class="chip" aria-pressed="false" data-scenario="peer-claim">Channel · no listener, agents live</button>
+            <button class="chip" aria-pressed="false" data-scenario="peer-start">Channel · no listener, no agents</button>
+          </div>
+          <div class="flow" id="flow-steps"></div>
+          <div class="controls">
+            <button class="btn" id="flow-next">Next step</button>
+            <button class="btn secondary" id="flow-reset">Reset</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>What’s happening</h2>
+          <p class="sub" id="flow-caption">Start the walkthrough.</p>
+          <div class="demo-box" id="flow-code"></div>
+          <p class="callout" id="flow-callout"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DECIDE -->
+    <section class="panel" id="panel-decide" role="tabpanel">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Core-brain Decide = lookup, not LLM</h2>
+          <p class="sub">Toggle whether a listener already covers this channel/thread. Decision flips instantly — no model call.</p>
+          <div class="toggle-row">
+            <label class="tog"><input type="checkbox" id="has-listener"> Alive listener on same scope</label>
+            <label class="tog"><input type="checkbox" id="same-thread" checked> Same thread / channel id</label>
+          </div>
+          <div class="demo-box" id="decide-code"></div>
+          <p class="callout"><strong>LLM comes later</strong> — only when frontdesk runs <code>cursor-agent</code> / <code>claude</code> / <code>codex</code> on a claimed job or agent message.</p>
+        </div>
+        <div class="card">
+          <h2>Result</h2>
+          <p class="sub">Route steers existing work. Start creates a new unit of work.</p>
+          <div class="compare" id="decide-result"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLAIM -->
+    <section class="panel" id="panel-claim" role="tabpanel">
+      <div class="card" style="margin-bottom:1rem">
+        <h2>Two different “claims”</h2>
+        <p class="sub">People mix these up. They are unrelated mechanisms.</p>
+        <div class="compare">
+          <div class="card">
+            <h3>Claim round (agents bid)</h3>
+            <ul>
+              <li>Desk would <b>Start</b>, but live non-brain agents exist</li>
+              <li>Each gets <code>CLAIM_OFFER</code></li>
+              <li>Reply <code>FOCUS_CLAIM</code> yes/no</li>
+              <li>Winner gets <code>CLAIMED_WORK</code> → delivered into <b>that existing agent</b></li>
+              <li>Not “spawn a new process” by itself</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Claim job (host dequeue)</h3>
+            <ul>
+              <li><code>focus frontdesk run</code> on your machine</li>
+              <li>Picks next <code>brain_jobs</code> row in <code>pending</code></li>
+              <li>Marks it <code>running</code> (<code>FOR UPDATE SKIP LOCKED</code>)</li>
+              <li>Then WorkPool may exec headless CLI</li>
+              <li>Queue take — not an auction</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h2>Simulate a claim round</h2>
+          <p class="sub">Agents answer the offer. One yes assigns; many escalate; none expire.</p>
+          <div class="controls" style="margin-top:0;margin-bottom:.85rem">
+            <button class="btn secondary" data-claim="a-yes">Agent A: claim</button>
+            <button class="btn secondary" data-claim="b-yes">Agent B: claim</button>
+            <button class="btn secondary" data-claim="a-no">Agent A: decline</button>
+            <button class="btn secondary" data-claim="expire">Expire TTL</button>
+            <button class="btn" data-claim="reset">Reset round</button>
+          </div>
+          <div class="demo-box" id="claim-log"></div>
+        </div>
+        <div class="card">
+          <h2>Round state</h2>
+          <p class="sub" id="claim-caption">Round is open. Waiting on offers.</p>
+          <div class="sm" id="claim-sm"></div>
+          <p class="callout" id="claim-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOBS -->
+    <section class="panel" id="panel-jobs" role="tabpanel">
+      <div class="card">
+        <h2><code>brain_jobs</code> state machine</h2>
+        <p class="sub">Click Next to walk a job from enqueue → host run → finish. Stale running jobs are reaped after ~4 minutes.</p>
+        <div class="sm" id="job-sm"></div>
+        <div class="controls">
+          <button class="btn" id="job-next">Advance</button>
+          <button class="btn secondary" id="job-fail">Force fail / reap</button>
+          <button class="btn secondary" id="job-wait">Complete as waiting</button>
+          <button class="btn secondary" id="job-reset">Reset</button>
+        </div>
+        <p class="callout" id="job-note"></p>
+        <div class="demo-box" id="job-code" style="margin-top:1rem"></div>
+      </div>
+    </section>
+
+    <!-- MYTHS -->
+    <section class="panel" id="panel-myths" role="tabpanel">
+      <div class="card">
+        <h2>Common misconceptions</h2>
+        <p class="sub">Short answers to the questions that keep coming up.</p>
+        <div class="myth">
+          <div class="row">
+            <span class="tag no">No</span>
+            <p><b>Is Decide an LLM?</b> Pure Go: match alive listener on same scope + scope_id → Route, else Start. Zero model calls.</p>
+          </div>
+          <div class="row">
+            <span class="tag kinda">Kinda</span>
+            <p><b>Is Route “steer into existing session”?</b> Yes in spirit — work goes to the listening agent, often via <code>--resume</code> on the same Cursor/Claude chat. Not a Slack “steer” API; Focus agent pipe / job reuse.</p>
+          </div>
+          <div class="row">
+            <span class="tag no">No</span>
+            <p><b>Does Start always mean a new OS process?</b> Start means a new work unit (task + job / agent registration). Processes are bounded by the host WorkPool (default 2 concurrent). Keep-alive supervisor may already be running.</p>
+          </div>
+          <div class="row">
+            <span class="tag no">No</span>
+            <p><b>Is work sandboxed on the server?</b> No. API never execs Cursor/Claude/Codex. Your laptop’s <code>focus frontdesk run</code> does.</p>
+          </div>
+          <div class="row">
+            <span class="tag yes">Yes</span>
+            <p><b>Are there ceilings?</b> Agents: brain 1 / worker 8 (config). Worker spawn burst 3. Host concurrent CLI jobs default 2 (<code>FOCUS_CLI_WORK_LIMIT</code>).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="note">
+      Hosted at <a href="https://withfocus.io/scheduling.html">withfocus.io/scheduling.html</a> · mirrors Focus desk / brain / brainjob / claim behavior · not a live debugger
+    </footer>
+  </div>
+
+  <script>
+    const scenarios = {
+      iris: {
+        title: "Owner Iris DM",
+        steps: [
+          { badge: "Slack", badgeClass: "", title: "DM to Iris", body: "Linked Slack user message in IM.", caption: "Owner DM hits the Iris path — not the peer desk loop.", code: "ProcessSlackEventCallback\n  linked && isDM → IngestIris", callout: "Desk skips Iris DM channels so it won’t enqueue a competing brain_job." },
+          { badge: "Event", badgeClass: "sky", title: "Store event", body: "Idempotent on Slack event_id.", caption: "One owner event row; duplicates don’t re-run work.", code: "events: source=slack, audience=owner, status=pending", callout: "Ack may fire if CLI/brain isn’t ready." },
+          { badge: "Accept", badgeClass: "amber", title: "brain.Accept", body: "Same path as web Iris send.", caption: "Accept owns owner DMs when wired.", code: "ChatService.Accept(user, message)\n  → EnsureBrain → PassUserBatch", callout: "EnsureBrain reuses or Spawns kind=brain (cap 1)." },
+          { badge: "Pipe", badgeClass: "sage", title: "Agent pipe message", body: "Batch delivered to brain agent on node.", caption: "Frontdesk polls agent messages and runs work.", code: "frontdesk poll → WorkPool → cursor/claude/codex", callout: "LLM runs here on the host — not inside Decide." }
+        ]
+      },
+      "peer-listen": {
+        title: "Listener already exists",
+        steps: [
+          { badge: "Slack", badgeClass: "", title: "Channel / thread message", body: "Peer or channel ping for a Focus owner.", caption: "Not an owner Iris DM → desk path.", code: "Ingress / peer router → desk.Process", callout: "Requires connected CLI (fresh heartbeat)." },
+          { badge: "Decide", badgeClass: "sky", title: "Route", body: "Alive listener matches scope + scope_id.", caption: "Deterministic match — no LLM.", code: "Decide → ActionRoute, AgentID=<listener>", callout: "This is steer-into-existing-agent territory." },
+          { badge: "Task", badgeClass: "amber", title: "tasks row + job reuse", body: "Insert route task; prefer existing agent/job id.", caption: "May flip waiting/done job back to pending.", code: "insertTask(route)\nenqueueBrain / deliver to agent", callout: "Usually resume chat — not a brand-new agent." },
+          { badge: "Host", badgeClass: "", title: "Frontdesk runs it", body: "Claim or pipe delivery → WorkPool.", caption: "Concurrent host jobs capped (default 2).", code: "pending → running → done|waiting|failed", callout: "Same machine keep-alive may already be up." }
+        ]
+      },
+      "peer-claim": {
+        title: "No listener · agents can bid",
+        steps: [
+          { badge: "Decide", badgeClass: "sky", title: "Would Start", body: "No matching listener.", caption: "Before Start, desk asks live agents.", code: "Decide → ActionStart\nTryClaimOrStart(...)", callout: "ErrSkipStart while claim round is open." },
+          { badge: "Claim", badgeClass: "amber", title: "CLAIM_OFFER", body: "Solicit candidates on agent pipe.", caption: "Auction — not job dequeue.", code: "CLAIM_OFFER → agents reply FOCUS_CLAIM", callout: "Analysis text is truncated body, not an LLM." },
+          { badge: "Assign", badgeClass: "", title: "One claimer wins", body: "CLAIMED_WORK to that agent.", caption: "Route task + listener registered.", code: "round=assigned → AssignClaimed", callout: "Work goes into existing agent session." },
+          { badge: "Host", badgeClass: "sage", title: "Agent executes", body: "Frontdesk delivers / runs via pool.", caption: "Many claimers → escalate to Iris instead.", code: "FOCUS_CLAIM × N → escalate notice", callout: "Zero claims / TTL → expire; may retry Start later." }
+        ]
+      },
+      "peer-start": {
+        title: "No listener · Start fresh",
+        steps: [
+          { badge: "Decide", badgeClass: "sky", title: "Start", body: "No listener, no claim candidates.", caption: "Desk creates new work.", code: "Decide → ActionStart\ninsertTask + recordSpawn", callout: "Needs a node with cursor/claude/codex." },
+          { badge: "Job", badgeClass: "amber", title: "Enqueue brain_job", body: "pending on chosen node/brain.", caption: "brain_order prefers cursor → claude → codex.", code: "brain_jobs.state = pending\nlisteners registered on Start", callout: "API still does not exec the CLI." },
+          { badge: "Claim*", badgeClass: "", title: "Host ClaimNext", body: "Frontdesk dequeues pending → running.", caption: "Different meaning of claim.", code: "FOR UPDATE SKIP LOCKED\npending → running", callout: "Jump: jobs on dead nodes move to live ones." },
+          { badge: "Run", badgeClass: "sage", title: "Headless brain CLI", body: "WorkPool runs -p / exec.", caption: "Complete → done, waiting, or failed.", code: "cursor-agent -p … | claude -p … | codex exec", callout: "New work unit ≠ unbounded new processes." }
+        ]
+      }
+    };
+
+    let scenarioKey = "iris";
+    let stepIdx = 0;
+
+    function renderFlow() {
+      const sc = scenarios[scenarioKey];
+      const root = document.getElementById("flow-steps");
+      root.innerHTML = sc.steps.map((s, i) => `
+        <div class="step ${i === stepIdx ? "on" : i < stepIdx ? "" : "dim"}">
+          <span class="badge ${s.badgeClass || ""}">${s.badge}</span>
+          <div>
+            <h3>${s.title}</h3>
+            <p>${s.body}</p>
+          </div>
+        </div>`).join("");
+      const cur = sc.steps[stepIdx];
+      document.getElementById("flow-caption").textContent = cur.caption;
+      document.getElementById("flow-code").textContent = cur.code;
+      document.getElementById("flow-callout").innerHTML = cur.callout;
+      document.getElementById("flow-next").disabled = stepIdx >= sc.steps.length - 1;
+    }
+
+    document.querySelectorAll("#scenario .chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#scenario .chip").forEach(b => b.setAttribute("aria-pressed", "false"));
+        btn.setAttribute("aria-pressed", "true");
+        scenarioKey = btn.dataset.scenario;
+        stepIdx = 0;
+        renderFlow();
+      });
+    });
+    document.getElementById("flow-next").addEventListener("click", () => {
+      const max = scenarios[scenarioKey].steps.length - 1;
+      if (stepIdx < max) { stepIdx++; renderFlow(); }
+    });
+    document.getElementById("flow-reset").addEventListener("click", () => { stepIdx = 0; renderFlow(); });
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", "false"));
+        document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+        tab.setAttribute("aria-selected", "true");
+        document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+      });
+    });
+
+    // Decide demo
+    function renderDecide() {
+      const has = document.getElementById("has-listener").checked;
+      const same = document.getElementById("same-thread").checked;
+      const route = has && same;
+      document.getElementById("decide-code").innerHTML =
+        `<span class="lo">// brain.Decide — no LLM</span>\n` +
+        `listening = alive listener on scope?\n` +
+        `  has_listener = <span class="hi">${has}</span>\n` +
+        `  same_scope_id = <span class="hi">${same}</span>\n\n` +
+        `if has_listener && same_scope_id:\n` +
+        `  return <span class="${route ? "hi" : "lo"}">Route(agent_id)</span>\n` +
+        `else:\n` +
+        `  return <span class="${route ? "lo" : "warn"}">Start</span>`;
+      document.getElementById("decide-result").innerHTML = route ? `
+        <div class="card"><h3>Route</h3><ul>
+          <li>Send to existing listening agent</li>
+          <li>Often resume same chat (<code>--resume</code>)</li>
+          <li>Steer-like, not a new agent</li>
+        </ul></div>
+        <div class="card" style="opacity:.55"><h3>Start (not chosen)</h3><ul>
+          <li>Would open new work / job</li>
+          <li>Maybe claim round first</li>
+        </ul></div>` : `
+        <div class="card" style="opacity:.55"><h3>Route (not chosen)</h3><ul>
+          <li>Needs alive listener on same scope</li>
+        </ul></div>
+        <div class="card"><h3>Start</h3><ul>
+          <li>New task + brain_job (or claim auction)</li>
+          <li>New work unit — process still WorkPool-bounded</li>
+        </ul></div>`;
+    }
+    document.getElementById("has-listener").addEventListener("change", renderDecide);
+    document.getElementById("same-thread").addEventListener("change", renderDecide);
+
+    // Claim round sim
+    const claimState = { a: "pending", b: "pending", round: "open" };
+    function renderClaim() {
+      const states = ["open", "assigned", "escalated", "expired"];
+      const sm = document.getElementById("claim-sm");
+      sm.innerHTML = states.map((s, i) => {
+        const live = claimState.round === s;
+        return `${i ? '<span class="arrow' + (live ? ' live' : '') + '">→</span>' : ''}<span class="node${live ? ' live' : ''}">${s}</span>`;
+      }).join("");
+      const log = [];
+      log.push(`round: ${claimState.round}`);
+      log.push(`offer A: ${claimState.a}`);
+      log.push(`offer B: ${claimState.b}`);
+      if (claimState.round === "assigned") log.push("→ CLAIMED_WORK to winner (existing agent)");
+      if (claimState.round === "escalated") log.push("→ Iris: several agents claimed — pick one");
+      if (claimState.round === "expired") log.push("→ no claims; desk may Start later");
+      document.getElementById("claim-log").textContent = log.join("\n");
+      let caption = "Round open — waiting on FOCUS_CLAIM replies.";
+      let note = "Claim round = auction among existing agents. Not the host job ClaimNext.";
+      if (claimState.round === "assigned") {
+        caption = "Assigned to one agent. Work delivered into that session.";
+        note = "This is the closest thing to “steer”: CLAIMED_WORK on an existing agent pipe.";
+      } else if (claimState.round === "escalated") {
+        caption = "Multiple claimers — escalate to the user via Iris.";
+        note = "Focus does not auto-pick among many claimers.";
+      } else if (claimState.round === "expired") {
+        caption = "TTL ended with zero claims.";
+        note = "Event can stay queued; desk may Start a fresh brain job on retry.";
+      }
+      document.getElementById("claim-caption").textContent = caption;
+      document.getElementById("claim-note").textContent = note;
+    }
+    function resolveClaim() {
+      const claims = [claimState.a, claimState.b].filter(x => x === "claimed").length;
+      const pending = [claimState.a, claimState.b].filter(x => x === "pending").length;
+      if (pending === 0) {
+        if (claims === 1) claimState.round = "assigned";
+        else if (claims > 1) claimState.round = "escalated";
+        else claimState.round = "expired";
+      }
+      renderClaim();
+    }
+    document.querySelectorAll("[data-claim]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const k = btn.dataset.claim;
+        if (k === "reset") {
+          claimState.a = "pending"; claimState.b = "pending"; claimState.round = "open";
+          renderClaim(); return;
+        }
+        if (claimState.round !== "open") return;
+        if (k === "a-yes") claimState.a = "claimed";
+        if (k === "b-yes") claimState.b = "claimed";
+        if (k === "a-no") claimState.a = "declined";
+        if (k === "expire") {
+          if (claimState.a === "pending") claimState.a = "timeout";
+          if (claimState.b === "pending") claimState.b = "timeout";
+        }
+        resolveClaim();
+      });
+    });
+
+    // Job SM
+    const jobOrder = ["pending", "running", "done"];
+    let jobIdx = 0;
+    let jobState = "pending";
+    function paintJobs() {
+      const nodes = ["pending", "running", "waiting", "done", "failed"];
+      document.getElementById("job-sm").innerHTML = nodes.map((s, i) => {
+        const live = s === jobState;
+        const fail = live && s === "failed";
+        return `${i ? '<span class="arrow' + (live ? ' live' : '') + '">→</span>' : ''}` +
+          `<span class="node${live ? (fail ? ' fail' : ' live') : ''}">${s}</span>`;
+      }).join("");
+      const notes = {
+        pending: "Enqueued by desk. Waiting for a live node’s frontdesk to ClaimNext.",
+        running: "Host claimed it. WorkPool may be executing cursor-agent/claude/codex.",
+        waiting: "First pass done; agent kept alive for follow-ups on this work.",
+        done: "Finished successfully. Reply stored on the job.",
+        failed: "Error on complete, or API reaped stuck running (>~4m)."
+      };
+      document.getElementById("job-note").textContent = notes[jobState];
+      document.getElementById("job-code").textContent =
+        `brain_jobs.state = ${jobState}\n` +
+        (jobState === "pending" ? "ClaimNext: FOR UPDATE SKIP LOCKED → running" :
+         jobState === "running" ? "Complete(reply) → done | Complete(wait) → waiting | error/reap → failed" :
+         jobState === "waiting" ? "New message can flip this job back toward pending" :
+         jobState === "done" ? "Terminal success" : "Terminal failure / reap");
+    }
+    document.getElementById("job-next").addEventListener("click", () => {
+      if (jobState === "pending") jobState = "running";
+      else if (jobState === "running") jobState = "done";
+      else if (jobState === "waiting") jobState = "done";
+      paintJobs();
+    });
+    document.getElementById("job-fail").addEventListener("click", () => {
+      if (jobState === "pending" || jobState === "running") jobState = "failed";
+      paintJobs();
+    });
+    document.getElementById("job-wait").addEventListener("click", () => {
+      if (jobState === "running") jobState = "waiting";
+      paintJobs();
+    });
+    document.getElementById("job-reset").addEventListener("click", () => { jobState = "pending"; paintJobs(); });
+
+    renderFlow();
+    renderDecide();
+    renderClaim();
+    paintJobs();
+  </script>
+</body>
+</html>
