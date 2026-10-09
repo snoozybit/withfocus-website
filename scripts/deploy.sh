@@ -33,7 +33,7 @@ if ! git remote get-url origin >/dev/null 2>&1; then
   fi
 fi
 
-git add index.html assets/ CNAME scripts/ .gitignore
+git add index.html favicon.ico assets/ CNAME scripts/ .gitignore
 git diff --cached --quiet && echo "No file changes to commit." || git commit -m "Deploy Focus marketing site"
 
 git push -u origin "${BRANCH}"
