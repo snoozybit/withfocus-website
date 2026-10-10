@@ -106,7 +106,10 @@ p{margin:0}
 .col-title{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:12px}
 .incoming{display:grid;gap:10px;align-content:start}
 .msg{background:var(--white);border:1px solid var(--line-light);border-radius:14px;padding:12px 14px;display:grid;gap:4px;box-shadow:0 1px 2px rgba(28,43,30,.04);animation:in .45s ease-out both}
-.msg .src{font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sage)}
+.incoming .msg{grid-template-columns:20px minmax(0,1fr);column-gap:12px;align-items:center}
+.msg .src{display:flex;align-items:center}
+.msg .src svg{width:20px;height:20px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .msg .txt{font-size:14.5px;line-height:1.45;color:var(--ink)}
 .msg.leaving{animation:out .4s ease-in both}
 @keyframes in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
@@ -243,7 +246,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       <div class="section-head">
         <span class="eyebrow">Less overhead</span>
         <h2>Focus handles the work around the work.</h2>
-        <p>Slack threads, email, review requests and questions about code you wrote last week all reach Focus first. It works out what needs you, drafts the rest in your voice, and sends code questions to the agent that did the work.</p>
+        <p>Slack threads, Gmail, review requests and questions about code you wrote last week all reach Focus first. It works out what needs you, drafts the rest in your voice, and sends code questions to the agent that did the work.</p>
       </div>
 
       <div class="triage" aria-label="Animation: incoming messages sorted by Focus">
@@ -375,15 +378,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   /* ── Overhead: incoming messages sorted into lanes ─────── */
   var MESSAGES = [
     { src: 'Slack', txt: 'Is the payments migration safe to run tonight?', lane: 'agent', note: 'Asked the Claude Code session that wrote it' },
-    { src: 'Email', txt: 'Vendor wants a call next week', lane: 'draft', note: 'Reply drafted in your voice' },
+    { src: 'Gmail', txt: 'Vendor wants a call next week', lane: 'draft', note: 'Reply drafted in your voice' },
     { src: 'Slack', txt: 'Can you approve the release?', lane: 'you', note: 'Only you can approve this' },
     { src: 'Slack', txt: 'Standup: what did you ship yesterday?', lane: 'draft', note: 'Drafted from your agents’ records' },
     { src: 'Slack', txt: 'Why did the sync retry logic change?', lane: 'agent', note: 'Sent to the Cursor chat that changed it' },
-    { src: 'Email', txt: 'Customer asks when SSO ships', lane: 'draft', note: 'Reply drafted with the roadmap date' },
-    { src: 'Review', txt: 'Review requested on PR 412', lane: 'agent', note: 'Summary from the agent that wrote it' },
-    { src: 'Email', txt: 'Contract needs your signature', lane: 'you', note: 'Only you can sign this' }
+    { src: 'Gmail', txt: 'Customer asks when SSO ships', lane: 'draft', note: 'Reply drafted with the roadmap date' },
+    { src: 'Gmail', txt: 'GitHub: review requested on PR 412', lane: 'agent', note: 'Summary from the agent that wrote it' },
+    { src: 'Gmail', txt: 'Contract needs your signature', lane: 'you', note: 'Only you can sign this' }
   ];
-  var QUEUE_SHOWS = 5, LANE_SHOWS = 1;
+  var QUEUE_SHOWS = 7, LANE_SHOWS = 1;
+  var LOGOS = {
+    Slack: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>',
+    Gmail: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>'
+  };
   var incoming = document.getElementById('incoming');
   var hub = document.getElementById('hub');
   var lanes = {};
@@ -394,7 +401,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   function card(m, inLane) {
     var d = document.createElement('div');
     d.className = 'msg';
-    var src = document.createElement('span'); src.className = 'src'; src.textContent = m.src;
+    var src = document.createElement('span'); src.className = 'src';
+    src.innerHTML = LOGOS[m.src] || '';
+    var name = document.createElement('span'); name.className = 'sr-only'; name.textContent = m.src;
+    src.appendChild(name);
     var txt = document.createElement('span'); txt.className = 'txt'; txt.textContent = m.txt;
     d.appendChild(src); d.appendChild(txt);
     if (inLane) { var n = document.createElement('span'); n.className = 'note'; n.textContent = m.note; d.appendChild(n); }
@@ -407,19 +417,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     while (L.items.children.length > LANE_SHOWS) L.items.removeChild(L.items.lastChild);
     L.n += 1; L.count.textContent = L.n;
   }
-  function resetCounts() {
-    Object.keys(lanes).forEach(function (k) { lanes[k].n = 0; lanes[k].count.textContent = '0'; });
-  }
   function fillQueue(from) {
     incoming.innerHTML = '';
     for (var i = 0; i < QUEUE_SHOWS; i++) incoming.appendChild(card(MESSAGES[(from + i) % MESSAGES.length], false));
   }
 
-  /* Incoming always shows the next few messages; the top one goes through Focus into its lane. */
+  /* Incoming always shows the next few messages; the top one goes through Focus into its lane.
+     Lane counts keep adding up, like a running tally of the day. */
   async function triage() {
     var next = 0;
     while (true) {
-      resetCounts();
       for (var i = 0; i < MESSAGES.length; i++) {
         var m = MESSAGES[next % MESSAGES.length], c = incoming.firstChild;
         await sleep(1100);
