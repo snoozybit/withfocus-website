@@ -80,7 +80,12 @@ p{margin:0}
 .agent-who{fill:var(--on-dark-mute);font:500 12.5px var(--mono)}
 .pip{fill:none;stroke:rgba(200,217,196,.35);stroke-width:1.5;transition:fill .4s,stroke .4s}
 .pip.on{fill:var(--sage-light);stroke:var(--sage-light)}
-.wire{fill:none;stroke:rgba(200,217,196,.16);stroke-width:1.5}
+.wire{fill:none;stroke:rgba(200,217,196,.24);stroke-width:1.5}
+.loop .core,.loop [data-agent]{transition:opacity .5s,transform .5s;transform-box:fill-box;transform-origin:center}
+.loop .hide{opacity:0}
+.loop .core.hide{transform:scale(.8)}
+.loop > g{transition:opacity .6s}
+.loop.fade > g{opacity:0}
 .dot{fill:var(--sage-2)}
 .dot.share{fill:var(--sage-light)}
 .halo{fill:none;stroke:var(--sage-light);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
@@ -218,7 +223,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
             <g data-agent="2"><rect class="agent-box" x="16" y="278" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="306">Codex</text><text class="agent-who" x="32" y="328">teammate</text><circle class="pip" cx="150" cy="323" r="5"/><circle class="pip" cx="165" cy="323" r="5"/><circle class="pip" cx="180" cy="323" r="5"/><text class="got" x="16" y="362">+ skill</text></g>
           </g>
 
-          <g>
+          <g class="core">
             <circle class="halo" cx="320" cy="190" r="50"/>
             <rect x="270" y="140" width="100" height="100" rx="28" fill="url(#lg)"/>
             <circle cx="320" cy="190" r="26" fill="none" stroke="#fff" stroke-width="7"/>
@@ -247,7 +252,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
             <g data-agent="1"><rect class="agent-box" x="127" y="8" width="106" height="76" rx="14"/><text class="agent-name" x="180" y="36" text-anchor="middle">Cursor</text><text class="agent-who" x="180" y="54" text-anchor="middle">teammate</text><circle class="pip" cx="166" cy="69" r="4.5"/><circle class="pip" cx="180" cy="69" r="4.5"/><circle class="pip" cx="194" cy="69" r="4.5"/></g>
             <g data-agent="2"><rect class="agent-box" x="248" y="8" width="106" height="76" rx="14"/><text class="agent-name" x="301" y="36" text-anchor="middle">Codex</text><text class="agent-who" x="301" y="54" text-anchor="middle">teammate</text><circle class="pip" cx="287" cy="69" r="4.5"/><circle class="pip" cx="301" cy="69" r="4.5"/><circle class="pip" cx="315" cy="69" r="4.5"/></g>
           </g>
-          <g>
+          <g class="core">
             <circle class="halo" cx="180" cy="218" r="40"/>
             <rect x="140" y="178" width="80" height="80" rx="24" fill="url(#lg)"/>
             <circle cx="180" cy="218" r="21" fill="none" stroke="#fff" stroke-width="6"/>
@@ -351,6 +356,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   function parts(svg) {
     return {
       dots: svg.querySelector('.dots'),
+      svg: svg,
+      core: svg.querySelector('.core'),
       halo: svg.querySelector('.halo'),
       inPaths: [0, 1, 2].map(function (i) { return svg.querySelector('[data-in="' + i + '"]'); }),
       outPaths: [0, 1, 2].map(function (i) { return svg.querySelector('[data-out="' + i + '"]'); }),
@@ -360,7 +367,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   }
   function showing() { return parts(drawings[tall.matches ? 1 : 0]); }
 
-  function travel(dots, path, reverse, cls) {
+  /* A wire stays hidden until a dot first travels along it, drawing it as it goes. */
+  function hideWire(w) { var L = w.getTotalLength(); w.style.strokeDasharray = L; w.style.strokeDashoffset = L; }
+  function showWire(w) { w.style.strokeDasharray = ''; w.style.strokeDashoffset = ''; }
+  function travel(dots, path, reverse, cls, draw) {
     return new Promise(function (done) {
       var len = path.getTotalLength(), dur = 900, t0 = null;
       var c = document.createElementNS(NS, 'circle');
@@ -373,7 +383,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         var e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
         var pt = path.getPointAtLength((reverse ? 1 - e : e) * len);
         c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);
-        if (p < 1) requestAnimationFrame(frame); else { c.remove(); done(); }
+        if (draw) path.style.strokeDashoffset = len * (1 - e);
+        if (p < 1) requestAnimationFrame(frame); else { c.remove(); if (draw) showWire(path); done(); }
       }
       requestAnimationFrame(frame);
     });
@@ -383,19 +394,28 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   function pips(agent) { return all(agent, '.pip'); }
   function reset(P) {
     P.skills.forEach(function (s) { s.classList.remove('on'); });
-    P.agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.remove('on'); }); });
+    P.agents.forEach(function (a) { a.classList.add('hide'); pips(a).forEach(function (p) { p.classList.remove('on'); }); });
+    P.core.classList.add('hide');
+    P.inPaths.concat(P.outPaths).forEach(hideWire);
   }
 
   async function loop() {
     while (true) {
       var P = showing();
       reset(P);
+      P.svg.classList.remove('fade');
+      setStep(0);
+      /* Build the picture: Focus in the middle first, then the agents on the left. */
+      await sleep(500);
+      P.core.classList.remove('hide');
       await sleep(600);
+      for (var a = 0; a < P.agents.length; a++) { P.agents[a].classList.remove('hide'); await sleep(180); }
+      await sleep(500);
       for (var k = 0; k < 3; k++) {
         setStep(0);
-        await Promise.all(P.inPaths.map(function (p, j) { return sleep(j * 160).then(function () { return travel(P.dots, p); }); }));
+        await Promise.all(P.inPaths.map(function (p, j) { return sleep(j * 160).then(function () { return travel(P.dots, p, false, 'dot', k === 0); }); }));
         pulse(P.halo); setStep(1);
-        await travel(P.dots, P.outPaths[k]);
+        await travel(P.dots, P.outPaths[k], false, 'dot', true);
         P.skills[k].classList.add('on');
         await sleep(450);
         setStep(2);
@@ -410,7 +430,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         });
         await sleep(1500);
       }
-      await sleep(1800);
+      await sleep(2200);
+      P.svg.classList.add('fade');
+      await sleep(700);
     }
   }
 
