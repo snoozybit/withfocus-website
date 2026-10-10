@@ -102,7 +102,10 @@ p{margin:0}
 .section-head p{font-size:18px;color:var(--ink-mid);max-width:60ch}
 .band-dark .section-head p{color:var(--on-dark-mute)}
 
-.triage{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1.1fr);gap:20px;align-items:start}
+.triage{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1.1fr);gap:20px;align-items:start;position:relative}
+.route{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+.route path{fill:none;stroke:var(--sage);stroke-width:2;stroke-linecap:round;transition:opacity .5s}
+.route circle{fill:var(--sage)}
 .col-title{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:12px}
 .incoming{display:grid;gap:10px;align-content:start}
 .msg{background:var(--white);border:1px solid var(--line-light);border-radius:14px;padding:12px 14px;display:grid;gap:4px;box-shadow:0 1px 2px rgba(28,43,30,.04);animation:in .45s ease-out both}
@@ -112,9 +115,11 @@ p{margin:0}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .msg .txt{font-size:14.5px;line-height:1.45;color:var(--ink)}
 .msg.leaving{animation:out .4s ease-in both}
+.msg.picked,.lane.hit{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
+.msg,.lane{transition:border-color .3s,box-shadow .3s}
 @keyframes in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @keyframes out{to{opacity:0;transform:translateX(24px)}}
-.hub{display:grid;justify-items:center;gap:10px;align-self:center}
+.hub{display:grid;justify-items:center;gap:10px;align-self:center;position:relative;z-index:3}
 .hub-mark{width:76px;height:76px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,#6B9B7A,#4A7560);box-shadow:0 10px 30px rgba(74,117,96,.3);position:relative}
 .hub-mark svg{width:46px;height:46px}
 .hub-mark.go::after{content:"";position:absolute;inset:-6px;border-radius:26px;border:2px solid var(--sage);animation:hub .8s ease-out both}
@@ -124,6 +129,7 @@ p{margin:0}
 .lane{border:1px solid var(--line-light);border-radius:16px;padding:12px 14px;background:rgba(255,255,255,.55);display:grid;gap:8px}
 .lane-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .lane-name{font-weight:700;font-size:15px}
+.lane-repo{font:500 12px var(--mono);color:var(--ink-mid);margin-left:8px}
 .lane-count{font:600 13px var(--mono);color:var(--ink-mid);font-variant-numeric:tabular-nums}
 .lane-items{display:grid;gap:6px}
 .lane .msg{padding:8px 12px;box-shadow:none;gap:2px}
@@ -246,26 +252,28 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       <div class="section-head">
         <span class="eyebrow">Less overhead</span>
         <h2>Focus handles the work around the work.</h2>
-        <p>Slack threads, Gmail, review requests and questions about code you wrote last week all reach Focus first. It works out what needs you, drafts the rest in your voice, and sends code questions to the agent that did the work.</p>
+        <p>Every question goes to the agent that knows the answer. A question about code goes to the agent that wrote it, which drafts the reply for your OK. Only what really needs you comes to you.</p>
       </div>
 
-      <div class="triage" aria-label="Animation: incoming messages sorted by Focus">
+      <div class="triage" id="triage" aria-label="Animation: each incoming message is routed to the agent that did the work, or to you">
+        <svg class="route" id="route" aria-hidden="true"></svg>
         <div>
           <div class="col-title">Incoming</div>
           <div class="incoming" id="incoming"></div>
         </div>
         <div class="hub">
           <div class="hub-mark" id="hub"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" fill="#fff" transform="translate(256 256) rotate(-35)"/></svg></div>
-          <div class="hub-text">Focus<br>reads it</div>
+          <div class="hub-text">Focus<br>routes it</div>
         </div>
         <div class="lanes">
-          <div class="col-title">Your day</div>
-          <div class="lane lane-you" data-lane="you"><div class="lane-head"><span class="lane-name">Needs you</span><span class="lane-count">1</span></div><div class="lane-items"></div></div>
-          <div class="lane" data-lane="draft"><div class="lane-head"><span class="lane-name">Drafted, waiting for your OK</span><span class="lane-count">2</span></div><div class="lane-items"></div></div>
-          <div class="lane" data-lane="agent"><div class="lane-head"><span class="lane-name">Sent to the agent that did the work</span><span class="lane-count">1</span></div><div class="lane-items"></div></div>
+          <div class="col-title">Routed to</div>
+          <div class="lane lane-you" data-lane="you"><div class="lane-head"><span><span class="lane-name">You</span></span><span class="lane-count">0</span></div><div class="lane-items"></div></div>
+          <div class="lane" data-lane="claude"><div class="lane-head"><span><span class="lane-name">Claude Code</span><span class="lane-repo">payments-service</span></span><span class="lane-count">0</span></div><div class="lane-items"></div></div>
+          <div class="lane" data-lane="cursor"><div class="lane-head"><span><span class="lane-name">Cursor</span><span class="lane-repo">sync-worker</span></span><span class="lane-count">0</span></div><div class="lane-items"></div></div>
+          <div class="lane" data-lane="codex"><div class="lane-head"><span><span class="lane-name">Codex</span><span class="lane-repo">web-app</span></span><span class="lane-count">0</span></div><div class="lane-items"></div></div>
         </div>
       </div>
-      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages, for illustration.</span></div>
+      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
     </div>
   </section>
 
@@ -375,18 +383,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     }
   }
 
-  /* ── Overhead: incoming messages sorted into lanes ─────── */
+  /* ── Routing: each incoming message goes to the agent that did the work, or to you ── */
   var MESSAGES = [
-    { src: 'Slack', txt: 'Is the payments migration safe to run tonight?', lane: 'agent', note: 'Asked the Claude Code session that wrote it' },
-    { src: 'Gmail', txt: 'Vendor wants a call next week', lane: 'draft', note: 'Reply drafted in your voice' },
+    { src: 'Slack', txt: 'Is the payments migration safe to run tonight?', lane: 'claude', note: 'Wrote the migration' },
+    { src: 'Slack', txt: 'Why did the sync retry logic change?', lane: 'cursor', note: 'Made the change' },
     { src: 'Slack', txt: 'Can you approve the release?', lane: 'you', note: 'Only you can approve this' },
-    { src: 'Slack', txt: 'Standup: what did you ship yesterday?', lane: 'draft', note: 'Drafted from your agents’ records' },
-    { src: 'Slack', txt: 'Why did the sync retry logic change?', lane: 'agent', note: 'Sent to the Cursor chat that changed it' },
-    { src: 'Gmail', txt: 'Customer asks when SSO ships', lane: 'draft', note: 'Reply drafted with the roadmap date' },
-    { src: 'Gmail', txt: 'GitHub: review requested on PR 412', lane: 'agent', note: 'Summary from the agent that wrote it' },
+    { src: 'Gmail', txt: 'GitHub: review requested on PR 412', lane: 'codex', note: 'Opened PR 412' },
+    { src: 'Gmail', txt: 'Customer reports a failed payment', lane: 'claude', note: 'Wrote the payment retry code' },
+    { src: 'Slack', txt: 'What does the new cache flag do?', lane: 'cursor', note: 'Added the flag' },
+    { src: 'Slack', txt: 'Did the login fix ship?', lane: 'codex', note: 'Fixed the login bug' },
     { src: 'Gmail', txt: 'Contract needs your signature', lane: 'you', note: 'Only you can sign this' }
   ];
-  var QUEUE_SHOWS = 7, LANE_SHOWS = 1;
+  var QUEUE_SHOWS = 8, LANE_SHOWS = 1;
   var LOGOS = {
     Slack: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>',
     Gmail: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>'
@@ -422,28 +430,66 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     for (var i = 0; i < QUEUE_SHOWS; i++) incoming.appendChild(card(MESSAGES[(from + i) % MESSAGES.length], false));
   }
 
-  /* Incoming always shows the next few messages; the top one goes through Focus into its lane.
+  /* The route is drawn from the message, through Focus, to its lane. Skipped when the columns stack. */
+  var triageEl = document.getElementById('triage'), route = document.getElementById('route');
+  var stacked = window.matchMedia('(max-width:860px)');
+  function anchor(el, side) {
+    var r = el.getBoundingClientRect(), o = triageEl.getBoundingClientRect();
+    var x = side === 'right' ? r.right : side === 'left' ? r.left : r.left + r.width / 2;
+    return { x: x - o.left, y: r.top + r.height / 2 - o.top };
+  }
+  function drawRoute(fromEl, toEl) {
+    return new Promise(function (done) {
+      if (stacked.matches) { done(); return; }
+      var a = anchor(fromEl, 'right'), h = anchor(hub, 'centre'), b = anchor(toEl, 'left');
+      var m1 = (a.x + h.x) / 2, m2 = (h.x + b.x) / 2;
+      var path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', 'M' + a.x + ' ' + a.y + 'C' + m1 + ' ' + a.y + ' ' + m1 + ' ' + h.y + ' ' + h.x + ' ' + h.y +
+        'C' + m2 + ' ' + h.y + ' ' + m2 + ' ' + b.y + ' ' + b.x + ' ' + b.y);
+      var dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('r', '5');
+      route.appendChild(path); route.appendChild(dot);
+      var len = path.getTotalLength(), t0 = null, dur = 900, pulsed = false;
+      path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
+      function frame(now) {
+        if (t0 === null) t0 = now;
+        var p = Math.min(1, (now - t0) / dur), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        var pt = path.getPointAtLength(e * len);
+        path.style.strokeDashoffset = len * (1 - e);
+        dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+        if (!pulsed && e > .5) { pulsed = true; hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go'); }
+        if (p < 1) { requestAnimationFrame(frame); return; }
+        dot.remove();
+        path.style.opacity = '0';
+        setTimeout(function () { path.remove(); }, 500);
+        done();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+
+  /* Incoming always shows the next few messages; the top one is routed to its lane.
      Lane counts keep adding up, like a running tally of the day. */
   async function triage() {
     var next = 0;
     while (true) {
-      for (var i = 0; i < MESSAGES.length; i++) {
-        var m = MESSAGES[next % MESSAGES.length], c = incoming.firstChild;
-        await sleep(1100);
-        c.classList.add('leaving');
-        hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go');
-        await sleep(420);
-        c.remove();
-        addToLane(m, true);
-        next += 1;
-        incoming.appendChild(card(MESSAGES[(next + QUEUE_SHOWS - 1) % MESSAGES.length], false));
-        await sleep(700);
-      }
-      await sleep(2600);
+      var m = MESSAGES[next % MESSAGES.length], c = incoming.firstChild, lane = lanes[m.lane].el;
+      c.classList.add('picked');
+      await sleep(500);
+      await drawRoute(c, lane);
+      lane.classList.add('hit');
+      addToLane(m, true);
+      c.classList.add('leaving');
+      await sleep(400);
+      c.remove();
+      next += 1;
+      incoming.appendChild(card(MESSAGES[(next + QUEUE_SHOWS - 1) % MESSAGES.length], false));
+      setTimeout(function (l) { l.classList.remove('hit'); }, 700, lane);
+      await sleep(900);
     }
   }
 
-  /* Resting state: every skill shared, every lane holding its latest message. Motion replaces it when allowed. */
+  /* Resting state: every skill shared, every destination holding its latest message. Motion replaces it when allowed. */
   agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.add('on'); }); });
   MESSAGES.forEach(function (m) { addToLane(m, false); });
   fillQueue(0);
