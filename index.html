@@ -137,7 +137,7 @@ p{margin:0}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .triage-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--ink-mid);font-size:14px}
 .triage-foot b{color:var(--ink)}
-@media (max-width:760px){.flow{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)}.flow-col{gap:10px}.card{min-height:104px;padding:10px 11px}.msg{grid-template-columns:1fr;row-gap:6px;align-content:start}.msg .src svg{width:16px;height:16px}.msg .txt{font-size:12.5px;line-height:1.35}.soon{grid-column:1;font-size:9.5px;padding:3px 6px;margin-top:2px}.dest-top{flex-direction:column;align-items:flex-start;gap:6px}.dest-name{font-size:13.5px}.dest-power{font-size:10.5px}.badge{font-size:10px;padding:4px 6px;white-space:normal;line-height:1.25}.hub-mark{width:52px;height:52px;border-radius:16px;box-shadow:0 0 0 8px rgba(90,138,94,.10),0 0 0 16px rgba(90,138,94,.05),0 8px 20px rgba(74,117,96,.3)}.hub-mark svg{width:30px;height:30px}}
+@media (max-width:760px){.flow{grid-template-columns:1fr;grid-template-rows:auto 112px auto}.flow-col{grid-template-rows:none;gap:10px}.flow-in{padding-left:26px}.flow-out{padding-right:26px}.card{min-height:0;padding:12px 14px}.dest-top{flex-wrap:wrap;gap:6px}.badge{white-space:normal}.hub-mark{width:64px;height:64px;border-radius:19px;box-shadow:0 0 0 10px rgba(90,138,94,.10),0 0 0 20px rgba(90,138,94,.05),0 10px 24px rgba(74,117,96,.3)}.hub-mark svg{width:38px;height:38px}}
 
 /* Dark band: how it works + trust */
 .band-dark{padding-block:88px}
@@ -420,7 +420,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   var dests = {};
   Array.prototype.forEach.call(flow.querySelectorAll('.dest'), function (d) { dests[d.dataset.key] = d; });
 
-  /* Where a curve leaves a message, crosses Focus, and enters a destination. */
+  /* Desktop: curves run left to right through Focus.
+     Phones: messages feed a rail down the left into Focus; Focus feeds a rail down the right into each destination. */
+  var stacked = window.matchMedia('(max-width:760px)');
+  var RAIL = 9, BEND = 12;
   function point(el, edge) {
     var r = el.getBoundingClientRect(), o = flow.getBoundingClientRect();
     var x = edge === 'right' ? r.right : edge === 'left' ? r.left : r.left + r.width / 2;
@@ -430,8 +433,20 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   function curve(p, q) {
     var mx = (p.x + q.x) / 2; return 'C' + mx + ' ' + p.y + ' ' + mx + ' ' + q.y + ' ' + q.x + ' ' + q.y;
   }
-  function fromMsg(m) { return point(m, 'right'); }
-  function intoDest(d) { return point(d, 'left'); }
+  function fromMsg(m) { return point(m, stacked.matches ? 'left' : 'right'); }
+  function intoDest(d) { return point(d, stacked.matches ? 'right' : 'left'); }
+  function inLeg(a, h) {
+    if (!stacked.matches) return curve(a, h);
+    var x = RAIL;
+    return 'L' + (x + BEND) + ' ' + a.y + 'Q' + x + ' ' + a.y + ' ' + x + ' ' + (a.y + BEND) +
+      'L' + x + ' ' + (h.y - BEND) + 'Q' + x + ' ' + h.y + ' ' + (x + BEND) + ' ' + h.y + 'L' + h.x + ' ' + h.y;
+  }
+  function outLeg(h, b) {
+    if (!stacked.matches) return curve(h, b);
+    var x = flow.clientWidth - RAIL;
+    return 'L' + (x - BEND) + ' ' + h.y + 'Q' + x + ' ' + h.y + ' ' + x + ' ' + (h.y + BEND) +
+      'L' + x + ' ' + (b.y - BEND) + 'Q' + x + ' ' + b.y + ' ' + (x - BEND) + ' ' + b.y + 'L' + b.x + ' ' + b.y;
+  }
   function path(d, cls) {
     var p = document.createElementNS(NS, 'path');
     p.setAttribute('d', d); p.setAttribute('class', cls);
@@ -439,15 +454,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   }
   function routeD(m) {
     var a = fromMsg(m), h = point(hub, 'centre'), b = intoDest(dests[m.dataset.to]);
-    return 'M' + a.x + ' ' + a.y + curve(a, h) + curve(h, b);
+    return 'M' + a.x + ' ' + a.y + inLeg(a, h) + outLeg(h, b);
   }
 
   var lit = [];
   function draw() {
     wires.innerHTML = '';
     var h = point(hub, 'centre');
-    msgs.forEach(function (m) { var a = fromMsg(m); wires.appendChild(path('M' + a.x + ' ' + a.y + curve(a, h), 'spoke')); });
-    Object.keys(dests).forEach(function (k) { var b = intoDest(dests[k]); wires.appendChild(path('M' + h.x + ' ' + h.y + curve(h, b), 'spoke')); });
+    msgs.forEach(function (m) { var a = fromMsg(m); wires.appendChild(path('M' + a.x + ' ' + a.y + inLeg(a, h), 'spoke')); });
+    Object.keys(dests).forEach(function (k) { var b = intoDest(dests[k]); wires.appendChild(path('M' + h.x + ' ' + h.y + outLeg(h, b), 'spoke')); });
     lit.forEach(function (m) { wires.appendChild(path(routeD(m), 'lit')); });
   }
   window.addEventListener('resize', draw);
