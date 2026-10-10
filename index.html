@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Focus — Focus makes Claude smarter. Automatically.</title>
+  <title>Focus — Focus makes your coding agents smarter. Automatically.</title>
   <meta name="description" content="Focus learns how you and your team work, turns what works into skills, and gives them to every coding agent you use. Then it takes the overhead off your plate.">
   <meta name="theme-color" content="#1C2B1E">
-  <meta property="og:title" content="Focus makes Claude smarter. Automatically.">
+  <meta property="og:title" content="Focus makes your coding agents smarter. Automatically.">
   <meta property="og:description" content="Focus turns what works into skills for every coding agent on your team, and takes the overhead off your plate.">
   <meta property="og:image" content="https://withfocus.io/assets/focus-icon.png">
   <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -63,8 +63,9 @@ p{margin:0}
 
 .stage{background:rgba(255,255,255,.025);border:1px solid var(--line-dark);border-radius:24px;padding:20px;display:grid;gap:16px}
 .stage svg{width:100%;height:auto;display:block}
-.stage-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-@media (max-width:600px){.stage-scroll svg{min-width:560px}}
+.stage .loop-tall{display:none}
+@media (max-width:600px){.stage .loop-wide{display:none}.stage .loop-tall{display:block}}
+.loop-tall .agent-name{font-size:14px}.loop-tall .agent-who{font-size:11px}.loop-tall .skill-name{font-size:12.5px}
 .steps-live{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .step-live{display:grid;gap:4px;padding:12px 14px;border-radius:14px;border:1px solid var(--line-dark);color:var(--on-dark-mute);transition:border-color .35s,background .35s,color .35s}
 .step-live b{font:600 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sage)}
@@ -191,7 +192,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <div class="wrap">
       <div class="hero-copy">
         <span class="eyebrow">A work OS for people who ship with AI</span>
-        <h1>Focus makes Claude smarter. <em>Automatically.</em></h1>
+        <h1>Focus makes your coding agents smarter. <em>Automatically.</em></h1>
         <p class="lede">Focus learns how you and your team work, turns what works into skills, and gives them to every coding agent you use. Then it takes the overhead off your plate, so you only see what needs you.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
@@ -200,37 +201,65 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       </div>
 
       <div class="stage" aria-label="Animation: Focus turns your team's agent sessions into skills and gives them to every agent">
-        <div class="stage-scroll"><svg id="loop" viewBox="0 0 640 380" role="img" aria-label="Agent sessions flow into Focus, become skills, and the skills flow back to every agent">
-          <g id="wires">
-            <path class="wire" id="in0" d="M196 70 C240 70 240 190 270 190"/>
-            <path class="wire" id="in1" d="M196 190 L270 190"/>
-            <path class="wire" id="in2" d="M196 310 C240 310 240 190 270 190"/>
-            <path class="wire" id="out0" d="M370 190 C405 190 405 78 444 78"/>
-            <path class="wire" id="out1" d="M370 190 L444 190"/>
-            <path class="wire" id="out2" d="M370 190 C405 190 405 302 444 302"/>
+        <svg class="loop loop-wide" viewBox="0 0 640 380" role="img" aria-label="Agent sessions flow into Focus, become skills, and the skills flow back to every agent">
+          <g>
+            <path class="wire" data-in="0" d="M196 70 C240 70 240 190 270 190"/>
+            <path class="wire" data-in="1" d="M196 190 L270 190"/>
+            <path class="wire" data-in="2" d="M196 310 C240 310 240 190 270 190"/>
+            <path class="wire" data-out="0" d="M370 190 C405 190 405 78 444 78"/>
+            <path class="wire" data-out="1" d="M370 190 L444 190"/>
+            <path class="wire" data-out="2" d="M370 190 C405 190 405 302 444 302"/>
           </g>
 
-          <g id="agents">
+          <g>
             <g data-agent="0"><rect class="agent-box" x="16" y="38" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="66">Claude Code</text><text class="agent-who" x="32" y="88">you</text><circle class="pip" cx="150" cy="83" r="5"/><circle class="pip" cx="165" cy="83" r="5"/><circle class="pip" cx="180" cy="83" r="5"/><text class="got" x="16" y="122">+ skill</text></g>
             <g data-agent="1"><rect class="agent-box" x="16" y="158" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="186">Cursor</text><text class="agent-who" x="32" y="208">teammate</text><circle class="pip" cx="150" cy="203" r="5"/><circle class="pip" cx="165" cy="203" r="5"/><circle class="pip" cx="180" cy="203" r="5"/><text class="got" x="16" y="242">+ skill</text></g>
             <g data-agent="2"><rect class="agent-box" x="16" y="278" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="306">Codex</text><text class="agent-who" x="32" y="328">teammate</text><circle class="pip" cx="150" cy="323" r="5"/><circle class="pip" cx="165" cy="323" r="5"/><circle class="pip" cx="180" cy="323" r="5"/><text class="got" x="16" y="362">+ skill</text></g>
           </g>
 
-          <g id="core">
-            <circle class="halo" id="halo" cx="320" cy="190" r="50"/>
+          <g>
+            <circle class="halo" cx="320" cy="190" r="50"/>
             <rect x="270" y="140" width="100" height="100" rx="28" fill="url(#lg)"/>
             <circle cx="320" cy="190" r="26" fill="none" stroke="#fff" stroke-width="7"/>
             <path d="M-14 0A17 17 0 0 1 14 0A17 17 0 0 1 -14 0Z" fill="#fff" transform="translate(320 190) rotate(-35)"/>
             <text class="core-label" x="320" y="266" text-anchor="middle">FOCUS</text>
           </g>
 
-          <g id="skills">
-            <g class="skill on" data-skill="0"><rect class="skill-box" x="444" y="50" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="74">deploy-staging</text><text class="skill-from" x="458" y="94">learned from your sessions</text></g>
-            <g class="skill on" data-skill="1"><rect class="skill-box" x="444" y="162" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="186">review-checklist</text><text class="skill-from" x="458" y="206">learned from Cursor</text></g>
-            <g class="skill on" data-skill="2"><rect class="skill-box" x="444" y="274" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="298">incident-triage</text><text class="skill-from" x="458" y="318">learned from Codex</text></g>
+          <g>
+            <g class="skill on" data-skill="0" data-name="deploy-staging"><rect class="skill-box" x="444" y="50" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="74">deploy-staging</text><text class="skill-from" x="458" y="94">learned from your sessions</text></g>
+            <g class="skill on" data-skill="1" data-name="review-checklist"><rect class="skill-box" x="444" y="162" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="186">review-checklist</text><text class="skill-from" x="458" y="206">learned from Cursor</text></g>
+            <g class="skill on" data-skill="2" data-name="incident-triage"><rect class="skill-box" x="444" y="274" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="298">incident-triage</text><text class="skill-from" x="458" y="318">learned from Codex</text></g>
           </g>
-          <g id="dots"></g>
-        </svg></div>
+          <g class="dots"></g>
+        </svg>
+        <svg class="loop loop-tall" viewBox="0 0 360 428" role="img" aria-label="Agent sessions flow into Focus, become skills, and the skills flow back to every agent">
+          <g>
+            <path class="wire" data-in="0" d="M59 84 C59 132 180 132 180 178"/>
+            <path class="wire" data-in="1" d="M180 84 C180 132 180 132 180 178"/>
+            <path class="wire" data-in="2" d="M301 84 C301 132 180 132 180 178"/>
+            <path class="wire" data-out="0" d="M180 258 C180 302 59 302 59 346"/>
+            <path class="wire" data-out="1" d="M180 258 C180 302 180 302 180 346"/>
+            <path class="wire" data-out="2" d="M180 258 C180 302 301 302 301 346"/>
+          </g>
+          <g>
+            <g data-agent="0"><rect class="agent-box" x="6" y="8" width="106" height="76" rx="14"/><text class="agent-name" x="59" y="36" text-anchor="middle">Claude Code</text><text class="agent-who" x="59" y="54" text-anchor="middle">you</text><circle class="pip" cx="45" cy="69" r="4.5"/><circle class="pip" cx="59" cy="69" r="4.5"/><circle class="pip" cx="73" cy="69" r="4.5"/></g>
+            <g data-agent="1"><rect class="agent-box" x="127" y="8" width="106" height="76" rx="14"/><text class="agent-name" x="180" y="36" text-anchor="middle">Cursor</text><text class="agent-who" x="180" y="54" text-anchor="middle">teammate</text><circle class="pip" cx="166" cy="69" r="4.5"/><circle class="pip" cx="180" cy="69" r="4.5"/><circle class="pip" cx="194" cy="69" r="4.5"/></g>
+            <g data-agent="2"><rect class="agent-box" x="248" y="8" width="106" height="76" rx="14"/><text class="agent-name" x="301" y="36" text-anchor="middle">Codex</text><text class="agent-who" x="301" y="54" text-anchor="middle">teammate</text><circle class="pip" cx="287" cy="69" r="4.5"/><circle class="pip" cx="301" cy="69" r="4.5"/><circle class="pip" cx="315" cy="69" r="4.5"/></g>
+          </g>
+          <g>
+            <circle class="halo" cx="180" cy="218" r="40"/>
+            <rect x="140" y="178" width="80" height="80" rx="24" fill="url(#lg)"/>
+            <circle cx="180" cy="218" r="21" fill="none" stroke="#fff" stroke-width="6"/>
+            <path d="M-11 0A14 14 0 0 1 11 0A14 14 0 0 1 -11 0Z" fill="#fff" transform="translate(180 218) rotate(-35)"/>
+          </g>
+          <g>
+            <g class="skill on" data-skill="0" data-name="deploy-staging"><rect class="skill-box" x="6" y="346" width="106" height="74" rx="12"/><text class="skill-name" x="59" y="377" text-anchor="middle"><tspan x="59">deploy-</tspan><tspan x="59" dy="18">staging</tspan></text></g>
+            <g class="skill on" data-skill="1" data-name="review-checklist"><rect class="skill-box" x="127" y="346" width="106" height="74" rx="12"/><text class="skill-name" x="180" y="377" text-anchor="middle"><tspan x="180">review-</tspan><tspan x="180" dy="18">checklist</tspan></text></g>
+            <g class="skill on" data-skill="2" data-name="incident-triage"><rect class="skill-box" x="248" y="346" width="106" height="74" rx="12"/><text class="skill-name" x="301" y="377" text-anchor="middle"><tspan x="301">incident-</tspan><tspan x="301" dy="18">triage</tspan></text></g>
+          </g>
+          <g class="dots"></g>
+        </svg>
+
         <div class="steps-live" aria-live="polite">
           <div class="step-live on" data-step="0"><b>1 · Work</b><span>Everyone keeps working in their own coding agent.</span></div>
           <div class="step-live on" data-step="1"><b>2 · Learn</b><span>Focus spots what worked and writes it down as a skill.</span></div>
@@ -313,16 +342,24 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 
   /* ── Hero: the skill loop ─────────────────────────────── */
-  var svg = document.getElementById('loop');
-  var dots = document.getElementById('dots');
-  var inPaths = [0, 1, 2].map(function (i) { return document.getElementById('in' + i); });
-  var outPaths = [0, 1, 2].map(function (i) { return document.getElementById('out' + i); });
-  var skills = Array.prototype.slice.call(svg.querySelectorAll('.skill'));
-  var agents = Array.prototype.slice.call(svg.querySelectorAll('[data-agent]'));
+  /* Two drawings of the same loop: wide for larger screens, tall for phones. The loop drives whichever is showing. */
+  var drawings = Array.prototype.slice.call(document.querySelectorAll('svg.loop'));
+  var tall = window.matchMedia('(max-width:600px)');
   var steps = Array.prototype.slice.call(document.querySelectorAll('.step-live'));
-  var halo = document.getElementById('halo');
+  function all(root, sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
+  function parts(svg) {
+    return {
+      dots: svg.querySelector('.dots'),
+      halo: svg.querySelector('.halo'),
+      inPaths: [0, 1, 2].map(function (i) { return svg.querySelector('[data-in="' + i + '"]'); }),
+      outPaths: [0, 1, 2].map(function (i) { return svg.querySelector('[data-out="' + i + '"]'); }),
+      skills: all(svg, '.skill'),
+      agents: all(svg, '[data-agent]')
+    };
+  }
+  function showing() { return parts(drawings[tall.matches ? 1 : 0]); }
 
-  function travel(path, reverse, cls) {
+  function travel(dots, path, reverse, cls) {
     return new Promise(function (done) {
       var len = path.getTotalLength(), dur = 900, t0 = null;
       var c = document.createElementNS(NS, 'circle');
@@ -341,30 +378,32 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     });
   }
   function setStep(n) { steps.forEach(function (s, i) { s.classList.toggle('on', i === n); }); }
-  function pulse() { halo.classList.remove('go'); void halo.getBBox(); halo.classList.add('go'); }
-  function pips(agent) { return Array.prototype.slice.call(agent.querySelectorAll('.pip')); }
-  function reset() {
-    skills.forEach(function (s) { s.classList.remove('on'); });
-    agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.remove('on'); }); });
+  function pulse(halo) { halo.classList.remove('go'); void halo.getBBox(); halo.classList.add('go'); }
+  function pips(agent) { return all(agent, '.pip'); }
+  function reset(P) {
+    P.skills.forEach(function (s) { s.classList.remove('on'); });
+    P.agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.remove('on'); }); });
   }
 
   async function loop() {
     while (true) {
-      reset();
+      var P = showing();
+      reset(P);
       await sleep(600);
       for (var k = 0; k < 3; k++) {
         setStep(0);
-        await Promise.all(inPaths.map(function (p, j) { return sleep(j * 160).then(function () { return travel(p); }); }));
-        pulse(); setStep(1);
-        await travel(outPaths[k]);
-        skills[k].classList.add('on');
+        await Promise.all(P.inPaths.map(function (p, j) { return sleep(j * 160).then(function () { return travel(P.dots, p); }); }));
+        pulse(P.halo); setStep(1);
+        await travel(P.dots, P.outPaths[k]);
+        P.skills[k].classList.add('on');
         await sleep(450);
         setStep(2);
-        await Promise.all(inPaths.map(function (p) { return travel(p, true, 'dot share'); }));
-        agents.forEach(function (a) {
+        await Promise.all(P.inPaths.map(function (p) { return travel(P.dots, p, true, 'dot share'); }));
+        P.agents.forEach(function (a) {
           pips(a)[k].classList.add('on');
           var g = a.querySelector('.got');
-          g.textContent = '+ ' + skills[k].querySelector('.skill-name').textContent;
+          if (!g) return;
+          g.textContent = '+ ' + P.skills[k].dataset.name;
           g.classList.add('on');
           setTimeout(function () { g.classList.remove('on'); }, 1300);
         });
@@ -464,7 +503,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   /* Resting state: every skill shared, every message connected to where it goes. Motion replaces it when allowed. */
   settle(true);
   if (document.fonts) document.fonts.ready.then(draw);
-  agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.add('on'); }); });
+  drawings.forEach(function (svg) { all(svg, '.pip').forEach(function (p) { p.classList.add('on'); }); });
 
   if (!reduce) {
     setTimeout(loop, 900);
