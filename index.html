@@ -102,38 +102,40 @@ p{margin:0}
 .section-head p{font-size:18px;color:var(--ink-mid);max-width:60ch}
 .band-dark .section-head p{color:var(--on-dark-mute)}
 
-.routes{display:grid;gap:14px;position:relative;--row:66px;--mid:150px}
-.routes-head,.rrow{display:grid;grid-template-columns:minmax(0,1fr) var(--mid) minmax(0,1fr);align-items:center}
-.routes-head{height:var(--row)}
-.routes-head .col-title:last-child{grid-column:3}
+.flow{display:grid;grid-template-columns:minmax(0,1fr) 240px minmax(0,1fr);position:relative}
+.flow-col{display:grid;gap:12px;align-content:center;min-width:0}
+.flow-col .col-title{margin-bottom:2px}
 .col-title{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid)}
-.hub-mark{justify-self:center;width:var(--row);height:var(--row);border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#6B9B7A,#4A7560);box-shadow:0 10px 30px rgba(74,117,96,.3);position:relative;z-index:2}
-.hub-mark svg{width:40px;height:40px}
-.hub-mark.go::after{content:"";position:absolute;inset:-6px;border-radius:24px;border:2px solid var(--sage);animation:hub .8s ease-out both}
-@keyframes hub{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.25)}}
-/* The spine: from the Focus mark down through every row's node */
-.spine{position:absolute;left:calc(50% - 1px);top:calc(var(--row) / 2);bottom:calc(var(--row) / 2);width:2px;background:rgba(90,138,94,.25)}
-.msg,.dest{min-height:var(--row);border-radius:14px;background:var(--white);border:1px solid var(--line-light);box-shadow:0 1px 2px rgba(28,43,30,.04);transition:border-color .3s,box-shadow .3s,opacity .4s}
-.msg{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:12px;align-items:center;padding:12px 16px}
+.flow-out .col-title{text-align:left}
+.flow-hub{display:grid;place-items:center;position:relative;z-index:3}
+.hub-mark{width:92px;height:92px;border-radius:26px;display:grid;place-items:center;background:linear-gradient(135deg,#6B9B7A,#4A7560);box-shadow:0 0 0 14px rgba(90,138,94,.10),0 0 0 30px rgba(90,138,94,.05),0 14px 34px rgba(74,117,96,.32);position:relative}
+.hub-mark svg{width:54px;height:54px}
+.hub-mark.go::after{content:"";position:absolute;inset:-8px;border-radius:32px;border:2px solid var(--sage);animation:hub .9s ease-out both}
+@keyframes hub{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.35)}}
+.wires{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1}
+.wires path{fill:none;stroke-linecap:round}
+.wires .spoke{stroke:rgba(90,138,94,.22);stroke-width:1.25}
+.wires .lit{stroke:var(--sage);stroke-width:2.5;transition:opacity .6s}
+.wires.fade .lit{opacity:0}
+.wires circle{fill:var(--sage)}
+.card{position:relative;z-index:2;min-height:74px;border-radius:14px;background:var(--white);border:1px solid var(--line-light);box-shadow:0 1px 2px rgba(28,43,30,.04);padding:12px 16px;transition:border-color .3s,box-shadow .3s}
+.card.on{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
+.msg{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:12px;align-items:center}
 .msg .src{display:flex}
 .msg .src svg{width:20px;height:20px}
-.msg .txt{font-size:15px;line-height:1.4;color:var(--ink)}
-.dest{display:grid;align-content:center;gap:2px;padding:12px 16px}
+.msg .txt{font-size:14.5px;line-height:1.4;color:var(--ink)}
+.dest{display:grid;align-content:center;gap:2px}
+.dest-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .dest-name{font-weight:700;font-size:15px;color:var(--ink)}
 .dest-power{font:500 12px var(--mono);color:var(--ink-mid)}
+.badge{font:600 11px/1 var(--mono);color:var(--sage);background:rgba(90,138,94,.12);border-radius:999px;padding:5px 8px;white-space:nowrap;opacity:0;transform:translateY(3px);transition:opacity .35s,transform .35s}
+.dest.filled .badge{opacity:1;transform:none}
 .dest-you{border:2px solid var(--sage)}
 .dest-you .dest-name{color:var(--sage)}
-.link{position:relative;height:var(--row)}
-.wire{position:absolute;left:0;right:0;top:calc(50% - 1px);height:2px;background:var(--sage);transform-origin:left center;transition:transform .8s cubic-bezier(.65,0,.35,1)}
-.node{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 5px rgba(90,138,94,.18);z-index:1;transition:background .3s,box-shadow .3s}
-.rrow.off .wire{transform:scaleX(0)}
-.rrow.off .node{background:var(--sage-light);box-shadow:none}
-.rrow.off .dest{opacity:.4}
-.rrow.picked .msg,.rrow.landed .dest{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .triage-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--ink-mid);font-size:14px}
 .triage-foot b{color:var(--ink)}
-@media (max-width:720px){.routes{gap:22px}.routes-head{grid-template-columns:1fr;justify-items:center}.routes-head .col-title{display:none}.spine{display:none}.rrow{grid-template-columns:1fr;padding:10px;border-radius:20px;background:rgba(255,255,255,.45);border:1px solid var(--line-light)}.link{height:34px;justify-self:center;width:14px}.wire{left:calc(50% - 1px);right:auto;width:2px;top:0;bottom:0;height:auto;transform-origin:center top}.rrow.off .wire{transform:scaleY(0)}}
+@media (max-width:760px){.flow{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)}.flow-col{gap:10px}.card{min-height:104px;padding:10px 11px}.msg{grid-template-columns:1fr;row-gap:6px;align-content:start}.msg .src svg{width:16px;height:16px}.msg .txt{font-size:12.5px;line-height:1.35}.dest-top{flex-direction:column;align-items:flex-start;gap:6px}.dest-name{font-size:13.5px}.dest-power{font-size:10.5px}.badge{font-size:10px;padding:4px 6px}.hub-mark{width:52px;height:52px;border-radius:16px;box-shadow:0 0 0 8px rgba(90,138,94,.10),0 0 0 16px rgba(90,138,94,.05),0 8px 20px rgba(74,117,96,.3)}.hub-mark svg{width:30px;height:30px}}
 
 /* Dark band: how it works + trust */
 .band-dark{padding-block:88px}
@@ -246,13 +248,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         <p>Every question goes to the agent that knows the answer. A question about code goes to the agent that wrote it, which drafts the reply for your OK. Only what really needs you comes to you.</p>
       </div>
 
-      <div class="routes" id="routes" aria-label="Focus connects each incoming message to the agent that knows the answer, or to you">
-        <div class="spine" aria-hidden="true"></div>
-        <div class="routes-head"><span class="col-title">Incoming</span><div class="hub-mark" id="hub"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" fill="#fff" transform="translate(256 256) rotate(-35)"/></svg></div><span class="col-title">Goes to</span></div>
-        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Is the payments migration safe to run tonight?</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest"><span class="sr-only">goes to </span><span class="dest-name">Payments agent</span><span class="dest-power">powered by Claude Code</span></div></div>
-        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="sr-only">Gmail</span></span><span class="txt">GitHub: review requested on PR 412</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest"><span class="sr-only">goes to </span><span class="dest-name">Web app agent</span><span class="dest-power">powered by Codex</span></div></div>
-        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="sr-only">Gmail</span></span><span class="txt">Customer reports a failed payment</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest"><span class="sr-only">goes to </span><span class="dest-name">Payments agent</span><span class="dest-power">powered by Claude Code</span></div></div>
-        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Can you approve the release?</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest dest-you"><span class="sr-only">goes to </span><span class="dest-name">You</span><span class="dest-power">only what needs you</span></div></div>
+      <div class="flow" id="flow" aria-label="Focus connects each incoming message to the agent that knows the answer, or to you">
+        <svg class="wires" id="flow-wires" aria-hidden="true"></svg>
+        <div class="flow-col flow-in"><div class="col-title">Incoming</div>
+          <div class="card msg" data-to="payments"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Is the payments migration safe to run tonight?</span></div>
+          <div class="card msg" data-to="web"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="sr-only">Gmail</span></span><span class="txt">GitHub: review requested on PR 412</span></div>
+          <div class="card msg" data-to="infra"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Why did the deploy pipeline slow down?</span></div>
+          <div class="card msg" data-to="you"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Can you approve the release?</span></div>
+        </div>
+        <div class="flow-hub"><div class="hub-mark" id="hub"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" fill="#fff" transform="translate(256 256) rotate(-35)"/></svg></div></div>
+        <div class="flow-col flow-out"><div class="col-title">Goes to</div>
+          <div class="card dest dest-you" data-key="you"><div class="dest-top"><span class="dest-name">You</span><span class="badge">Waiting for you</span></div><span class="dest-power">only what needs you</span></div>
+          <div class="card dest" data-key="payments"><div class="dest-top"><span class="dest-name">Payments agent</span><span class="badge">Drafting a reply</span></div><span class="dest-power">powered by Claude Code</span></div>
+          <div class="card dest" data-key="web"><div class="dest-top"><span class="dest-name">Web app agent</span><span class="badge">Drafting a reply</span></div><span class="dest-power">powered by Codex</span></div>
+          <div class="card dest" data-key="infra"><div class="dest-top"><span class="dest-name">Infra agent</span><span class="badge">Drafting a reply</span></div><span class="dest-power">powered by Cursor</span></div>
+        </div>
       </div>
       <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
     </div>
@@ -364,32 +374,96 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     }
   }
 
-  /* ── Routing: one row per message; Focus connects each to where it goes ── */
-  var hub = document.getElementById('hub');
-  var rows = Array.prototype.slice.call(document.querySelectorAll('.rrow'));
+  /* ── Routing: Focus connects each message, along a curve through it, to where it goes ── */
+  var flow = document.getElementById('flow'), wires = document.getElementById('flow-wires'), hub = document.getElementById('hub');
+  var msgs = Array.prototype.slice.call(flow.querySelectorAll('.msg'));
+  var dests = {};
+  Array.prototype.forEach.call(flow.querySelectorAll('.dest'), function (d) { dests[d.dataset.key] = d; });
 
-  /* Rows start dim and unconnected, then connect one at a time; all four stay connected, hold, and replay. */
+  /* Where a curve leaves a message, crosses Focus, and enters a destination. */
+  function point(el, edge) {
+    var r = el.getBoundingClientRect(), o = flow.getBoundingClientRect();
+    var x = edge === 'right' ? r.right : edge === 'left' ? r.left : r.left + r.width / 2;
+    var y = r.top + r.height / 2;
+    return { x: x - o.left, y: y - o.top };
+  }
+  function curve(p, q) {
+    var mx = (p.x + q.x) / 2; return 'C' + mx + ' ' + p.y + ' ' + mx + ' ' + q.y + ' ' + q.x + ' ' + q.y;
+  }
+  function fromMsg(m) { return point(m, 'right'); }
+  function intoDest(d) { return point(d, 'left'); }
+  function path(d, cls) {
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', d); p.setAttribute('class', cls);
+    return p;
+  }
+  function routeD(m) {
+    var a = fromMsg(m), h = point(hub, 'centre'), b = intoDest(dests[m.dataset.to]);
+    return 'M' + a.x + ' ' + a.y + curve(a, h) + curve(h, b);
+  }
+
+  var lit = [];
+  function draw() {
+    wires.innerHTML = '';
+    var h = point(hub, 'centre');
+    msgs.forEach(function (m) { var a = fromMsg(m); wires.appendChild(path('M' + a.x + ' ' + a.y + curve(a, h), 'spoke')); });
+    Object.keys(dests).forEach(function (k) { var b = intoDest(dests[k]); wires.appendChild(path('M' + h.x + ' ' + h.y + curve(h, b), 'spoke')); });
+    lit.forEach(function (m) { wires.appendChild(path(routeD(m), 'lit')); });
+  }
+  window.addEventListener('resize', draw);
+
+  function light(m) {
+    return new Promise(function (done) {
+      var p = path(routeD(m), 'lit'), dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('r', '5');
+      wires.appendChild(p); wires.appendChild(dot);
+      var len = p.getTotalLength(), t0 = null, dur = 1100, pulsed = false;
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      function frame(now) {
+        if (t0 === null) t0 = now;
+        var k = Math.min(1, (now - t0) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        var pt = p.getPointAtLength(e * len);
+        p.style.strokeDashoffset = len * (1 - e);
+        dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+        if (!pulsed && e > .5) { pulsed = true; hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go'); }
+        if (k < 1) { requestAnimationFrame(frame); return; }
+        dot.remove(); p.style.strokeDasharray = ''; p.style.strokeDashoffset = '';
+        lit.push(m);
+        done();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+  function settle(all) {
+    lit = all ? msgs.slice() : [];
+    Object.keys(dests).forEach(function (k) { dests[k].classList.toggle('filled', all); });
+    draw();
+  }
+
+  /* Focus connects the four messages one at a time; all four routes stay lit, hold, then replay. */
   async function triage() {
     while (true) {
-      rows.forEach(function (r) { r.classList.add('off'); });
-      await sleep(900);
-      for (var i = 0; i < rows.length; i++) {
-        var r = rows[i];
-        r.classList.add('picked');
-        await sleep(350);
-        r.classList.remove('off');
-        hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go');
-        await sleep(800);
-        r.classList.remove('picked');
-        r.classList.add('landed');
+      wires.classList.add('fade');
+      await sleep(600);
+      settle(false);
+      wires.classList.remove('fade');
+      await sleep(700);
+      for (var i = 0; i < msgs.length; i++) {
+        var m = msgs[i], d = dests[m.dataset.to];
+        m.classList.add('on');
+        await light(m);
+        m.classList.remove('on');
+        d.classList.add('on', 'filled');
         await sleep(650);
-        r.classList.remove('landed');
+        d.classList.remove('on');
       }
-      await sleep(3600);
+      await sleep(3400);
     }
   }
 
   /* Resting state: every skill shared, every message connected to where it goes. Motion replaces it when allowed. */
+  settle(true);
+  if (document.fonts) document.fonts.ready.then(draw);
   agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.add('on'); }); });
 
   if (!reduce) {
