@@ -102,42 +102,38 @@ p{margin:0}
 .section-head p{font-size:18px;color:var(--ink-mid);max-width:60ch}
 .band-dark .section-head p{color:var(--on-dark-mute)}
 
-.triage{display:grid;grid-template-columns:minmax(0,1fr) 180px minmax(0,1fr);gap:20px}
-.col{display:grid;gap:14px;min-width:0}
-.triage{align-items:center;position:relative}
+.routes{display:grid;gap:14px;position:relative;--row:66px;--mid:150px}
+.routes-head,.rrow{display:grid;grid-template-columns:minmax(0,1fr) var(--mid) minmax(0,1fr);align-items:center}
+.routes-head{height:var(--row)}
+.routes-head .col-title:last-child{grid-column:3}
 .col-title{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid)}
-.route{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
-.route path{fill:none;stroke-linecap:round;stroke:var(--sage);stroke-width:2.25;transition:opacity .6s}
-.route circle{fill:var(--sage)}
-.route.fade path{opacity:0}
-.incoming{display:grid;gap:14px}
-.msg{background:var(--white);border:1px solid var(--line-light);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:12px;align-items:center;box-shadow:0 1px 2px rgba(28,43,30,.04);transition:border-color .3s,box-shadow .3s}
-.msg .src{display:flex;align-items:center}
-.msg .src svg{width:20px;height:20px}
-.msg .txt{font-size:15px;line-height:1.45;color:var(--ink)}
-.msg .to{grid-column:2;font:600 12px var(--mono);color:var(--sage);margin-top:4px;display:none}
-.msg.picked{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.hub{display:grid;justify-items:center;position:relative;z-index:3}
-.hub-mark{width:84px;height:84px;border-radius:24px;display:grid;place-items:center;background:linear-gradient(135deg,#6B9B7A,#4A7560);box-shadow:0 10px 30px rgba(74,117,96,.3);position:relative}
-.hub-mark svg{width:50px;height:50px}
-.hub-mark.go::after{content:"";position:absolute;inset:-6px;border-radius:28px;border:2px solid var(--sage);animation:hub .8s ease-out both}
+.hub-mark{justify-self:center;width:var(--row);height:var(--row);border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#6B9B7A,#4A7560);box-shadow:0 10px 30px rgba(74,117,96,.3);position:relative;z-index:2}
+.hub-mark svg{width:40px;height:40px}
+.hub-mark.go::after{content:"";position:absolute;inset:-6px;border-radius:24px;border:2px solid var(--sage);animation:hub .8s ease-out both}
 @keyframes hub{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.25)}}
-.buckets{display:grid;gap:14px}
-.bucket{border:1px solid var(--line-light);border-radius:16px;padding:14px 16px;background:rgba(255,255,255,.6);display:grid;gap:6px;min-height:118px;align-content:start;transition:border-color .3s,box-shadow .3s}
-.bucket.hit{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
-.bucket-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.bucket-name{font-weight:700;font-size:16px}
-.bucket-count{font:600 13px var(--mono);color:var(--ink-mid);font-variant-numeric:tabular-nums}
-.bucket-power{font:500 12px var(--mono);color:var(--ink-mid)}
-.bucket-items{display:grid;gap:6px;margin-top:4px}
-.bucket-item{font-size:13.5px;line-height:1.4;color:var(--ink);background:var(--white);border:1px solid var(--line-light);border-radius:10px;padding:7px 10px;animation:land .5s ease-out both}
-@keyframes land{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
-.bucket-you{border:2px solid var(--sage);background:var(--white)}
-.bucket-you .bucket-name{color:var(--sage)}
+/* The spine: from the Focus mark down through every row's node */
+.spine{position:absolute;left:calc(50% - 1px);top:calc(var(--row) / 2);bottom:calc(var(--row) / 2);width:2px;background:rgba(90,138,94,.25)}
+.msg,.dest{min-height:var(--row);border-radius:14px;background:var(--white);border:1px solid var(--line-light);box-shadow:0 1px 2px rgba(28,43,30,.04);transition:border-color .3s,box-shadow .3s,opacity .4s}
+.msg{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:12px;align-items:center;padding:12px 16px}
+.msg .src{display:flex}
+.msg .src svg{width:20px;height:20px}
+.msg .txt{font-size:15px;line-height:1.4;color:var(--ink)}
+.dest{display:grid;align-content:center;gap:2px;padding:12px 16px}
+.dest-name{font-weight:700;font-size:15px;color:var(--ink)}
+.dest-power{font:500 12px var(--mono);color:var(--ink-mid)}
+.dest-you{border:2px solid var(--sage)}
+.dest-you .dest-name{color:var(--sage)}
+.link{position:relative;height:var(--row)}
+.wire{position:absolute;left:0;right:0;top:calc(50% - 1px);height:2px;background:var(--sage);transform-origin:left center;transition:transform .8s cubic-bezier(.65,0,.35,1)}
+.node{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 5px rgba(90,138,94,.18);z-index:1;transition:background .3s,box-shadow .3s}
+.rrow.off .wire{transform:scaleX(0)}
+.rrow.off .node{background:var(--sage-light);box-shadow:none}
+.rrow.off .dest{opacity:.4}
+.rrow.picked .msg,.rrow.landed .dest{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .triage-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--ink-mid);font-size:14px}
 .triage-foot b{color:var(--ink)}
-@media (max-width:860px){.triage{grid-template-columns:1fr}.hub{justify-items:start}.msg .to{display:block}}
+@media (max-width:720px){.routes{gap:22px}.routes-head{grid-template-columns:1fr;justify-items:center}.routes-head .col-title{display:none}.spine{display:none}.rrow{grid-template-columns:1fr;padding:10px;border-radius:20px;background:rgba(255,255,255,.45);border:1px solid var(--line-light)}.link{height:34px;justify-self:center;width:14px}.wire{left:calc(50% - 1px);right:auto;width:2px;top:0;bottom:0;height:auto;transform-origin:center top}.rrow.off .wire{transform:scaleY(0)}}
 
 /* Dark band: how it works + trust */
 .band-dark{padding-block:88px}
@@ -250,15 +246,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         <p>Every question goes to the agent that knows the answer. A question about code goes to the agent that wrote it, which drafts the reply for your OK. Only what really needs you comes to you.</p>
       </div>
 
-      <div class="triage" id="triage" aria-label="Animation: Focus connects each incoming message to the agent that knows the answer, or to you">
-        <svg class="route" id="route" aria-hidden="true"></svg>
-        <div class="col"><div class="col-title">Incoming</div><div class="incoming" id="incoming"></div></div>
-        <div class="hub"><div class="hub-mark" id="hub"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" fill="#fff" transform="translate(256 256) rotate(-35)"/></svg></div></div>
-        <div class="col"><div class="col-title">Goes to</div><div class="buckets">
-          <div class="bucket bucket-you" data-bucket="you"><div class="bucket-head"><span class="bucket-name">You</span><span class="bucket-count">0</span></div><div class="bucket-power">only what needs you</div><div class="bucket-items"></div></div>
-          <div class="bucket" data-bucket="payments"><div class="bucket-head"><span class="bucket-name">Payments agent</span><span class="bucket-count">0</span></div><div class="bucket-power">powered by Claude Code</div><div class="bucket-items"></div></div>
-          <div class="bucket" data-bucket="web"><div class="bucket-head"><span class="bucket-name">Web app agent</span><span class="bucket-count">0</span></div><div class="bucket-power">powered by Codex</div><div class="bucket-items"></div></div>
-        </div></div>
+      <div class="routes" id="routes" aria-label="Focus connects each incoming message to the agent that knows the answer, or to you">
+        <div class="spine" aria-hidden="true"></div>
+        <div class="routes-head"><span class="col-title">Incoming</span><div class="hub-mark" id="hub"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" fill="#fff" transform="translate(256 256) rotate(-35)"/></svg></div><span class="col-title">Goes to</span></div>
+        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Is the payments migration safe to run tonight?</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest"><span class="sr-only">goes to </span><span class="dest-name">Payments agent</span><span class="dest-power">powered by Claude Code</span></div></div>
+        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="sr-only">Gmail</span></span><span class="txt">GitHub: review requested on PR 412</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest"><span class="sr-only">goes to </span><span class="dest-name">Web app agent</span><span class="dest-power">powered by Codex</span></div></div>
+        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="sr-only">Gmail</span></span><span class="txt">Customer reports a failed payment</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest"><span class="sr-only">goes to </span><span class="dest-name">Payments agent</span><span class="dest-power">powered by Claude Code</span></div></div>
+        <div class="rrow"><div class="msg"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Can you approve the release?</span></div><div class="link" aria-hidden="true"><span class="wire"></span><span class="node"></span></div><div class="dest dest-you"><span class="sr-only">goes to </span><span class="dest-name">You</span><span class="dest-power">only what needs you</span></div></div>
       </div>
       <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
     </div>
@@ -370,117 +364,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     }
   }
 
-  /* ── Routing: Focus connects each message to the agent that knows the answer, or to you ── */
-  var ROUTES = [
-    { src: 'Slack', txt: 'Is the payments migration safe to run tonight?', to: 'payments' },
-    { src: 'Gmail', txt: 'GitHub: review requested on PR 412', to: 'web' },
-    { src: 'Gmail', txt: 'Customer reports a failed payment', to: 'payments' },
-    { src: 'Slack', txt: 'Can you approve the release?', to: 'you' }
-  ];
-  var LOGOS = {
-    Slack: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>',
-    Gmail: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>'
-  };
-  var incoming = document.getElementById('incoming');
+  /* ── Routing: one row per message; Focus connects each to where it goes ── */
   var hub = document.getElementById('hub');
-  var triageEl = document.getElementById('triage'), route = document.getElementById('route');
-  var stacked = window.matchMedia('(max-width:860px)');
-  var buckets = {};
-  Array.prototype.forEach.call(document.querySelectorAll('.bucket'), function (b) {
-    buckets[b.dataset.bucket] = { el: b, name: b.querySelector('.bucket-name').textContent, items: b.querySelector('.bucket-items'), count: b.querySelector('.bucket-count') };
-  });
+  var rows = Array.prototype.slice.call(document.querySelectorAll('.rrow'));
 
-  var chips = ROUTES.map(function (m) {
-    var d = document.createElement('div'); d.className = 'msg';
-    var src = document.createElement('span'); src.className = 'src'; src.innerHTML = LOGOS[m.src];
-    var name = document.createElement('span'); name.className = 'sr-only'; name.textContent = m.src;
-    src.appendChild(name);
-    var txt = document.createElement('span'); txt.className = 'txt'; txt.textContent = m.txt;
-    var to = document.createElement('span'); to.className = 'to'; to.textContent = '→ ' + buckets[m.to].name;
-    d.appendChild(src); d.appendChild(txt); d.appendChild(to);
-    incoming.appendChild(d);
-    return d;
-  });
-
-  function anchor(el, side) {
-    var r = el.getBoundingClientRect(), o = triageEl.getBoundingClientRect();
-    var x = side === 'right' ? r.right : side === 'left' ? r.left : r.left + r.width / 2;
-    return { x: x - o.left, y: r.top + r.height / 2 - o.top };
-  }
-  function curve(p, q) {
-    var mx = (p.x + q.x) / 2;
-    return 'C' + mx + ' ' + p.y + ' ' + mx + ' ' + q.y + ' ' + q.x + ' ' + q.y;
-  }
-  function linkPath(i) {
-    var a = anchor(chips[i], 'right'), h = anchor(hub, 'centre'), b = anchor(buckets[ROUTES[i].to].el, 'left');
-    var path = document.createElementNS(NS, 'path');
-    path.setAttribute('d', 'M' + a.x + ' ' + a.y + curve(a, h) + curve(h, b));
-    return path;
-  }
-
-  /* Which messages are connected right now; links are redrawn from this on resize. */
-  var linked = [];
-  function redrawLinks() {
-    route.innerHTML = '';
-    if (stacked.matches) return;
-    linked.forEach(function (i) { route.appendChild(linkPath(i)); });
-  }
-  window.addEventListener('resize', redrawLinks);
-
-  function deliver(i) {
-    var B = buckets[ROUTES[i].to], item = document.createElement('div');
-    item.className = 'bucket-item'; item.textContent = ROUTES[i].txt;
-    B.items.appendChild(item);
-    B.count.textContent = B.items.children.length;
-    linked.push(i);
-  }
-  function clearAll() {
-    linked = [];
-    route.innerHTML = '';
-    Object.keys(buckets).forEach(function (k) { buckets[k].items.innerHTML = ''; buckets[k].count.textContent = '0'; });
-  }
-
-  function connect(i) {
-    return new Promise(function (done) {
-      if (stacked.matches) { setTimeout(done, 500); return; }
-      var path = linkPath(i), dot = document.createElementNS(NS, 'circle');
-      dot.setAttribute('r', '5');
-      route.appendChild(path); route.appendChild(dot);
-      var len = path.getTotalLength(), t0 = null, dur = 1000, pulsed = false;
-      path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
-      function frame(now) {
-        if (t0 === null) t0 = now;
-        var p = Math.min(1, (now - t0) / dur), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-        var pt = path.getPointAtLength(e * len);
-        path.style.strokeDashoffset = len * (1 - e);
-        dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
-        if (!pulsed && e > .5) { pulsed = true; hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go'); }
-        if (p < 1) { requestAnimationFrame(frame); return; }
-        dot.remove();
-        path.style.strokeDasharray = ''; path.style.strokeDashoffset = '';
-        done();
-      }
-      requestAnimationFrame(frame);
-    });
-  }
-
-  /* Focus connects the four messages one by one, holds with all of them connected, then starts again. */
+  /* Rows start dim and unconnected, then connect one at a time; all four stay connected, hold, and replay. */
   async function triage() {
     while (true) {
-      route.classList.add('fade');
-      await sleep(600);
-      clearAll();
-      route.classList.remove('fade');
-      await sleep(500);
-      for (var i = 0; i < ROUTES.length; i++) {
-        var B = buckets[ROUTES[i].to].el;
-        chips[i].classList.add('picked');
-        await connect(i);
-        chips[i].classList.remove('picked');
-        B.classList.add('hit');
-        deliver(i);
-        setTimeout(function (el) { el.classList.remove('hit'); }, 700, B);
-        await sleep(600);
+      rows.forEach(function (r) { r.classList.add('off'); });
+      await sleep(900);
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        r.classList.add('picked');
+        await sleep(350);
+        r.classList.remove('off');
+        hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go');
+        await sleep(800);
+        r.classList.remove('picked');
+        r.classList.add('landed');
+        await sleep(650);
+        r.classList.remove('landed');
       }
       await sleep(3600);
     }
@@ -488,9 +391,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
   /* Resting state: every skill shared, every message connected to where it goes. Motion replaces it when allowed. */
   agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.add('on'); }); });
-  ROUTES.forEach(function (_, i) { deliver(i); });
-  redrawLinks();
-  if (document.fonts) document.fonts.ready.then(redrawLinks);
 
   if (!reduce) {
     setTimeout(loop, 900);
