@@ -3,1425 +3,491 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Focus watches how you work, captures context automatically, and builds workflows for you. Work happens. Focus handles the rest.">
+  <title>Focus — Focus makes Claude smarter. Automatically.</title>
+  <meta name="description" content="Focus learns how you and your team work, turns what works into skills, and gives them to every coding agent you use. Then it takes the overhead off your plate.">
   <meta name="theme-color" content="#1C2B1E">
-  <title>Focus — Work happens. Focus handles the rest.</title>
+  <meta property="og:title" content="Focus makes Claude smarter. Automatically.">
+  <meta property="og:description" content="Focus turns what works into skills for every coding agent on your team, and takes the overhead off your plate.">
+  <meta property="og:image" content="https://withfocus.io/assets/focus-icon.png">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --dark: #1C2B1E;
-      --dark-soft: #243528;
-      --sage: #5A8A5E;
-      --sage-hover: #4d7a51;
-      --sage-light: #C8D9C4;
-      --sage-glow: rgba(90, 138, 94, 0.35);
-      --off-white: #F0F4EF;
-      --surface: #FFFFFF;
-      --text-dark: #1C2B1E;
-      --text-mid: #4A5E4C;
-      --text-light: rgba(240, 244, 239, 0.92);
-      --text-muted: rgba(240, 244, 239, 0.62);
-      --border: rgba(200, 217, 196, 0.55);
-      --border-dark: rgba(200, 217, 196, 0.12);
-      --shadow-sm: 0 1px 2px rgba(28, 43, 30, 0.04);
-      --shadow-md: 0 8px 32px rgba(28, 43, 30, 0.08);
-      --shadow-lg: 0 24px 64px rgba(28, 43, 30, 0.12);
-      --radius: 20px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
-      --max-width: 1160px;
-      --nav-height: 72px;
-      --section-pad: clamp(5rem, 10vw, 8rem);
-      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: dark hero with the skill-loop animation, a light band for the overhead animation, then steps, trust and the waitlist.
+   One committed look (the withfocus.io brand), so colours are set explicitly rather than following the viewer's theme. */
+:root{
+  --forest:#1C2B1E; --forest-2:#243528; --forest-3:#2E4232;
+  --sage:#5A8A5E; --sage-2:#6B9B7A; --sage-light:#C8D9C4; --mist:#F0F4EF; --white:#FFFFFF;
+  --ink:#1C2B1E; --ink-mid:#4A5E4C; --on-dark:rgba(240,244,239,.92); --on-dark-mute:rgba(240,244,239,.62);
+  --line-dark:rgba(200,217,196,.14); --line-light:rgba(90,138,94,.22);
+  --font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--forest);color:var(--on-dark);font:16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--mono)}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sage-light)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:999px;font:600 15px var(--font);border:0;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn:focus-visible,.input:focus-visible{outline:2px solid var(--sage-light);outline-offset:2px}
+.btn-primary{background:var(--sage);color:var(--white);box-shadow:0 6px 24px rgba(90,138,94,.35)}
+.btn-primary:hover{background:#4d7a51}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--white);border:1px solid rgba(255,255,255,.18)}
+
+/* Nav */
+.nav{padding-block:20px}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--white)}
+.logo svg{width:32px;height:32px}
+.nav-links{display:flex;gap:28px;align-items:center;font-size:14px;color:var(--on-dark-mute)}
+.nav-links a:hover{color:var(--white)}
+@media (max-width:720px){.nav-links a:not(.btn){display:none}}
+
+/* Hero */
+.hero{padding-block:48px 72px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(90,138,94,.18),transparent 60%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;gap:40px}
+.hero-copy{display:grid;gap:18px;max-width:760px}
+.hero h1{font-size:clamp(38px,6.4vw,68px);line-height:1.02;letter-spacing:-.045em;font-weight:800;color:var(--white)}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--sage-light),var(--sage-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{font-size:clamp(17px,2.1vw,20px);color:var(--on-dark);max-width:60ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+
+.stage{background:rgba(255,255,255,.025);border:1px solid var(--line-dark);border-radius:24px;padding:20px;display:grid;gap:16px}
+.stage svg{width:100%;height:auto;display:block}
+.stage-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:600px){.stage-scroll svg{min-width:560px}}
+.steps-live{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.step-live{display:grid;gap:4px;padding:12px 14px;border-radius:14px;border:1px solid var(--line-dark);color:var(--on-dark-mute);transition:border-color .35s,background .35s,color .35s}
+.step-live b{font:600 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sage)}
+.step-live span{font-size:14px;line-height:1.45}
+.step-live.on{border-color:rgba(200,217,196,.45);background:rgba(90,138,94,.12);color:var(--white)}
+.step-live.on b{color:var(--sage-light)}
+@media (max-width:640px){.steps-live{grid-template-columns:1fr}}
+
+/* SVG pieces (hero loop) */
+.agent-box{fill:var(--forest-2);stroke:rgba(200,217,196,.22);stroke-width:1.25}
+.agent-name{fill:var(--white);font:600 17px var(--font)}
+.agent-who{fill:var(--on-dark-mute);font:500 12.5px var(--mono)}
+.pip{fill:none;stroke:rgba(200,217,196,.35);stroke-width:1.5;transition:fill .4s,stroke .4s}
+.pip.on{fill:var(--sage-light);stroke:var(--sage-light)}
+.wire{fill:none;stroke:rgba(200,217,196,.16);stroke-width:1.5}
+.dot{fill:var(--sage-2)}
+.dot.share{fill:var(--sage-light)}
+.halo{fill:none;stroke:var(--sage-light);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.halo.go{animation:halo 1s ease-out}
+@keyframes halo{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.7)}}
+.skill{opacity:0;transform:translateX(-10px);transition:opacity .45s,transform .45s}
+.skill.on{opacity:1;transform:none}
+.skill-box{fill:var(--forest-3);stroke:rgba(200,217,196,.32);stroke-width:1.25}
+.skill-name{fill:var(--white);font:600 14.5px var(--mono)}
+.skill-from{fill:var(--on-dark-mute);font:500 12px var(--font)}
+.core-label{fill:var(--on-dark-mute);font:600 12px var(--mono);letter-spacing:.08em}
+.got{fill:var(--sage-light);font:600 12px var(--mono);opacity:0;transition:opacity .3s}
+.got.on{opacity:1}
+
+/* Light band: overhead */
+.band-light{background:var(--mist);color:var(--ink);padding-block:88px}
+.band-light .eyebrow{color:var(--sage)}
+.section-head{display:grid;gap:14px;max-width:720px;margin-bottom:40px}
+.section-head h2{font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.04em;font-weight:800}
+.section-head p{font-size:18px;color:var(--ink-mid);max-width:60ch}
+.band-dark .section-head p{color:var(--on-dark-mute)}
+
+.flow{display:grid;grid-template-columns:minmax(0,1fr) 240px minmax(0,1fr);position:relative}
+.flow-col{display:grid;gap:12px;align-content:center;min-width:0}
+.flow-col .col-title{margin-bottom:2px}
+.col-title{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid)}
+.flow-out .col-title{text-align:left}
+.flow-hub{display:grid;place-items:center;position:relative;z-index:3}
+.hub-mark{width:92px;height:92px;border-radius:26px;display:grid;place-items:center;background:linear-gradient(135deg,#6B9B7A,#4A7560);box-shadow:0 0 0 14px rgba(90,138,94,.10),0 0 0 30px rgba(90,138,94,.05),0 14px 34px rgba(74,117,96,.32);position:relative}
+.hub-mark svg{width:54px;height:54px}
+.hub-mark.go::after{content:"";position:absolute;inset:-8px;border-radius:32px;border:2px solid var(--sage);animation:hub .9s ease-out both}
+@keyframes hub{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.35)}}
+.wires{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1}
+.wires path{fill:none;stroke-linecap:round}
+.wires .spoke{stroke:rgba(90,138,94,.22);stroke-width:1.25}
+.wires .lit{stroke:var(--sage);stroke-width:2.5;transition:opacity .6s}
+.wires.fade .lit{opacity:0}
+.wires circle{fill:var(--sage)}
+.card{position:relative;z-index:2;min-height:74px;border-radius:14px;background:var(--white);border:1px solid var(--line-light);box-shadow:0 1px 2px rgba(28,43,30,.04);padding:12px 16px;transition:border-color .3s,box-shadow .3s}
+.card.on{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,138,94,.16)}
+.msg{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:12px;align-items:center}
+.msg .src{display:flex}
+.msg .src svg{width:20px;height:20px}
+.msg .txt{font-size:14.5px;line-height:1.4;color:var(--ink)}
+.dest{display:grid;align-content:center;gap:2px}
+.dest-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dest-name{font-weight:700;font-size:15px;color:var(--ink)}
+.dest-power{font:500 12px var(--mono);color:var(--ink-mid)}
+.badge{font:600 11px/1 var(--mono);color:var(--sage);background:rgba(90,138,94,.12);border-radius:999px;padding:5px 8px;white-space:nowrap;opacity:0;transform:translateY(3px);transition:opacity .35s,transform .35s}
+.dest.filled .badge{opacity:1;transform:none}
+.dest-you{border:2px solid var(--sage)}
+.dest-you .dest-name{color:var(--sage)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.triage-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--ink-mid);font-size:14px}
+.triage-foot b{color:var(--ink)}
+@media (max-width:760px){.flow{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)}.flow-col{gap:10px}.card{min-height:104px;padding:10px 11px}.msg{grid-template-columns:1fr;row-gap:6px;align-content:start}.msg .src svg{width:16px;height:16px}.msg .txt{font-size:12.5px;line-height:1.35}.dest-top{flex-direction:column;align-items:flex-start;gap:6px}.dest-name{font-size:13.5px}.dest-power{font-size:10.5px}.badge{font-size:10px;padding:4px 6px}.hub-mark{width:52px;height:52px;border-radius:16px;box-shadow:0 0 0 8px rgba(90,138,94,.10),0 0 0 16px rgba(90,138,94,.05),0 8px 20px rgba(74,117,96,.3)}.hub-mark svg{width:30px;height:30px}}
+
+/* Dark band: how it works + trust */
+.band-dark{padding-block:88px}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:s}
+.how li{list-style:none;border:1px solid var(--line-dark);border-radius:18px;padding:22px;display:grid;gap:10px;background:rgba(255,255,255,.025)}
+.how li::before{counter-increment:s;content:"0" counter(s);font:600 12px var(--mono);color:var(--sage-light);letter-spacing:.08em}
+.how h3{font-size:19px;letter-spacing:-.02em;color:var(--white)}
+.how p{color:var(--on-dark-mute);font-size:15px}
+.how code{font:500 13px var(--mono);background:rgba(200,217,196,.1);color:var(--sage-light);padding:2px 6px;border-radius:6px}
+.how{padding:0;margin:0}
+@media (max-width:820px){.how{grid-template-columns:1fr}}
+.trust{margin-top:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;border-top:1px solid var(--line-dark);padding-top:36px}
+.trust div{display:grid;gap:6px}
+.trust h3{font-size:16px;color:var(--white)}
+.trust p{font-size:14.5px;color:var(--on-dark-mute)}
+@media (max-width:820px){.trust{grid-template-columns:1fr}}
+
+/* CTA */
+.cta{background:linear-gradient(160deg,var(--sage),#4a7560);color:var(--white);padding-block:80px}
+.cta .wrap{display:grid;gap:18px;justify-items:center;text-align:center}
+.cta h2{font-size:clamp(30px,4.4vw,44px);letter-spacing:-.04em;font-weight:800;line-height:1.1}
+.cta p{font-size:18px;opacity:.92;max-width:52ch}
+.form{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:min(520px,100%);margin-top:8px}
+.input{flex:1 1 240px;min-width:0;padding:13px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:var(--white);font:15px var(--font)}
+.input::placeholder{color:rgba(255,255,255,.6)}
+.cta .btn-primary{background:var(--white);color:var(--sage);box-shadow:none}
+.form-note{font-size:13px;opacity:.8}
+footer{padding-block:32px;color:var(--on-dark-mute);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+[hidden]{display:none!important}
+</style>
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-      font-family: var(--font);
-      color: var(--text-dark);
-      line-height: 1.6;
-      background: var(--off-white);
-    }
-
-    img, svg { display: block; max-width: 100%; }
-    a { color: inherit; text-decoration: none; }
-
-    .container {
-      width: min(var(--max-width), calc(100% - 2.5rem));
-      margin-inline: auto;
-    }
-
-    /* ── Nav ── */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      height: var(--nav-height);
-      display: flex;
-      align-items: center;
-      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .nav.scrolled {
-      background: rgba(28, 43, 30, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-dark);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-
-    .logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.03em;
-      color: #fff;
-    }
-
-    .logo-mark {
-      width: 34px;
-      height: 34px;
-      flex-shrink: 0;
-      object-fit: contain;
-    }
-
-    .logo-mark.sm { width: 28px; height: 28px; }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .nav-links a {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover { color: #fff; }
-
-    .nav-cta {
-      padding: 0.55rem 1.25rem;
-      font-size: 0.875rem;
-    }
-
-    @media (max-width: 720px) {
-      .nav-links a:not(.nav-cta) { display: none; }
-    }
-
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.875rem 1.75rem;
-      border-radius: 999px;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      font-family: inherit;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0); }
-
-    .btn-primary {
-      background: var(--sage);
-      color: #fff;
-      box-shadow: 0 4px 20px var(--sage-glow);
-    }
-
-    .btn-primary:hover {
-      background: var(--sage-hover);
-      box-shadow: 0 8px 32px var(--sage-glow);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-ghost {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.28);
-    }
-
-    /* ── Section utilities ── */
-    section { padding-block: var(--section-pad); }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sage);
-      margin-bottom: 1rem;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 24px;
-      height: 2px;
-      background: currentColor;
-      border-radius: 1px;
-    }
-
-    .eyebrow.light { color: var(--sage-light); }
-
-    .section-title {
-      font-size: clamp(1.875rem, 4.5vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.12;
-      max-width: 22ch;
-    }
-
-    .section-title.center {
-      text-align: center;
-      max-width: 28ch;
-      margin-inline: auto;
-    }
-
-    .section-lead {
-      font-size: clamp(1rem, 2vw, 1.125rem);
-      color: var(--text-mid);
-      line-height: 1.7;
-      max-width: 52ch;
-      margin-top: 1.25rem;
-    }
-
-    .section-lead.center {
-      text-align: center;
-      margin-inline: auto;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fade-in.delay-1 { transition-delay: 0.08s; }
-    .fade-in.delay-2 { transition-delay: 0.16s; }
-    .fade-in.delay-3 { transition-delay: 0.24s; }
-
-    /* ── Hero ── */
-    .hero {
-      background: var(--dark);
-      color: var(--text-light);
-      min-height: 100svh;
-      padding-top: var(--nav-height);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .hero-bg::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 55% at 85% 15%, rgba(90, 138, 94, 0.18) 0%, transparent 55%),
-        radial-gradient(ellipse 45% 35% at 5% 75%, rgba(200, 217, 196, 0.08) 0%, transparent 50%);
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(200, 217, 196, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200, 217, 196, 0.04) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
-    }
-
-    .hero-body {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(2rem, 5vw, 4rem);
-      align-items: center;
-      min-height: calc(100svh - var(--nav-height));
-      padding-block: clamp(3rem, 6vw, 5rem);
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 0.85rem 0.4rem 0.5rem;
-      background: rgba(90, 138, 94, 0.15);
-      border: 1px solid rgba(90, 138, 94, 0.3);
-      border-radius: 999px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--sage-light);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--sage);
-      box-shadow: 0 0 12px var(--sage);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 6.5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.045em;
-      line-height: 1.05;
-      color: #fff;
-      margin-bottom: 1.25rem;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--sage-light) 0%, var(--sage) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: clamp(1.0625rem, 2.2vw, 1.2rem);
-      color: var(--text-light);
-      line-height: 1.7;
-      max-width: 46ch;
-      margin-bottom: 2.25rem;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .hero-visual {
-      position: relative;
-    }
-
-    .hero-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-dark);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .hero-card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-dark);
-    }
-
-    .hero-card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      object-fit: contain;
-    }
-
-    .hero-card-title {
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    .hero-card-sub {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .hero-task {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .hero-task-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.875rem 1rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-dark);
-      border-radius: var(--radius-sm);
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-
-    .hero-task-item.active {
-      border-color: rgba(90, 138, 94, 0.4);
-      background: rgba(90, 138, 94, 0.08);
-    }
-
-    .hero-task-check {
-      width: 18px;
-      height: 18px;
-      border-radius: 5px;
-      border: 2px solid rgba(200, 217, 196, 0.3);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .hero-task-item.active .hero-task-check {
-      background: var(--sage);
-      border-color: var(--sage);
-    }
-
-    .hero-task-text {
-      font-size: 0.875rem;
-      color: var(--text-light);
-      line-height: 1.5;
-    }
-
-    .hero-task-meta {
-      font-size: 0.6875rem;
-      color: var(--sage);
-      font-weight: 600;
-      margin-top: 0.35rem;
-      letter-spacing: 0.02em;
-    }
-
-    .hero-float {
-      position: absolute;
-      bottom: -1rem;
-      left: -1.5rem;
-      padding: 0.75rem 1rem;
-      background: var(--surface);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-md);
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      animation: float 4s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    .hero-float-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--sage-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--sage);
-    }
-
-    /* ── Problem ── */
-    .problem { background: var(--off-white); }
-
-    .problem-header {
-      margin-bottom: 3.5rem;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 2rem 1.75rem;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-      border-color: rgba(90, 138, 94, 0.35);
-    }
-
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--sage-light) 0%, rgba(200, 217, 196, 0.5) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.35rem;
-      color: var(--sage);
-    }
-
-    .card h3 {
-      font-size: 1.125rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-      letter-spacing: -0.02em;
-    }
-
-    .card p {
-      font-size: 0.9375rem;
-      color: var(--text-mid);
-      line-height: 1.65;
-    }
-
-    /* ── How it works ── */
-    .how {
-      background: var(--dark);
-      color: var(--text-light);
-    }
-
-    .how-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
-
-    .how-header .section-title {
-      color: #fff;
-      max-width: none;
-      margin-inline: auto;
-    }
-
-    .how-header .section-lead {
-      color: var(--text-muted);
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      position: relative;
-    }
-
-    .steps::after {
-      content: "";
-      position: absolute;
-      top: 2.75rem;
-      left: 10%;
-      right: 10%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(90, 138, 94, 0.35), transparent);
-      pointer-events: none;
-    }
-
-    .step {
-      position: relative;
-      padding: 1.75rem 1.5rem;
-      border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-dark);
-      transition: background 0.25s ease, border-color 0.25s ease;
-    }
-
-    .step:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(90, 138, 94, 0.25);
-    }
-
-    .step-num {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(90, 138, 94, 0.2);
-      border: 2px solid rgba(90, 138, 94, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--sage-light);
-      margin-bottom: 1.25rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .step h3 {
-      font-size: 1.0625rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.02em;
-    }
-
-    .step p {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* ── Collaboration ── */
-    .collab { background: var(--off-white); }
-
-    .collab-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.05fr;
-      gap: clamp(2.5rem, 6vw, 5rem);
-      align-items: center;
-    }
-
-    .collab-text .section-title { max-width: 18ch; }
-
-    .slack-card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .slack-header {
-      padding: 0.9rem 1.25rem;
-      background: linear-gradient(135deg, #350d36 0%, #4a154b 100%);
-      color: #fff;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .slack-header svg { opacity: 0.75; flex-shrink: 0; }
-
-    .slack-body {
-      padding: 1.35rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.15rem;
-    }
-
-    .slack-msg {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-start;
-    }
-
-    .slack-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.6875rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .slack-avatar.focus {
-      background: transparent;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .slack-avatar.focus img { width: 36px; height: 36px; }
-    .slack-avatar.user { background: linear-gradient(135deg, #6b5b95, #8b7ab5); }
-
-    .slack-msg-content { flex: 1; min-width: 0; }
-
-    .slack-msg-header {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .slack-name {
-      font-weight: 700;
-      font-size: 0.875rem;
-    }
-
-    .slack-time {
-      font-size: 0.6875rem;
-      color: #999;
-    }
-
-    .slack-text {
-      font-size: 0.875rem;
-      color: var(--text-mid);
-      line-height: 1.55;
-    }
-
-    .slack-text code {
-      background: var(--off-white);
-      padding: 0.15em 0.4em;
-      border-radius: 5px;
-      font-size: 0.85em;
-      font-family: ui-monospace, monospace;
-    }
-
-    /* ── About ── */
-    .about {
-      background: var(--dark);
-      color: var(--text-light);
-    }
-
-    .about-card {
-      max-width: 680px;
-      margin-inline: auto;
-      text-align: center;
-      padding: 3rem 2.5rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-dark);
-      border-radius: var(--radius);
-    }
-
-    .about-avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-hover) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #fff;
-      margin: 0 auto 1.75rem;
-      letter-spacing: -0.02em;
-    }
-
-    .about .section-title {
-      color: #fff;
-      max-width: none;
-      margin-inline: auto;
-      margin-bottom: 1.25rem;
-    }
-
-    .about p {
-      font-size: 1.0625rem;
-      color: var(--text-light);
-      line-height: 1.75;
-      margin-bottom: 1.75rem;
-    }
-
-    .about-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--sage-light);
-      font-weight: 600;
-      font-size: 0.9375rem;
-      padding: 0.65rem 1.25rem;
-      border-radius: 999px;
-      border: 1px solid rgba(200, 217, 196, 0.25);
-      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
-
-    .about-link:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(200, 217, 196, 0.4);
-      color: #fff;
-    }
-
-    /* ── Waitlist ── */
-    .waitlist {
-      background: linear-gradient(160deg, var(--sage) 0%, #4a7560 100%);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .waitlist::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 100% 0%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .waitlist-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 480px;
-      margin-inline: auto;
-      text-align: center;
-    }
-
-    .waitlist h2 {
-      font-size: clamp(1.875rem, 4vw, 2.375rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 0.75rem;
-    }
-
-    .waitlist-sub {
-      font-size: 1.0625rem;
-      opacity: 0.92;
-      margin-bottom: 2.25rem;
-      line-height: 1.65;
-    }
-
-    .waitlist-form-wrap {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: var(--radius);
-      padding: 2rem;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      text-align: left;
-    }
-
-    .waitlist-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      opacity: 0.95;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border: 1.5px solid rgba(255, 255, 255, 0.22);
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 0.9375rem;
-      font-family: inherit;
-      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: rgba(255, 255, 255, 0.45);
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: rgba(255, 255, 255, 0.55);
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-    }
-
-    .form-group select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      padding-right: 2.5rem;
-    }
-
-    .form-group select option {
-      color: var(--text-dark);
-      background: #fff;
-    }
-
-    .form-group textarea {
-      min-height: 96px;
-      resize: vertical;
-    }
-
-    .waitlist-form .btn-primary {
-      margin-top: 0.25rem;
-      width: 100%;
-      background: #fff;
-      color: var(--sage);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .waitlist-form .btn-primary:hover {
-      background: var(--off-white);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
-
-    .form-error {
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: var(--radius-sm);
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      display: none;
-    }
-
-    .form-error.visible { display: block; }
-
-    .form-success {
-      display: none;
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-    }
-
-    .form-success.visible { display: block; }
-
-    .form-success-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.25rem;
-      color: #fff;
-    }
-
-    .form-success h3 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.03em;
-    }
-
-    .form-success p {
-      opacity: 0.9;
-      font-size: 1.0625rem;
-    }
-
-    .waitlist-form-wrap.hidden { display: none; }
-
-    /* ── Footer ── */
-    .footer {
-      background: var(--dark);
-      color: var(--text-muted);
-      padding: 2.75rem 0;
-      border-top: 1px solid var(--border-dark);
-    }
-
-    .footer-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-
-    .footer .logo { color: #fff; }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.5rem 1.25rem;
-      font-size: 0.875rem;
-    }
-
-    .footer-links a {
-      color: var(--sage-light);
-      transition: color 0.2s ease;
-    }
-
-    .footer-links a:hover { color: #fff; }
-
-    .footer-links span { opacity: 0.25; }
-
-    .footer-copy {
-      width: 100%;
-      text-align: center;
-      font-size: 0.8125rem;
-      opacity: 0.45;
-      margin-top: 0.75rem;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 960px) {
-      .hero-body { grid-template-columns: 1fr; }
-      .hero-visual { order: -1; max-width: 480px; }
-      .hero-float { display: none; }
-      .cards { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr 1fr; }
-      .steps::after { display: none; }
-      .collab-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 600px) {
-      .container { width: calc(100% - 2rem); }
-      .steps { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .hero-actions .btn { width: 100%; }
-      .footer-inner { flex-direction: column; text-align: center; }
-      .about-card { padding: 2rem 1.5rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .fade-in { transition: opacity 0.3s ease; transform: none; }
-      .hero-badge-dot, .hero-float { animation: none; }
-      .btn:hover, .card:hover { transform: none; }
-    }
-  </style>
 </head>
 <body>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Focus home">
+      <svg viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B9B7A"/><stop offset=".5" stop-color="#5A8A6E"/><stop offset="1" stop-color="#4A7560"/></linearGradient></defs><rect width="512" height="512" rx="143" fill="url(#lg)"/><g transform="translate(256 256) scale(.7) translate(-256 -256)" fill="#fff"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" transform="translate(256 256) rotate(-35)"/></g></svg>
+      Focus
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#learn">How agents learn</a>
+      <a href="#overhead">Less overhead</a>
+      <a href="#how">How it works</a>
+      <a href="#waitlist" class="btn btn-primary" style="padding:9px 18px;font-size:14px">Join the waitlist</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- Nav -->
-  <nav class="nav" id="nav">
-    <div class="container nav-inner">
-      <a href="#top" class="logo" aria-label="Focus home">
-        <img
-          class="logo-mark"
-          src="assets/focus-icon-128.png"
-          srcset="assets/focus-icon-36.png 108w, assets/focus-icon-128.png 256w"
-          sizes="34px"
-          width="34"
-          height="34"
-          alt=""
-        >
-        Focus
-      </a>
-      <div class="nav-links">
-        <a href="#how">How it works</a>
-        <a href="#collab">Collaboration</a>
-        <a href="#about">About</a>
-        <a href="#waitlist" class="btn btn-primary nav-cta">Join waitlist</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero" id="top">
-    <div class="hero-bg" aria-hidden="true">
-      <div class="hero-grid"></div>
-    </div>
-
-    <div class="container hero-body">
-      <div class="hero-content fade-in">
-        <div class="hero-badge">
-          <span class="hero-badge-dot" aria-hidden="true"></span>
-          Now building in public
-        </div>
-        <h1>Work happens. <em>Focus</em> handles the rest.</h1>
-        <p class="hero-sub">Focus watches how you work, captures everything around your tasks, and quietly builds the automation — so you don't have to.</p>
+<main id="top">
+  <section class="hero" id="learn">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">A work OS for people who ship with AI</span>
+        <h1>Focus makes Claude smarter. <em>Automatically.</em></h1>
+        <p class="lede">Focus learns how you and your team work, turns what works into skills, and gives them to every coding agent you use. Then it takes the overhead off your plate, so you only see what needs you.</p>
         <div class="hero-actions">
-          <a href="#waitlist" class="btn btn-primary">Join the waitlist</a>
-          <a href="#how" class="btn btn-ghost">See how it works</a>
+          <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+          <a class="btn btn-ghost" href="#overhead">See what it takes off you</a>
         </div>
       </div>
 
-      <div class="hero-visual fade-in delay-1">
-        <div class="hero-card">
-          <div class="hero-card-header">
-            <img class="hero-card-icon" src="assets/focus-icon-36.png" width="40" height="40" alt="">
-            <div>
-              <div class="hero-card-title">Q3 pricing rollout</div>
-              <div class="hero-card-sub">Focus is watching · 3 resources captured</div>
-            </div>
-          </div>
-          <div class="hero-task">
-            <div class="hero-task-item active">
-              <div class="hero-task-check" aria-hidden="true"></div>
-              <div>
-                <div class="hero-task-text">Draft internal announcement email</div>
-                <div class="hero-task-meta">Pattern detected · ready to automate</div>
-              </div>
-            </div>
-            <div class="hero-task-item">
-              <div class="hero-task-check" aria-hidden="true"></div>
-              <div class="hero-task-text">Schedule customer email for Thursday</div>
-            </div>
-            <div class="hero-task-item">
-              <div class="hero-task-check" aria-hidden="true"></div>
-              <div class="hero-task-text">Pull context from Slack + Notion</div>
-            </div>
-          </div>
-        </div>
-        <div class="hero-float" aria-hidden="true">
-          <div class="hero-float-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          Workflow ready to run
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="stage" aria-label="Animation: Focus turns your team's agent sessions into skills and gives them to every agent">
+        <div class="stage-scroll"><svg id="loop" viewBox="0 0 640 380" role="img" aria-label="Agent sessions flow into Focus, become skills, and the skills flow back to every agent">
+          <g id="wires">
+            <path class="wire" id="in0" d="M196 70 C240 70 240 190 270 190"/>
+            <path class="wire" id="in1" d="M196 190 L270 190"/>
+            <path class="wire" id="in2" d="M196 310 C240 310 240 190 270 190"/>
+            <path class="wire" id="out0" d="M370 190 C405 190 405 78 444 78"/>
+            <path class="wire" id="out1" d="M370 190 L444 190"/>
+            <path class="wire" id="out2" d="M370 190 C405 190 405 302 444 302"/>
+          </g>
 
-  <!-- Problem -->
-  <section class="problem" id="problem">
-    <div class="container">
-      <div class="problem-header fade-in">
-        <span class="eyebrow">The problem</span>
-        <h2 class="section-title">You already know what should be automated. You just never have time to do it.</h2>
-      </div>
-      <div class="cards">
-        <article class="card fade-in delay-1">
-          <div class="card-icon" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 6v6l4 2"/>
-            </svg>
-          </div>
-          <h3>Context is scattered</h3>
-          <p>Slack threads, Notion docs, Jira tickets, emails — your task context lives everywhere except where you're working.</p>
-        </article>
+          <g id="agents">
+            <g data-agent="0"><rect class="agent-box" x="16" y="38" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="66">Claude Code</text><text class="agent-who" x="32" y="88">you</text><circle class="pip" cx="150" cy="83" r="5"/><circle class="pip" cx="165" cy="83" r="5"/><circle class="pip" cx="180" cy="83" r="5"/><text class="got" x="16" y="122">+ skill</text></g>
+            <g data-agent="1"><rect class="agent-box" x="16" y="158" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="186">Cursor</text><text class="agent-who" x="32" y="208">teammate</text><circle class="pip" cx="150" cy="203" r="5"/><circle class="pip" cx="165" cy="203" r="5"/><circle class="pip" cx="180" cy="203" r="5"/><text class="got" x="16" y="242">+ skill</text></g>
+            <g data-agent="2"><rect class="agent-box" x="16" y="278" width="180" height="64" rx="14"/><text class="agent-name" x="32" y="306">Codex</text><text class="agent-who" x="32" y="328">teammate</text><circle class="pip" cx="150" cy="323" r="5"/><circle class="pip" cx="165" cy="323" r="5"/><circle class="pip" cx="180" cy="323" r="5"/><text class="got" x="16" y="362">+ skill</text></g>
+          </g>
 
-        <article class="card fade-in delay-2">
-          <div class="card-icon" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4v5h5"/><path d="M20 20v-5h-5"/>
-              <path d="M20 4l-8 8"/><path d="M4 20l8-8"/>
-            </svg>
-          </div>
-          <h3>Repetition goes unresolved</h3>
-          <p>Every executor has a graveyard of tasks they meant to automate. Someday never comes.</p>
-        </article>
+          <g id="core">
+            <circle class="halo" id="halo" cx="320" cy="190" r="50"/>
+            <rect x="270" y="140" width="100" height="100" rx="28" fill="url(#lg)"/>
+            <circle cx="320" cy="190" r="26" fill="none" stroke="#fff" stroke-width="7"/>
+            <path d="M-14 0A17 17 0 0 1 14 0A17 17 0 0 1 -14 0Z" fill="#fff" transform="translate(320 190) rotate(-35)"/>
+            <text class="core-label" x="320" y="266" text-anchor="middle">FOCUS</text>
+          </g>
 
-        <article class="card fade-in delay-3">
-          <div class="card-icon" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <h3>Collaboration is friction</h3>
-          <p>Getting a quick answer means pulling someone into a new tool, a new thread, a new context switch.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="how" id="how">
-    <div class="container">
-      <div class="how-header fade-in">
-        <span class="eyebrow light">How it works</span>
-        <h2 class="section-title center">The Focus Loop</h2>
-        <p class="section-lead center">Four steps. Zero extra work from you.</p>
-      </div>
-      <div class="steps">
-        <article class="step fade-in delay-1">
-          <div class="step-num">1</div>
-          <h3>Watch</h3>
-          <p>Focus observes your actions as you work, passively, in the background.</p>
-        </article>
-        <article class="step fade-in delay-2">
-          <div class="step-num">2</div>
-          <h3>Capture</h3>
-          <p>Resources, conversations, and context are automatically gathered around the task.</p>
-        </article>
-        <article class="step fade-in delay-3">
-          <div class="step-num">3</div>
-          <h3>Recognise</h3>
-          <p>Intent is identified. The same pattern surfaces when it detects matching work ahead.</p>
-        </article>
-        <article class="step fade-in">
-          <div class="step-num">4</div>
-          <h3>Execute</h3>
-          <p>The workflow runs. You approve or it runs silently.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Collaboration -->
-  <section class="collab" id="collab">
-    <div class="container">
-      <div class="collab-grid">
-        <div class="collab-text fade-in">
-          <span class="eyebrow">Collaboration</span>
-          <h2 class="section-title">No new tools. No context switches.</h2>
-          <p class="section-lead">Focus meets your team where they already are. When it needs a quick answer, it reaches out in Slack — not another dashboard, not another login. Your colleague replies in the thread. Focus picks it up and keeps going.</p>
-        </div>
-
-        <div class="slack-card fade-in delay-1" aria-label="Example Slack conversation">
-          <div class="slack-header">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/></svg>
-            Direct message
-          </div>
-          <div class="slack-body">
-            <div class="slack-msg">
-              <div class="slack-avatar focus" aria-hidden="true">
-                <img src="assets/focus-icon-36.png" width="36" height="36" alt="">
-              </div>
-              <div class="slack-msg-content">
-                <div class="slack-msg-header">
-                  <span class="slack-name">Focus</span>
-                  <span class="slack-time">10:42 AM</span>
-                </div>
-                <p class="slack-text">Quick question on <strong>Q3 pricing rollout</strong> — should the internal announcement go out before or after the customer email? I have a draft ready either way.</p>
-              </div>
-            </div>
-
-            <div class="slack-msg">
-              <div class="slack-avatar user">SC</div>
-              <div class="slack-msg-content">
-                <div class="slack-msg-header">
-                  <span class="slack-name">Sarah Chen</span>
-                  <span class="slack-time">10:44 AM</span>
-                </div>
-                <p class="slack-text">Internal first, always. Give the team 24h before customers see it. Use the <code>#product-launches</code> template.</p>
-              </div>
-            </div>
-
-            <div class="slack-msg">
-              <div class="slack-avatar focus" aria-hidden="true">
-                <img src="assets/focus-icon-36.png" width="36" height="36" alt="">
-              </div>
-              <div class="slack-msg-content">
-                <div class="slack-msg-header">
-                  <span class="slack-name">Focus</span>
-                  <span class="slack-time">10:44 AM</span>
-                </div>
-                <p class="slack-text">Got it — scheduling internal for tomorrow 9am, customer email Thursday. I'll draft both now.</p>
-              </div>
-            </div>
-          </div>
+          <g id="skills">
+            <g class="skill on" data-skill="0"><rect class="skill-box" x="444" y="50" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="74">deploy-staging</text><text class="skill-from" x="458" y="94">learned from your sessions</text></g>
+            <g class="skill on" data-skill="1"><rect class="skill-box" x="444" y="162" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="186">review-checklist</text><text class="skill-from" x="458" y="206">learned from Cursor</text></g>
+            <g class="skill on" data-skill="2"><rect class="skill-box" x="444" y="274" width="180" height="56" rx="12"/><text class="skill-name" x="458" y="298">incident-triage</text><text class="skill-from" x="458" y="318">learned from Codex</text></g>
+          </g>
+          <g id="dots"></g>
+        </svg></div>
+        <div class="steps-live" aria-live="polite">
+          <div class="step-live on" data-step="0"><b>1 · Work</b><span>Everyone keeps working in their own coding agent.</span></div>
+          <div class="step-live on" data-step="1"><b>2 · Learn</b><span>Focus spots what worked and writes it down as a skill.</span></div>
+          <div class="step-live on" data-step="2"><b>3 · Share</b><span>Every agent on the team gets the skill, with no prompt to write.</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- About -->
-  <section class="about" id="about">
-    <div class="container fade-in">
-      <div class="about-card">
-        <div class="about-avatar" aria-hidden="true">LN</div>
-        <h2 class="section-title">Built by someone who lived this problem</h2>
-        <p>Focus is built by Lalit Nankani — Senior Staff Engineer and Engineering Manager with 9+ years in fintech and distributed systems. Focus exists because the best person to automate something is always the least motivated to do it.</p>
-        <a href="mailto:lit@withfocus.io" class="about-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          lit@withfocus.io
-        </a>
+  <section class="band-light" id="overhead">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Less overhead</span>
+        <h2>Focus handles the work around the work.</h2>
+        <p>Every question goes to the agent that knows the answer. A question about code goes to the agent that wrote it, which drafts the reply for your OK. Only what really needs you comes to you.</p>
+      </div>
+
+      <div class="flow" id="flow" aria-label="Focus connects each incoming message to the agent that knows the answer, or to you">
+        <svg class="wires" id="flow-wires" aria-hidden="true"></svg>
+        <div class="flow-col flow-in"><div class="col-title">Incoming</div>
+          <div class="card msg" data-to="payments"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Is the payments migration safe to run tonight?</span></div>
+          <div class="card msg" data-to="web"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="sr-only">Gmail</span></span><span class="txt">GitHub: review requested on PR 412</span></div>
+          <div class="card msg" data-to="infra"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Why did the deploy pipeline slow down?</span></div>
+          <div class="card msg" data-to="you"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Can you approve the release?</span></div>
+        </div>
+        <div class="flow-hub"><div class="hub-mark" id="hub"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="187" fill="none" stroke="#fff" stroke-width="52"/><path d="M-104 0A128 128 0 0 1 104 0A128 128 0 0 1 -104 0Z" fill="#fff" transform="translate(256 256) rotate(-35)"/></svg></div></div>
+        <div class="flow-col flow-out"><div class="col-title">Goes to</div>
+          <div class="card dest dest-you" data-key="you"><div class="dest-top"><span class="dest-name">You</span><span class="badge">Waiting for you</span></div><span class="dest-power">only what needs you</span></div>
+          <div class="card dest" data-key="payments"><div class="dest-top"><span class="dest-name">Payments agent</span><span class="badge">Drafting a reply</span></div><span class="dest-power">powered by Claude Code</span></div>
+          <div class="card dest" data-key="web"><div class="dest-top"><span class="dest-name">Web app agent</span><span class="badge">Drafting a reply</span></div><span class="dest-power">powered by Codex</span></div>
+          <div class="card dest" data-key="infra"><div class="dest-top"><span class="dest-name">Infra agent</span><span class="badge">Drafting a reply</span></div><span class="dest-power">powered by Cursor</span></div>
+        </div>
+      </div>
+      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
+    </div>
+  </section>
+
+  <section class="band-dark" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Install once. Keep working.</h2>
+        <p>There's no new tool to learn. Focus sits beside the agents and apps you already use.</p>
+      </div>
+      <ol class="how">
+        <li><h3>Install the Focus CLI</h3><p>Sign in with your work email, then connect Slack and email. Focus registers your agent tools on that machine.</p></li>
+        <li><h3>Work as usual</h3><p>Keep using Claude Code, Cursor or Codex. Every coding chat becomes an agent with a permanent record of what it did.</p></li>
+        <li><h3>Watch your agents improve</h3><p>Skills you and your teammates share land on every machine, for every agent tool. Your inbox gets shorter as Focus takes the overhead.</p></li>
+      </ol>
+      <div class="trust">
+        <div><h3>Your AI, not ours</h3><p>Focus's brain runs on your own Claude, Cursor or Codex subscription, on your own machine.</p></div>
+        <div><h3>Your data stays with you</h3><p>Agents query company databases read-only through an Outpost inside your network. Every query is signed and audited.</p></div>
+        <div><h3>You stay in control</h3><p>Drafts wait for your OK. Shared skills need the owner's approval before a colleague gets them.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Waitlist -->
-  <section class="waitlist" id="waitlist">
-    <div class="container">
-      <div class="waitlist-inner fade-in">
-        <h2>Be the first to use Focus.</h2>
-        <p class="waitlist-sub">We are building Focus in public. Join the waitlist and we will keep you close.</p>
-
-        <div class="waitlist-form-wrap" id="form-wrap">
-          <form
-            id="waitlist-form"
-            class="waitlist-form"
-            action="https://formspree.io/f/mykqpryn"
-            method="POST"
-          >
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name">Full name</label>
-                <input type="text" id="name" name="name" required placeholder="Jane Smith" autocomplete="name">
-              </div>
-              <div class="form-group">
-                <label for="email">Work email</label>
-                <input type="email" id="email" name="email" required placeholder="you@company.com" autocomplete="email">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="role">Role</label>
-              <select id="role" name="role" required>
-                <option value="" disabled selected>Select your role</option>
-                <option value="Engineer">Engineer</option>
-                <option value="Architect">Architect</option>
-                <option value="Engineering Manager">Engineering Manager</option>
-                <option value="Product Manager">Product Manager</option>
-                <option value="Founder">Founder</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="pain">What's your biggest workflow pain? <span style="opacity:0.65">(optional)</span></label>
-              <textarea id="pain" name="pain" placeholder="e.g. Every sprint I manually compile status updates from five different tools…"></textarea>
-            </div>
-
-            <div id="form-error" class="form-error" role="alert"></div>
-            <button type="submit" class="btn btn-primary" id="submit-btn">Join the waitlist</button>
-          </form>
-        </div>
-
-        <div id="form-success" class="form-success" role="status">
-          <div class="form-success-icon" aria-hidden="true">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <h3>You're on the list.</h3>
-          <p>We'll be in touch.</p>
-        </div>
-      </div>
+  <section class="cta" id="waitlist">
+    <div class="wrap">
+      <h2>Give every agent on your team the best of your team.</h2>
+      <p>Focus is in use with design partners now. Join the waitlist and we'll bring you in.</p>
+      <form class="form" id="wl" action="https://formspree.io/f/mykqpryn" method="POST">
+        <label for="wl-email" class="mono" style="position:absolute;left:-9999px">Work email</label>
+        <input class="input" id="wl-email" name="email" type="email" required placeholder="you@company.com" autocomplete="email">
+        <button class="btn btn-primary" type="submit">Join the waitlist</button>
+      </form>
+      <p class="form-note" id="wl-note" role="status">We’ll only use your email to bring you onto Focus.</p>
     </div>
   </section>
+</main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <a href="#top" class="logo" aria-label="Focus home">
-          <img
-            class="logo-mark sm"
-            src="assets/focus-icon-128.png"
-            srcset="assets/focus-icon-36.png 108w, assets/focus-icon-128.png 256w"
-            sizes="28px"
-            width="28"
-            height="28"
-            alt=""
-          >
-          Focus
-        </a>
-        <nav class="footer-links" aria-label="Footer links">
-          <a href="https://withfocus.io">withfocus.io</a>
-          <span>·</span>
-          <a href="mailto:lit@withfocus.io">lit@withfocus.io</a>
-        </nav>
-        <p class="footer-copy">© 2026 Focus. Built in London.</p>
-      </div>
-    </div>
-  </footer>
+<footer>
+  <div class="wrap"><span>© 2026 Focus. Built in London.</span><span class="mono">withfocus.io</span></div>
+</footer>
 
-  <script>
-    (function () {
-      /* Nav scroll state */
-      var nav = document.getElementById('nav');
-      function onScroll() {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+  var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+
+  /* ── Hero: the skill loop ─────────────────────────────── */
+  var svg = document.getElementById('loop');
+  var dots = document.getElementById('dots');
+  var inPaths = [0, 1, 2].map(function (i) { return document.getElementById('in' + i); });
+  var outPaths = [0, 1, 2].map(function (i) { return document.getElementById('out' + i); });
+  var skills = Array.prototype.slice.call(svg.querySelectorAll('.skill'));
+  var agents = Array.prototype.slice.call(svg.querySelectorAll('[data-agent]'));
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step-live'));
+  var halo = document.getElementById('halo');
+
+  function travel(path, reverse, cls) {
+    return new Promise(function (done) {
+      var len = path.getTotalLength(), dur = 900, t0 = null;
+      var c = document.createElementNS(NS, 'circle');
+      c.setAttribute('r', '5.5');
+      c.setAttribute('class', cls || 'dot');
+      dots.appendChild(c);
+      function frame(now) {
+        if (t0 === null) t0 = now;
+        var p = Math.min(1, (now - t0) / dur);
+        var e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        var pt = path.getPointAtLength((reverse ? 1 - e : e) * len);
+        c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);
+        if (p < 1) requestAnimationFrame(frame); else { c.remove(); done(); }
       }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+      requestAnimationFrame(frame);
+    });
+  }
+  function setStep(n) { steps.forEach(function (s, i) { s.classList.toggle('on', i === n); }); }
+  function pulse() { halo.classList.remove('go'); void halo.getBBox(); halo.classList.add('go'); }
+  function pips(agent) { return Array.prototype.slice.call(agent.querySelectorAll('.pip')); }
+  function reset() {
+    skills.forEach(function (s) { s.classList.remove('on'); });
+    agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.remove('on'); }); });
+  }
 
-      /* Scroll fade-in */
-      var fadeEls = document.querySelectorAll('.fade-in');
-      if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
-        fadeEls.forEach(function (el) { observer.observe(el); });
-      } else {
-        fadeEls.forEach(function (el) { el.classList.add('visible'); });
-      }
-
-      /* Smooth scroll */
-      document.querySelectorAll('a[href^="#"]').forEach(function (link) {
-        link.addEventListener('click', function (e) {
-          var target = document.querySelector(link.getAttribute('href'));
-          if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+  async function loop() {
+    while (true) {
+      reset();
+      await sleep(600);
+      for (var k = 0; k < 3; k++) {
+        setStep(0);
+        await Promise.all(inPaths.map(function (p, j) { return sleep(j * 160).then(function () { return travel(p); }); }));
+        pulse(); setStep(1);
+        await travel(outPaths[k]);
+        skills[k].classList.add('on');
+        await sleep(450);
+        setStep(2);
+        await Promise.all(inPaths.map(function (p) { return travel(p, true, 'dot share'); }));
+        agents.forEach(function (a) {
+          pips(a)[k].classList.add('on');
+          var g = a.querySelector('.got');
+          g.textContent = '+ ' + skills[k].querySelector('.skill-name').textContent;
+          g.classList.add('on');
+          setTimeout(function () { g.classList.remove('on'); }, 1300);
         });
+        await sleep(1500);
+      }
+      await sleep(1800);
+    }
+  }
+
+  /* ── Routing: Focus connects each message, along a curve through it, to where it goes ── */
+  var flow = document.getElementById('flow'), wires = document.getElementById('flow-wires'), hub = document.getElementById('hub');
+  var msgs = Array.prototype.slice.call(flow.querySelectorAll('.msg'));
+  var dests = {};
+  Array.prototype.forEach.call(flow.querySelectorAll('.dest'), function (d) { dests[d.dataset.key] = d; });
+
+  /* Where a curve leaves a message, crosses Focus, and enters a destination. */
+  function point(el, edge) {
+    var r = el.getBoundingClientRect(), o = flow.getBoundingClientRect();
+    var x = edge === 'right' ? r.right : edge === 'left' ? r.left : r.left + r.width / 2;
+    var y = r.top + r.height / 2;
+    return { x: x - o.left, y: y - o.top };
+  }
+  function curve(p, q) {
+    var mx = (p.x + q.x) / 2; return 'C' + mx + ' ' + p.y + ' ' + mx + ' ' + q.y + ' ' + q.x + ' ' + q.y;
+  }
+  function fromMsg(m) { return point(m, 'right'); }
+  function intoDest(d) { return point(d, 'left'); }
+  function path(d, cls) {
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', d); p.setAttribute('class', cls);
+    return p;
+  }
+  function routeD(m) {
+    var a = fromMsg(m), h = point(hub, 'centre'), b = intoDest(dests[m.dataset.to]);
+    return 'M' + a.x + ' ' + a.y + curve(a, h) + curve(h, b);
+  }
+
+  var lit = [];
+  function draw() {
+    wires.innerHTML = '';
+    var h = point(hub, 'centre');
+    msgs.forEach(function (m) { var a = fromMsg(m); wires.appendChild(path('M' + a.x + ' ' + a.y + curve(a, h), 'spoke')); });
+    Object.keys(dests).forEach(function (k) { var b = intoDest(dests[k]); wires.appendChild(path('M' + h.x + ' ' + h.y + curve(h, b), 'spoke')); });
+    lit.forEach(function (m) { wires.appendChild(path(routeD(m), 'lit')); });
+  }
+  window.addEventListener('resize', draw);
+
+  function light(m) {
+    return new Promise(function (done) {
+      var p = path(routeD(m), 'lit'), dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('r', '5');
+      wires.appendChild(p); wires.appendChild(dot);
+      var len = p.getTotalLength(), t0 = null, dur = 1100, pulsed = false;
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      function frame(now) {
+        if (t0 === null) t0 = now;
+        var k = Math.min(1, (now - t0) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        var pt = p.getPointAtLength(e * len);
+        p.style.strokeDashoffset = len * (1 - e);
+        dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+        if (!pulsed && e > .5) { pulsed = true; hub.classList.remove('go'); void hub.offsetWidth; hub.classList.add('go'); }
+        if (k < 1) { requestAnimationFrame(frame); return; }
+        dot.remove(); p.style.strokeDasharray = ''; p.style.strokeDashoffset = '';
+        lit.push(m);
+        done();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+  function settle(all) {
+    lit = all ? msgs.slice() : [];
+    Object.keys(dests).forEach(function (k) { dests[k].classList.toggle('filled', all); });
+    draw();
+  }
+
+  /* Focus connects the four messages one at a time; all four routes stay lit, hold, then replay. */
+  async function triage() {
+    while (true) {
+      wires.classList.add('fade');
+      await sleep(600);
+      settle(false);
+      wires.classList.remove('fade');
+      await sleep(700);
+      for (var i = 0; i < msgs.length; i++) {
+        var m = msgs[i], d = dests[m.dataset.to];
+        m.classList.add('on');
+        await light(m);
+        m.classList.remove('on');
+        d.classList.add('on', 'filled');
+        await sleep(650);
+        d.classList.remove('on');
+      }
+      await sleep(3400);
+    }
+  }
+
+  /* Resting state: every skill shared, every message connected to where it goes. Motion replaces it when allowed. */
+  settle(true);
+  if (document.fonts) document.fonts.ready.then(draw);
+  agents.forEach(function (a) { pips(a).forEach(function (p) { p.classList.add('on'); }); });
+
+  if (!reduce) {
+    setTimeout(loop, 900);
+    setTimeout(triage, 1400);
+  }
+
+  var form = document.getElementById('wl'), note = document.getElementById('wl-note');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Joining…';
+    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+      .then(function (res) {
+        if (!res.ok) throw new Error();
+        form.hidden = true;
+        note.textContent = 'You’re on the list. We’ll be in touch.';
+      })
+      .catch(function () {
+        btn.disabled = false; btn.textContent = 'Join the waitlist';
+        note.textContent = 'That didn’t go through. Try again in a minute, or email lit@withfocus.io.';
       });
-
-      /* Waitlist form */
-      var form = document.getElementById('waitlist-form');
-      var formWrap = document.getElementById('form-wrap');
-      var errorEl = document.getElementById('form-error');
-      var successEl = document.getElementById('form-success');
-      var submitBtn = document.getElementById('submit-btn');
-
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          errorEl.classList.remove('visible');
-          errorEl.textContent = '';
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Joining…';
-
-          fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { Accept: 'application/json' }
-          })
-            .then(function (res) {
-              if (res.ok) {
-                formWrap.classList.add('hidden');
-                successEl.classList.add('visible');
-                return;
-              }
-              return res.json().then(function (data) {
-                var msg = (data.errors && data.errors.map(function (err) { return err.message; }).join(', '))
-                  || 'Something went wrong. Please try again.';
-                throw new Error(msg);
-              });
-            })
-            .catch(function (err) {
-              errorEl.textContent = err.message || 'Something went wrong. Please try again.';
-              errorEl.classList.add('visible');
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Join the waitlist';
-            });
-        });
-      }
-    })();
-  </script>
+  });
+})();
+</script>
 </body>
 </html>
