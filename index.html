@@ -45,8 +45,8 @@ p{margin:0}
 /* Nav */
 .nav{padding-block:20px}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--white)}
-.logo svg{width:32px;height:32px;color:var(--focus-green)}
+.logo{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--white)}
+.logo svg{width:32px;height:32px;color:var(--focus-green);transform:translateY(1px)}
 .nav-links{display:flex;gap:28px;align-items:center;font-size:14px;color:var(--on-dark-mute)}
 .nav-links a:hover{color:var(--white)}
 @media (max-width:720px){.nav-links a:not(.btn){display:none}}
@@ -114,8 +114,8 @@ p{margin:0}
 .col-title{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid)}
 .flow-out .col-title{text-align:left}
 .flow-hub{display:grid;place-items:center;position:relative;z-index:3}
-.hub-mark{width:92px;height:92px;border-radius:26px;display:grid;place-items:center;background:var(--green-deep);color:var(--mist);box-shadow:0 0 0 14px rgba(90,138,94,.10),0 0 0 30px rgba(90,138,94,.05),0 14px 34px rgba(74,117,96,.32);position:relative}
-.hub-mark svg{width:54px;height:54px}
+.hub-mark{width:92px;height:92px;display:grid;place-items:center;position:relative;filter:drop-shadow(0 14px 34px rgba(61,113,84,.32))}
+.hub-mark img{width:100%;height:100%;display:block}
 .hub-mark.go::after{content:"";position:absolute;inset:-8px;border-radius:32px;border:2px solid var(--sage);animation:hub .9s ease-out both}
 @keyframes hub{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.35)}}
 .wires{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1}
@@ -142,7 +142,7 @@ p{margin:0}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .triage-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--ink-mid);font-size:14px}
 .triage-foot b{color:var(--ink)}
-@media (max-width:760px){.flow{grid-template-columns:1fr;grid-template-rows:auto 112px auto}.flow-col{grid-template-rows:none;gap:10px}.flow-in{padding-left:26px}.flow-out{padding-right:26px}.card{min-height:0;padding:12px 14px}.dest-top{flex-wrap:wrap;gap:6px}.badge{white-space:normal}.hub-mark{width:64px;height:64px;border-radius:19px;box-shadow:0 0 0 10px rgba(90,138,94,.10),0 0 0 20px rgba(90,138,94,.05),0 10px 24px rgba(74,117,96,.3)}.hub-mark svg{width:38px;height:38px}}
+@media (max-width:760px){.flow{grid-template-columns:1fr;grid-template-rows:auto 112px auto}.flow-col{grid-template-rows:none;gap:10px}.flow-in{padding-left:26px}.flow-out{padding-right:26px}.card{min-height:0;padding:12px 14px}.dest-top{flex-wrap:wrap;gap:6px}.badge{white-space:normal}.hub-mark{width:64px;height:64px}}
 
 /* Dark band: how it works + trust */
 .band-dark{padding-block:88px}
@@ -288,7 +288,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
           <div class="card msg" data-to="platform"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Can we make strict null checks the team standard?</span></div>
           <div class="card msg" data-to="you"><span class="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg><span class="sr-only">Slack</span></span><span class="txt">Can you approve the release?</span></div>
         </div>
-        <div class="flow-hub"><div class="hub-mark" id="hub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#focus-mark"/></svg></div></div>
+        <div class="flow-hub"><div class="hub-mark" id="hub"><img src="assets/brand/app-icon.svg" alt="" width="92" height="92"></div></div>
         <div class="flow-col flow-out"><div class="col-title">Goes to</div>
           <div class="card dest dest-you" data-key="you"><div class="dest-top"><span class="dest-name">You</span><span class="badge">Waiting for you</span></div><span class="dest-power">only what needs you</span></div>
           <div class="card dest" data-key="payments"><div class="dest-top"><span class="dest-name">Payments agent</span><span class="badge">Updating the code</span></div><span class="dest-power">powered by Claude Code</span></div>
