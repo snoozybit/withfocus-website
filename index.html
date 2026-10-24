@@ -1218,6 +1218,10 @@ document.documentElement.classList.add('js');
   size(); layout();
   var yS = scrollY, vS = 0, last = performance.now(), lastKey = '';
   window.__snap = function () { yS = scrollY; vS = 0; lastKey = ''; };   /* test hook: skip the spring */
+  /* deep links (/#design-partner, old /#waitlist): the story only reaches its full height once it's laid out,
+     so the browser's own jump can land short or not at all. Re-apply the target, and skip the spring on the way down. */
+  function cxHash() { var id = location.hash && decodeURIComponent(location.hash.slice(1)), t = id && document.getElementById(id); if (!t) return; t.scrollIntoView({ behavior: 'instant', block: 'start' }); window.__snap(); }
+  cxHash(); if (document.readyState !== 'complete') addEventListener('load', function () { requestAnimationFrame(cxHash); }, { once: true });
   function stageP(y) { var span = proto.offsetHeight - innerHeight; return span > 0 ? clamp((y - geo.stageTop) / span * (N + HOLD) / N) : 0; }
   (function loop(now) {
     var dt = Math.min(.1, Math.max(0, (now - last) / 1000)); last = now; var target = scrollY, W = 9 + 7 * clamp(Math.abs(target - yS) / innerHeight);   /* a big fling: the timeline hurries to catch up */
