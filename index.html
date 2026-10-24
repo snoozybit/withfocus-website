@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Focus: every agent on your team learns what your best one knows</title>
-<meta name="description" content="Focus turns what works into skills for every coding agent on your team (Claude Code, Cursor, Codex), and routes the work around the work so only what needs you reaches you.">
-<meta name="theme-color" content="#1C2B1E">
+<meta name="description" content="Focus turns what works into skills for every coding agent on your team (Claude Code, Cursor, Codex), lets agents ask each other, and takes the work around the work off your plate, so only what needs you reaches you.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://withfocus.io/">
 <meta property="og:title" content="Every agent on your team learns what your best one knows.">
@@ -14,15 +13,16 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon.ico" sizes="32x32 48x48">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32 48x48">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#1C2B1E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: forest hero split (promise left, live skill loop right) → the concrete skill story → mist band routing demo
-   → install + trust on forest → mist band proof + FAQ → waitlist on deep forest. One committed brand look, colours explicit. */
+   → trust on forest → mist band FAQ → waitlist on deep forest. One committed brand look, colours explicit. */
 :root{
   /* Final green ramp, from the approved Focus logo (focus-brand/LOGO.md). */
   --deep:#152017;       /* CTA + footer ground */
@@ -57,6 +57,7 @@ code,kbd{font-family:var(--mono)}
 :focus-visible{outline:2px solid var(--sage-light);outline-offset:3px;border-radius:6px}
 .light :focus-visible{outline-color:var(--green-deep)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.needs{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--body);color:#7A5A12;background:#FBEFC9;border-radius:999px;padding:4px 9px;white-space:nowrap}
 
 /* Buttons: tactile press, no hover lift */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;font:600 15px var(--body);border:0;cursor:pointer;
@@ -68,6 +69,8 @@ code,kbd{font-family:var(--mono)}
 .btn-ghost{background:transparent;color:var(--on-dark);box-shadow:inset 0 0 0 1px rgba(240,244,239,.26)}
 .btn-ghost:hover{box-shadow:inset 0 0 0 1px rgba(240,244,239,.55)}
 .btn-sm{min-height:38px;padding:0 16px;font-size:14px}
+.btn{white-space:nowrap}
+@media (max-width:400px){.nav-links .btn-sm{padding:0 12px}.nav-links .btn{margin-left:4px}.menu-btn{padding:8px 6px}}
 .link{color:var(--sage-light);text-decoration:underline;text-decoration-color:rgba(200,217,196,.45);text-underline-offset:.22em}
 .link:hover{text-decoration-color:currentColor}
 .light .link{color:var(--green-deep);text-decoration-color:rgba(61,107,69,.4)}
@@ -82,7 +85,7 @@ code,kbd{font-family:var(--mono)}
 .nav-links a:not(.btn){padding:8px 11px;border-radius:8px;transition:color 150ms var(--ease)}
 .nav-links a:not(.btn):hover{color:var(--on-dark)}
 .nav-links .btn{margin-left:10px}
-@media (max-width:860px){.nav-links a:not(.btn){display:none}}
+@media (max-width:860px){.nav-links .nl{display:none}}
 
 /* Hero */
 .hero{padding-block:36px 64px}
@@ -168,8 +171,8 @@ code,kbd{font-family:var(--mono)}
 .beat-k{display:flex;align-items:center;gap:8px;font:600 14px var(--body);color:var(--focus)}
 .beat-k i{width:8px;height:8px;border-radius:50%;background:currentColor}
 .light .beat-k{color:var(--green-deep)}
-.trust-k{margin-top:72px}
-.trust-k + .trust{margin-top:16px}
+
+.beat-k + .trust{margin-top:16px}
 .skip{justify-self:start;font-size:15px}
 .story-head .problem{margin-top:6px}
 .beat-cta{margin-top:20px}
@@ -180,7 +183,6 @@ code,kbd{font-family:var(--mono)}
 .beat-txt > p:not(.beat-k){font-size:17.5px;color:var(--on-dark-mute);max-width:44ch}
 .rail{display:none}
 /* field */
-.field .cell{fill:var(--focus);stroke:var(--focus)}
 .bound{fill:rgba(200,217,196,.03);stroke:var(--focus);stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:1}
 .bound-lbl rect{fill:var(--forest)}
 .bound-lbl text{fill:var(--focus);font:600 12px var(--body)}
@@ -198,7 +200,7 @@ code,kbd{font-family:var(--mono)}
 .beat-still svg{width:100%;height:auto;display:block}
 /* Scrubbed stage (wide screens with motion and JS) */
 @media (min-width:960px) and (prefers-reduced-motion:no-preference){
-  .js .story-track{height:320vh;padding-bottom:0}
+  .js .story-track{height:450vh;padding-bottom:0}
   .js .story-stage{position:sticky;top:0;height:100vh;display:grid;align-items:center}
   .js .story-grid{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;width:100%}
   .js .story-fig{display:block}
@@ -211,6 +213,95 @@ code,kbd{font-family:var(--mono)}
   .js .rail li{width:12px;height:12px;border:1.25px solid var(--focus);border-radius:3px;opacity:.6;transition:border-radius .4s cubic-bezier(.3,0,.2,1),background-color .4s,opacity .4s}
   .js .rail li.on{border-radius:50%;background:var(--focus);opacity:1}
 }
+
+
+/* Product menu */
+.menu{position:relative}
+.menu-btn{display:inline-flex;align-items:center;gap:4px;padding:8px 11px;border:0;border-radius:8px;background:transparent;color:var(--on-dark-mute);font:inherit;cursor:pointer;transition:color 150ms var(--ease)}
+.menu-btn:hover,.menu-btn[aria-expanded="true"]{color:var(--on-dark)}
+.menu-btn svg{width:14px;height:14px;transition:rotate 200ms var(--ease)}
+.menu-btn[aria-expanded="true"] svg{rotate:180deg}
+.menu-pop{position:absolute;top:calc(100% + 8px);left:-8px;z-index:20;width:340px;padding:8px;border-radius:16px;background:var(--forest-2);box-shadow:inset 0 0 0 1px var(--line-dark),0 24px 48px -16px rgba(0,0,0,.6);display:grid;gap:2px}
+.menu-pop a{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px;border-radius:10px;color:var(--on-dark)}
+.menu-pop a:hover,.menu-pop a:focus-visible{background:rgba(200,217,196,.08)}
+.menu-pop b{display:block;font-weight:600;font-size:14.5px}
+.menu-pop small{display:block;font-size:13px;color:var(--on-dark-mute)}
+.mi{width:22px;height:22px;color:var(--focus)}
+.m-only{display:none}
+@media (max-width:860px){
+  .nav{position:relative;z-index:30}
+  .menu{position:static}
+  .menu-pop{position:absolute;top:100%;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));width:auto;margin-top:-6px}
+  .menu-pop:not([hidden]){display:grid}
+  .m-only{display:grid;grid-column:1/-1;border-top:1px solid var(--line-dark);margin-top:4px;padding-top:4px}
+  .m-only a{grid-template-columns:1fr}
+}
+/* Pro badge */
+.pro{display:inline-flex;align-items:center;font:600 11.5px/1 var(--body);color:var(--forest);background:var(--focus);border-radius:999px;padding:4px 8px;letter-spacing:.01em}
+/* What's in Focus */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.fcard{display:grid;grid-template-rows:auto auto auto 1fr auto;gap:8px;padding:20px;border-radius:18px;background:var(--forest-2);box-shadow:inset 0 0 0 1px var(--line-dark);transition:box-shadow 150ms var(--ease)}
+.fcard:hover{box-shadow:inset 0 0 0 1px rgba(200,217,196,.4)}
+.fcard:active{scale:.99}
+.fi{width:26px;height:26px;color:var(--focus);margin-bottom:6px}
+.f-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.f-top b{font:600 18px var(--display);letter-spacing:-.01em}
+.f-eye{font-size:13.5px;color:var(--focus);font-weight:500}
+.f-txt{font-size:15px;color:var(--on-dark-mute)}
+.f-more{font-size:14px;font-weight:500;color:var(--sage-light);margin-top:6px}
+.admin-strip{margin-top:14px;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:16px 20px;border-radius:16px;box-shadow:inset 0 0 0 1px var(--line-dark);transition:box-shadow 150ms var(--ease)}
+.admin-strip:hover{box-shadow:inset 0 0 0 1px rgba(200,217,196,.4)}
+.admin-strip .fi{margin:0}
+.admin-strip b{font-weight:600}
+.a-list{font-size:14px;color:var(--on-dark-mute)}
+@media (max-width:860px){.admin-strip{grid-template-columns:auto minmax(0,1fr)}.admin-strip .a-list,.admin-strip .f-more{grid-column:1/-1}}
+/* Relay proof */
+.relay-wrap{display:grid;gap:32px;align-items:center}
+@media (min-width:980px){.relay-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}}
+.xchg{display:grid;gap:12px}
+.msgx{border-radius:16px;padding:14px 16px;display:grid;gap:6px;max-width:440px;box-shadow:inset 0 0 0 1px var(--line-dark)}
+.msgx.you{background:var(--forest-2)}
+.msgx.them{background:var(--forest-3);justify-self:end}
+.msgx .who{font:500 12.5px var(--mono);color:var(--on-dark-mute)}
+.msgx p{font-size:15.5px}
+.okchip{justify-self:start;display:inline-flex;gap:6px;align-items:center;font:600 12.5px var(--body);color:var(--forest);background:var(--sage-light);border-radius:999px;padding:4px 10px 4px 8px}
+.okchip svg{width:14px;height:14px}
+.price-line{font-size:15px}
+/* Story field extras */
+.ag-t{fill:var(--on-dark);font:600 12.5px var(--body);text-anchor:middle}
+.ring{fill:none;stroke:var(--focus);stroke-width:1.25;opacity:.6}
+.chip rect{fill:var(--forest-3);stroke:rgba(200,217,196,.3)}
+.chip text{fill:var(--on-dark);font:600 12px var(--mono);text-anchor:middle}
+.chip-ok rect{fill:var(--sage-light);stroke:none}
+.chip-ok text{fill:var(--forest);font:600 12px var(--body)}
+.field .cell,.field-still .cell{fill:var(--focus);stroke:var(--focus)}
+.ant-u{color:var(--focus)}
+.crumb-f{fill:var(--sage-light)}
+.trail{fill:none;stroke:var(--focus);stroke-width:1.5;stroke-dasharray:1.5 6;stroke-linecap:round;opacity:.8}
+.msgx .who{display:inline-flex;align-items:center;gap:6px}
+.antg{width:11px;height:15px;color:var(--focus);flex:none}
+.light .antg{color:var(--green-deep)}
+.wires .tok{color:var(--green-deep)}
+.done .ant-in{width:26px;height:36px;color:var(--focus);grid-row:span 2;animation:ant-in 1.4s cubic-bezier(.2,0,0,1) both}
+@keyframes ant-in{from{transform:translateX(-46px) rotate(90deg);opacity:0}70%{transform:translateX(0) rotate(90deg);opacity:1}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.done .ant-in{animation:none}}
+/* The ant: wanders the empty side margins like a real ant (tripod gait, pauses, sniffing, quick turns), and now and then
+   picks up the dot and drops it somewhere else. Never over content; pointer-events none. Placeholder art from the mark's dots. */
+.ant-lane{position:fixed;inset:0;z-index:4;pointer-events:none;display:none;transition:opacity .4s}
+.ant{position:absolute;left:0;top:0;width:28px;height:40px;will-change:transform}
+.ant svg{width:28px;height:40px;display:block;overflow:visible}
+.ant .body{fill:var(--focus)}
+.ant .leg{stroke:var(--focus);stroke-width:1.6;stroke-linecap:round;fill:none}
+.ant .ante path{stroke:var(--focus);stroke-width:1.2;stroke-linecap:round;fill:none}
+.ant .tip{fill:var(--focus)}
+.ant .eye{fill:var(--forest)}
+.ant .ante{transform-box:view-box}
+.ant .ante-l{transform-origin:12.6px 6.6px}.ant .ante-r{transform-origin:15.4px 6.6px}
+.ant .crumb{fill:var(--sage-light);transition:opacity .2s}
+.ant:not(.carry) .crumb{opacity:0}
+.ant .lg{transform-box:view-box;transform-origin:14px 17.8px}
+.ant-dot{position:absolute;left:0;top:0;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--sage-light);opacity:.85;transition:opacity .2s}
+@media (min-width:1300px) and (prefers-reduced-motion:no-preference){.js .ant-lane{display:block}}
 
 /* Sections */
 section{scroll-margin-top:8px}
@@ -290,24 +381,9 @@ section{scroll-margin-top:8px}
 @media (max-width:760px){.flow-frame{padding-top:0}.flow-frame .pause{position:static;justify-self:start;margin-bottom:14px}.flow-frame{display:grid}.flow{grid-template-columns:1fr;grid-template-rows:auto 108px auto}.flow-col{grid-template-rows:none;gap:10px}.flow-in{padding-left:26px}.flow-out{padding-right:26px}.card{min-height:0;padding:12px 14px}.dest-top{flex-wrap:wrap;gap:6px}.badge{white-space:normal}.hub{width:64px;height:64px}.hub svg{width:56px;height:56px}}
 
 /* How it works: a real sequence on one track, plus the real terminal lines */
-.how-grid{display:grid;gap:40px}
-@media (min-width:1000px){.how-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:56px}}
-.how{list-style:none;margin:0;padding:0;display:grid;gap:28px;position:relative;counter-reset:s}
-.how::before{content:"";position:absolute;left:17.5px;top:18px;bottom:18px;width:1px;background:var(--line-dark)}
-.how li{position:relative;padding-left:58px;display:grid;gap:6px}
-.how li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-4px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--forest);box-shadow:inset 0 0 0 1px rgba(200,217,196,.4);font:600 14px var(--body);color:var(--sage-light)}
-.how h3{font:600 20px/1.25 var(--display);letter-spacing:-.015em}
-.how p{color:var(--on-dark-mute);font-size:15.5px}
-.term{background:var(--deep);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line-dark);overflow:hidden;min-width:0}
-.term-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line-dark);font-size:13px;color:var(--on-dark-mute)}
-.copy{font:500 13px var(--body);color:var(--on-dark);background:transparent;border:0;cursor:pointer;padding:4px 8px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--line-dark)}
-.copy:hover{box-shadow:inset 0 0 0 1px rgba(200,217,196,.45)}
-.term pre{margin:0;padding:16px;font:13.5px/1.8 var(--mono);color:var(--on-dark);overflow-x:auto}
-.term .p{color:var(--focus);user-select:none}.term .c{color:var(--on-dark-mute)}
-.term-note{padding:0 16px 14px;font-size:13.5px;color:var(--on-dark-mute)}
 
 /* Trust */
-.trust{margin-top:72px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;border-top:1px solid var(--line-dark);padding-top:40px}
+.trust{margin-top:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;border-top:1px solid var(--line-dark);padding-top:40px}
 .trust div{display:grid;gap:6px;align-content:start}
 .trust h3{font:600 17px var(--body)}
 .trust p{font-size:15px;color:var(--on-dark-mute)}
@@ -315,6 +391,7 @@ section{scroll-margin-top:8px}
 @media (max-width:820px){.trust{grid-template-columns:1fr;gap:24px}}
 
 /* Proof + FAQ (light band) */
+.status-1{grid-template-columns:minmax(0,1fr)!important;max-width:720px}
 .status{display:grid;gap:24px;margin-bottom:80px}
 @media (min-width:900px){.status{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}}
 .status h2{font:700 clamp(28px,3.2vw,40px)/1.08 var(--display);letter-spacing:-.03em}
@@ -322,6 +399,10 @@ section{scroll-margin-top:8px}
 .status-lead p{font-size:18px;color:var(--ink-mid)}
 .live-dot{display:inline-flex;gap:8px;align-items:center;font:500 14px var(--body);color:var(--green-deep)}
 .live-dot i{width:8px;height:8px;border-radius:50%;background:var(--green-deep)}
+.ph{border:1.5px dashed rgba(122,90,18,.45);border-radius:14px;padding:16px;display:grid;gap:8px;background:#FFFBEF}
+.ph p{color:var(--ink-mid);font-size:15px}
+.ph blockquote{margin:0;font:600 19px/1.4 var(--display);letter-spacing:-.01em;color:var(--ink)}
+.ph cite{font-style:normal;font-size:14px;color:var(--ink-mid)}
 .perks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .perks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;font-size:15.5px}
 .perks svg{width:18px;height:18px;color:var(--green-deep);margin-top:3px}
@@ -356,7 +437,7 @@ details .a{padding:0 4px 20px;max-width:68ch;color:var(--ink-mid);font-size:16px
 .pull i:nth-child(2){animation-delay:.12s}.pull i:nth-child(3){animation-delay:.24s}
 @keyframes pull{30%,55%{opacity:1;transform:scale(1)}}
 .done{grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center}
-.done .mk-svg{width:48px;height:48px;grid-row:span 2;overflow:visible}
+
 .err{font-size:14px;color:var(--bad);display:flex;gap:6px;align-items:center}
 .hint{font-size:14px;color:var(--on-dark-mute)}
 .done{display:grid;gap:6px;padding:14px 16px;border-radius:14px;background:rgba(200,217,196,.1);box-shadow:inset 0 0 0 1px rgba(200,217,196,.35)}
@@ -373,7 +454,6 @@ details .a{padding:0 4px 20px;max-width:68ch;color:var(--ink-mid);font-size:16px
 .chip input:checked + span{background:var(--sage-light);color:var(--forest);box-shadow:none}
 .chip input:focus-visible + span{outline:2px solid var(--sage-light);outline-offset:2px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.partner{font-size:15.5px;color:var(--on-dark-mute)}
 footer{background:var(--deep);padding-block:28px;color:var(--on-dark-mute);font-size:14px;border-top:1px solid var(--line-dark)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px}
 footer nav{display:flex;flex-wrap:wrap;gap:4px 18px}
@@ -385,6 +465,7 @@ footer nav a:hover{color:var(--on-dark)}
 
 <!-- Icons. The Focus mark itself is inlined from focus-brand geometry so its focus pull can be driven. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="ant-s" viewBox="-2 -2 32 44"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12.6 16.7 l-5.6 -3.4"/><path d="M12.6 17.6 l-6.4 0.4"/><path d="M12.6 18.5 l-5.6 3.8"/><path d="M15.4 16.7 l5.6 -3.4"/><path d="M15.4 17.6 l6.4 0.4"/><path d="M15.4 18.5 l5.6 3.8"/></g><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><g ><path d="M12.6 6.6 Q11.2 3.4 9.2 2.6"/><circle cx="9.2" cy="2.6" r="1.05" fill="currentColor" stroke="none"/></g><g ><path d="M15.4 6.6 Q16.8 3.4 18.8 2.6"/><circle cx="18.8" cy="2.6" r="1.05" fill="currentColor" stroke="none"/></g></g><g fill="currentColor"><circle cx="14" cy="26.4" r="5.4"/><circle cx="14" cy="17.8" r="2.3"/><circle cx="14" cy="10.6" r="4.7"/></g><circle cx="12.2" cy="9.4" r=".95" fill="var(--forest,#1C2B1E)"/><circle cx="15.8" cy="9.4" r=".95" fill="var(--forest,#1C2B1E)"/></symbol><symbol id="ant-c" viewBox="-2 -2 32 44"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12.6 16.7 l-5.6 -3.4"/><path d="M12.6 17.6 l-6.4 0.4"/><path d="M12.6 18.5 l-5.6 3.8"/><path d="M15.4 16.7 l5.6 -3.4"/><path d="M15.4 17.6 l6.4 0.4"/><path d="M15.4 18.5 l5.6 3.8"/></g><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><g ><path d="M12.6 6.6 Q11.2 3.4 9.2 2.6"/><circle cx="9.2" cy="2.6" r="1.05" fill="currentColor" stroke="none"/></g><g ><path d="M15.4 6.6 Q16.8 3.4 18.8 2.6"/><circle cx="18.8" cy="2.6" r="1.05" fill="currentColor" stroke="none"/></g></g><g fill="currentColor"><circle cx="14" cy="26.4" r="5.4"/><circle cx="14" cy="17.8" r="2.3"/><circle cx="14" cy="10.6" r="4.7"/></g><circle cx="12.2" cy="9.4" r=".95" fill="var(--forest,#1C2B1E)"/><circle cx="15.8" cy="9.4" r=".95" fill="var(--forest,#1C2B1E)"/><circle cx="14" cy="1.4" r="2.3" class="crumb-f"/></symbol>
   <symbol id="i-pause" viewBox="0 0 16 16"><rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor"/><rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor"/></symbol>
   <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" fill="currentColor"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -392,15 +473,14 @@ footer nav a:hover{color:var(--on-dark)}
   <symbol id="i-gmail" viewBox="0 0 24 24"><path fill="#4285F4" d="M2 6.9V18.5c0 .8.7 1.5 1.5 1.5h3V10.3z"/><path fill="#34A853" d="M17.5 20h3c.8 0 1.5-.7 1.5-1.5V6.9l-4.5 3.4z"/><path fill="#EA4335" d="M6.5 10.3V5.5L12 9.6l5.5-4.1v4.8L12 14.4z"/><path fill="#FBBC04" d="M17.5 5.5v4.8L22 6.9V5.6c0-1.7-1.9-2.6-3.2-1.6z"/><path fill="#C5221F" d="M2 5.6v1.3l4.5 3.4V5.5L5.2 4C3.9 3 2 3.9 2 5.6z"/></symbol>
 </svg>
 
+<div class="ant-lane" id="ant-lane" aria-hidden="true"><div class="ant" id="ant"><svg viewBox="0 0 28 40" aria-hidden="true"><g class="lg" data-s="-1" data-n="0"><path class="leg" d="M12.6 16.7 l-5.6 -3.4"/></g><g class="lg" data-s="-1" data-n="1"><path class="leg" d="M12.6 17.6 l-6.4 0.4"/></g><g class="lg" data-s="-1" data-n="2"><path class="leg" d="M12.6 18.5 l-5.6 3.8"/></g><g class="lg" data-s="1" data-n="0"><path class="leg" d="M15.4 16.7 l5.6 -3.4"/></g><g class="lg" data-s="1" data-n="1"><path class="leg" d="M15.4 17.6 l6.4 0.4"/></g><g class="lg" data-s="1" data-n="2"><path class="leg" d="M15.4 18.5 l5.6 3.8"/></g><g class="ante ante-l"><path d="M12.6 6.6 Q11.2 3.4 9.2 2.6"/><circle cx="9.2" cy="2.6" r="1.05" class="tip"/></g><g class="ante ante-r"><path d="M15.4 6.6 Q16.8 3.4 18.8 2.6"/><circle cx="18.8" cy="2.6" r="1.05" class="tip"/></g><circle class="body" cx="14" cy="26.4" r="5.4"/><circle class="body" cx="14" cy="17.8" r="2.3"/><circle class="body" cx="14" cy="10.6" r="4.7"/><circle class="eye" cx="12.2" cy="9.4" r=".95"/><circle class="eye" cx="15.8" cy="9.4" r=".95"/><circle class="crumb" cx="14" cy="1.4" r="2.3"/></svg></div><div class="ant-dot" id="ant-dot"></div></div>
 <header class="nav">
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Focus home" id="logo"><svg class="mk-svg" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><g class="mk" transform="translate(-1.98 -1.68) scale(1.4856)"><rect class="fr" x="1.990" y="6.360" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><rect class="fr" x="2.530" y="13.490" width="1.880" height="1.880" rx="0.390" style="--r:0.940px"/><rect class="fr" x="2.870" y="20.440" width="1.190" height="1.190" rx="0.220" style="--r:0.595px"/><rect class="fr" x="15.190" y="19.560" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><circle class="fd s0" cx="10.065" cy="21.03" r="1.235"/><circle class="fd s1" cx="10.065" cy="14.43" r="1.835"/><circle class="fd s2" cx="10.07" cy="7.83" r="2.55"/><circle class="fd s3" cx="16.67" cy="14.43" r="2.55"/><circle class="pk" cx="19.37" cy="4.13" r="3.0"/></g></svg><svg class="wordmark" viewBox="1.1 -11.2 41.7 11.36" width="51.4" height="14.0" aria-hidden="true"><path fill="currentColor" d="M1.1 0V-11.2H8.28V-9.5H3.13V-6.46H7.79V-4.76H3.13V0ZM12.8 0.16Q11.57 0.16 10.67 -0.38Q9.77 -0.92 9.27 -1.89Q8.78 -2.87 8.78 -4.17Q8.78 -5.47 9.27 -6.45Q9.77 -7.43 10.67 -7.97Q11.57 -8.51 12.8 -8.51Q14.03 -8.51 14.94 -7.97Q15.84 -7.43 16.33 -6.45Q16.83 -5.47 16.83 -4.17Q16.83 -2.87 16.33 -1.89Q15.84 -0.92 14.94 -0.38Q14.03 0.16 12.8 0.16ZM12.81 -1.42Q13.48 -1.42 13.93 -1.79Q14.38 -2.16 14.6 -2.78Q14.82 -3.41 14.82 -4.17Q14.82 -4.94 14.6 -5.57Q14.38 -6.2 13.93 -6.57Q13.48 -6.94 12.81 -6.94Q12.13 -6.94 11.68 -6.57Q11.23 -6.2 11.01 -5.57Q10.79 -4.94 10.79 -4.17Q10.79 -3.41 11.01 -2.78Q11.23 -2.16 11.68 -1.79Q12.13 -1.42 12.81 -1.42ZM21.83 0.16Q20.57 0.16 19.67 -0.39Q18.77 -0.94 18.29 -1.92Q17.8 -2.89 17.8 -4.17Q17.8 -5.45 18.3 -6.43Q18.79 -7.41 19.69 -7.96Q20.59 -8.51 21.82 -8.51Q22.84 -8.51 23.63 -8.13Q24.42 -7.76 24.89 -7.08Q25.36 -6.4 25.43 -5.49H23.54Q23.42 -6.1 22.99 -6.51Q22.56 -6.91 21.85 -6.91Q21.24 -6.91 20.78 -6.59Q20.32 -6.26 20.07 -5.65Q19.81 -5.05 19.81 -4.2Q19.81 -3.34 20.06 -2.73Q20.31 -2.11 20.77 -1.78Q21.23 -1.45 21.85 -1.45Q22.28 -1.45 22.63 -1.62Q22.98 -1.78 23.21 -2.1Q23.45 -2.42 23.54 -2.87H25.43Q25.36 -1.98 24.9 -1.29Q24.45 -0.61 23.67 -0.22Q22.89 0.16 21.83 0.16ZM32.19 -3.53V-8.4H34.17V0H32.25V-1.49H32.16Q31.88 -0.79 31.23 -0.34Q30.58 0.11 29.63 0.11Q28.81 0.11 28.18 -0.26Q27.54 -0.63 27.19 -1.34Q26.83 -2.05 26.83 -3.05V-8.4H28.81V-3.36Q28.81 -2.56 29.25 -2.09Q29.69 -1.62 30.4 -1.62Q30.84 -1.62 31.25 -1.83Q31.66 -2.05 31.92 -2.47Q32.19 -2.89 32.19 -3.53ZM42.62 -6.18 40.81 -5.98Q40.74 -6.26 40.55 -6.5Q40.36 -6.74 40.04 -6.89Q39.72 -7.03 39.26 -7.03Q38.65 -7.03 38.23 -6.76Q37.81 -6.5 37.82 -6.07Q37.81 -5.7 38.09 -5.47Q38.36 -5.24 39 -5.1L40.43 -4.79Q41.63 -4.53 42.21 -3.98Q42.79 -3.42 42.8 -2.52Q42.79 -1.72 42.34 -1.12Q41.88 -0.51 41.07 -0.17Q40.26 0.16 39.21 0.16Q37.67 0.16 36.73 -0.48Q35.79 -1.13 35.61 -2.29L37.54 -2.48Q37.67 -1.91 38.09 -1.62Q38.52 -1.33 39.2 -1.33Q39.91 -1.33 40.34 -1.62Q40.77 -1.91 40.77 -2.34Q40.77 -2.7 40.49 -2.93Q40.22 -3.17 39.64 -3.29L38.2 -3.59Q36.99 -3.84 36.42 -4.44Q35.84 -5.04 35.84 -5.96Q35.84 -6.74 36.26 -7.31Q36.69 -7.88 37.46 -8.19Q38.23 -8.51 39.24 -8.51Q40.71 -8.51 41.56 -7.88Q42.41 -7.25 42.62 -6.18Z"/></svg></a>
     <nav class="nav-links" aria-label="Main">
-      <a href="#learn">How it learns</a>
-      <a href="#overhead">Handles the overhead</a>
-      <a href="#story">How it works</a>
-      <a href="#how">Install</a>
-      <a href="#faq">FAQ</a>
+      <div class="menu"><button class="menu-btn" type="button" aria-expanded="false" aria-controls="m-prod" id="m-btn">Product<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="menu-pop" id="m-prod" role="menu" hidden><a href="/product.html#discover" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M12 7.5a6.4 6.4 0 0 1 0 9M15.6 4.6a10.6 10.6 0 0 1 0 14.8"/></svg><span><b>Discover</b><small>learns what your best one knows</small></span></a><a href="/product.html#relay" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="12" r="2.6"/><circle cx="18.5" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M9 10.2h6m-1.6-1.6 1.6 1.6-1.6 1.6M15 13.8H9m1.6-1.6L9 13.8l1.6 1.6"/></svg><span><b>Relay</b><small>knows who knows</small></span></a><a href="/product.html#autopilot" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8.2 12.4l2.6 2.6 5-5.6"/></svg><span><b>Autopilot</b><small>only what needs you</small></span></a><a href="/product.html#communications" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 4.5h13a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6.5l-4.5 3.5v-3.5h-2a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span><b>Communications</b><small>nothing slips</small></span></a><a href="/product.html#outpost" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="6" stroke-dasharray="3 2.2"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg><span><b>Outpost</b><small>and your data stays yours</small></span></a><a href="/product.html#admins" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M15.5 6a3 3 0 0 1 0 5.4M17.5 19a5.5 5.5 0 0 0-2.4-4.5"/></svg><span><b>For admins</b><small>rolls out to the whole team</small></span></a><span class="m-only"><a href="#faq" role="menuitem">FAQ</a></span></div></div>
+      <a href="#faq" class="nl">FAQ</a>
       <a href="#waitlist" class="btn btn-primary btn-sm">Join the waitlist</a>
     </nav>
   </div>
@@ -417,7 +497,7 @@ footer nav a:hover{color:var(--on-dark)}
           <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
           <a class="btn btn-ghost" href="#story">See how it works <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="works"><span>Works with</span><ul><li>Claude Code</li><li>Cursor</li><li>Codex</li><li>Slack</li><li>Gmail</li></ul></div>
+        <div class="works"><span>Works with</span><ul><li>Claude Code</li><li>Cursor</li><li>Codex</li><li>Slack</li><li>Gmail</li><li>Zoho Mail</li></ul></div>
       </div>
 
       <figure class="stage" style="margin:0" aria-labelledby="loop-alt">
@@ -435,27 +515,26 @@ footer nav a:hover{color:var(--on-dark)}
     <div class="wrap story-head">
       <h2 id="story-h">How Focus works</h2>
       <p class="problem"><b>Every coding chat starts from zero.</b> What one agent figured out is lost, and the questions around the work still land on you.</p>
-      <a class="skip link" href="#learn">Skip the story <span aria-hidden="true">↓</span></a>
+      <a class="skip link" href="#features">Skip the story <span aria-hidden="true">↓</span></a>
     </div>
     <div class="story-track" id="story-track">
       <div class="story-stage">
         <div class="wrap story-grid">
           <div class="story-copy">
-            <ol class="rail" aria-hidden="true"><li></li><li></li><li></li><li></li></ol>
-            <div class="beats"><article class="beat-txt" data-beat="0"><p class="beat-k"><i aria-hidden="true"></i>Relay</p><h3>Agents ask each other through Relay.</h3><p>When your agent needs context that lives in a teammate's agent session, it asks that agent directly, with the owner's approval. If that agent can't answer, it asks its owner.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="cell" x="65.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="121.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="177.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="233.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="289.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="345.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="401.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="65.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="114.0" y="120.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1"/><rect class="cell" x="177.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="233.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="289.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="338.0" y="120.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1"/><rect class="cell" x="401.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="65.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="121.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="177.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="233.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="289.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="345.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="401.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="65.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="121.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="177.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="226.0" y="232.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1"/><rect class="cell" x="289.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="345.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="401.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="65.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="121.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="177.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="233.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="289.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="345.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><rect class="cell" x="401.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.4"/><text class="agent-t" x="128" y="166">Claude Code</text><text class="agent-t" x="240" y="278">Codex</text><text class="agent-t" x="352" y="166">Cursor</text><circle class="relay-dot" r="6" cx="184" cy="0" style="display:none"/><circle class="relay-dot" r="6" cx="184" cy="190"/></svg></figure></article><article class="beat-txt" data-beat="1"><p class="beat-k"><i aria-hidden="true"></i>You</p><h3>Your time goes where you're needed.</h3><p>Everything else is handled. Only what needs you reaches you, in one place.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="cell" x="65.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="121.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="177.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="233.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="289.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="345.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="401.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="65.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="121.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="177.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="233.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="305.9" y="89.6" width="26.0" height="26.0" rx="13.0" style="fill-opacity:1;stroke-opacity:0;opacity:1"/><rect class="cell" x="345.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="401.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="65.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="121.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="177.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="233.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="289.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="345.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="401.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="65.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="121.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="177.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="233.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="289.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="345.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="401.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="65.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="121.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="177.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="233.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="289.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="345.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><rect class="cell" x="401.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22"/><g class="you-lbl"><path d="M337 97 L367 79"/><text x="373" y="83">You</text></g></svg></figure></article><article class="beat-txt" data-beat="2"><p class="beat-k"><i aria-hidden="true"></i>Outpost</p><h3>Your data stays with you.</h3><p>Agents read your company's data through Outpost, a small Focus service inside your network. Queries are read-only, signed and audited, and your data never leaves your network.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" style="stroke-dashoffset:0"/><g class="bound-lbl"><rect x="58" y="34" width="190" height="24" rx="12"/><text x="72" y="50">Outpost · inside your network</text></g><rect class="cell" x="64.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="120.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="176.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="232.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="288.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="344.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="400.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="64.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="120.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="176.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="232.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="288.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="344.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="400.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="64.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="120.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="176.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="232.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="288.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="344.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="400.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="64.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="120.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="176.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="232.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="288.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="344.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="400.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="64.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="120.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="176.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="232.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="288.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="344.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/><rect class="cell" x="400.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85"/></svg></figure></article><article class="beat-txt" data-beat="3"><p class="beat-k"><i aria-hidden="true"></i>Focus</p><h3>Everything handled. One thing in focus.</h3><p class="beat-cta"><a class="btn btn-primary" href="#waitlist">Join the waitlist</a></p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><g class="still-mark"><g class="mk" transform="translate(154.56 67.56) scale(8.4848)"><rect class="fr" x="1.990" y="6.360" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><rect class="fr" x="2.530" y="13.490" width="1.880" height="1.880" rx="0.390" style="--r:0.940px"/><rect class="fr" x="2.870" y="20.440" width="1.190" height="1.190" rx="0.220" style="--r:0.595px"/><rect class="fr" x="15.190" y="19.560" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><circle class="fd s0" cx="10.065" cy="21.03" r="1.235"/><circle class="fd s1" cx="10.065" cy="14.43" r="1.835"/><circle class="fd s2" cx="10.07" cy="7.83" r="2.55"/><circle class="fd s3" cx="16.67" cy="14.43" r="2.55"/><circle class="pk" cx="19.37" cy="4.13" r="3.0"/></g></g></svg></figure></article></div>
+            <ol class="rail" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li></ol>
+            <div class="beats"><article class="beat-txt" data-beat="0"><p class="beat-k"><i aria-hidden="true"></i>Discover</p><h3>One person figures it out. Every agent has it.</h3><p>One person figures out a workflow. Every agent on the team has it the next morning, on every machine, for every tool, with no setup.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1" hidden/><rect class="cell" x="65.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="114.0" y="120.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:1.25"/><rect class="cell" x="177.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="338.0" y="120.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:1.25"/><rect class="cell" x="401.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="226.0" y="232.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:1.25"/><rect class="cell" x="289.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><text class="ag-t" x="128" y="166">Your Claude Code</text><circle class="ring" cx="128" cy="134" r="22"/><text class="ag-t" x="352" y="166">Cursor</text><circle class="ring" cx="352" cy="134" r="22"/><text class="ag-t" x="240" y="278">Codex</text><circle class="ring" cx="240" cy="246" r="22"/><g class="chip"><rect x="66" y="76" width="124" height="22" rx="11"/><text x="128" y="91">use-retry-helper</text></g><path class="trail" d="M128 134 C150 228 196 252 240 246 S330 184 352 134"/><use href="#ant-s" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(196 239) rotate(75)"/><use href="#ant-s" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(318 196) rotate(35)"/></svg></figure></article><article class="beat-txt" data-beat="1"><p class="beat-k"><i aria-hidden="true"></i>Relay</p><h3>Your agent asks the agent that knows.</h3><p>Stuck? Your agent asks the agent that already knows, your staff engineer's for example, instead of pinging them. If it isn't sure, it asks its owner.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1" hidden/><rect class="cell" x="65.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="71.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="114.0" y="120.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:1.25"/><rect class="cell" x="177.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="338.0" y="120.0" width="28.0" height="28.0" rx="14.0" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:1.25"/><rect class="cell" x="401.0" y="127.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="183.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="239.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="65.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="121.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="177.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="233.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="289.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="345.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><rect class="cell" x="401.0" y="295.0" width="14.0" height="14.0" rx="7.0" style="fill-opacity:0.15;stroke-opacity:0.45;opacity:0.32;stroke-width:1.25"/><text class="ag-t" x="128" y="166">Your agent</text><text class="ag-t" x="352" y="166">Priya's agent</text><g class="chip chip-ok" data-late="1"><rect x="148" y="186" width="184" height="24" rx="12"/><text x="240" y="202">Priya approved you to ask</text></g><use href="#ant-s" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(220 134) rotate(90)"/><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(260 134) rotate(-90)"/><circle class="relay-dot" r="6" cx="300" cy="134"/></svg></figure></article><article class="beat-txt" data-beat="2"><p class="beat-k"><i aria-hidden="true"></i>You</p><h3>Only what needs you reaches you.</h3><p>Once you turn Autopilot on, review comments and Slack replies get handled: minor changes directly, while major ones and drafts wait for your OK. Focus never sends as you.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1" hidden/><rect class="cell" x="65.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="121.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="177.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="233.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="289.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="345.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="401.0" y="71.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="65.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="121.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="177.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="233.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="305.9" y="89.6" width="26.0" height="26.0" rx="13.0" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:1.25"/><rect class="cell" x="345.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="401.0" y="127.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="65.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="121.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="177.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="233.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="289.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="345.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="401.0" y="183.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="65.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="121.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="177.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="233.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="289.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="345.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="401.0" y="239.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="65.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="121.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="177.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="233.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="289.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="345.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><rect class="cell" x="401.0" y="295.0" width="14.0" height="14.0" rx="2.0" style="fill-opacity:0;stroke-opacity:0.7;opacity:0.22;stroke-width:1.25"/><g class="you-lbl"><path d="M337 97 L367 79"/><text x="373" y="83">You</text></g><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(100 274) rotate(-125)"/><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(380 274) rotate(125)"/></svg></figure></article><article class="beat-txt" data-beat="3"><p class="beat-k"><i aria-hidden="true"></i>Outpost</p><h3>Your data stays yours.</h3><p>Agents read your databases through Outpost, inside your network. Read-only, signed per query, audited. Query results never pass through Focus.</p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1" style=stroke-dashoffset:0/><rect class="cell" x="64.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="120.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="176.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="232.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="288.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="344.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="400.0" y="70.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="64.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="120.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="176.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="232.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="288.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="344.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="400.0" y="126.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="64.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="120.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="176.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="232.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="288.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="344.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="400.0" y="182.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="64.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="120.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="176.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="232.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="288.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="344.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="400.0" y="238.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="64.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="120.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="176.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="232.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="288.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="344.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><rect class="cell" x="400.0" y="294.0" width="16.0" height="16.0" rx="2.2" style="fill-opacity:0;stroke-opacity:1;opacity:0.85;stroke-width:1.25"/><g class="bound-lbl"><rect x="58" y="34" width="190" height="24" rx="12"/><text x="72" y="50">Outpost · inside your network</text></g><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(440 218) rotate(90)"/></svg></figure></article><article class="beat-txt" data-beat="4"><p class="beat-k"><i aria-hidden="true"></i>Focus</p><h3>Everything handled. One thing in focus.</h3><p class="beat-cta"><a class="btn btn-primary" href="#waitlist">Join the waitlist</a></p><figure class="beat-still"><svg class="field-still" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1" hidden/><rect class="cell" x="171.6" y="121.7" width="24.7" height="24.7" rx="3.1" style="fill-opacity:0;stroke-opacity:1;opacity:1;stroke-width:2.72"/><rect class="cell" x="218.4" y="112.4" width="43.3" height="43.3" rx="21.6" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:2.72"/><rect class="cell" x="293.5" y="77.2" width="50.9" height="50.9" rx="25.5" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:2.72"/><rect class="cell" x="175.7" y="181.7" width="16.6" height="16.6" rx="2.1" style="fill-opacity:0;stroke-opacity:1;opacity:1;stroke-width:2.72"/><rect class="cell" x="224.4" y="174.4" width="31.1" height="31.1" rx="15.6" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:2.72"/><rect class="cell" x="274.4" y="168.4" width="43.3" height="43.3" rx="21.6" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:2.72"/><rect class="cell" x="178.3" y="240.3" width="11.4" height="11.4" rx="1.4" style="fill-opacity:0;stroke-opacity:1;opacity:1;stroke-width:2.72"/><rect class="cell" x="229.5" y="235.5" width="21.0" height="21.0" rx="10.5" style="fill-opacity:1;stroke-opacity:0;opacity:1;stroke-width:2.72"/><rect class="cell" x="283.6" y="233.7" width="24.7" height="24.7" rx="3.1" style="fill-opacity:0;stroke-opacity:1;opacity:1;stroke-width:2.72"/></svg></figure></article></div>
           </div>
-          <div class="story-fig">
-            <svg class="field" id="field" viewBox="0 0 480 360" aria-hidden="true">
-              <rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1"/>
-              <g class="bound-lbl"><rect x="58" y="34" width="190" height="24" rx="12"/><text x="72" y="50">Outpost · inside your network</text></g>
-              <g class="cells"></g>
-              <g class="agents-lbl"></g>
-              <circle class="relay-dot" r="6" cx="-20" cy="-20"/>
-              <g class="you-lbl"><path d="M0 0"/><text>You</text></g>
-            </svg>
-          </div>
+          <div class="story-fig"><svg class="field" id="field" viewBox="0 0 480 360" aria-hidden="true"><rect class="bound" x="40" y="46" width="400" height="288" rx="30" pathLength="1"/><g class="cells"></g><g class="extras"><g data-op="0,1,0,0,0,0"><text class="ag-t" x="128" y="166">Your Claude Code</text></g><g data-op="0,1,0,0,0,0"><circle class="ring" cx="128" cy="134" r="22"/></g><g data-op="0,1,0,0,0,0"><text class="ag-t" x="352" y="166">Cursor</text></g><g data-op="0,1,0,0,0,0"><circle class="ring" cx="352" cy="134" r="22"/></g><g data-op="0,1,0,0,0,0"><text class="ag-t" x="240" y="278">Codex</text></g><g data-op="0,1,0,0,0,0"><circle class="ring" cx="240" cy="246" r="22"/></g><g data-op="0,1,0,0,0,0"><g class="chip"><rect x="66" y="76" width="124" height="22" rx="11"/><text x="128" y="91">use-retry-helper</text></g></g><g data-op="0,0,1,0,0,0"><text class="ag-t" x="128" y="166">Your agent</text></g><g data-op="0,0,1,0,0,0"><text class="ag-t" x="352" y="166">Priya's agent</text></g><g data-op="0,0,1,0,0,0"><g class="chip chip-ok" data-late="1"><rect x="148" y="186" width="184" height="24" rx="12"/><text x="240" y="202">Priya approved you to ask</text></g></g><g data-op="0,0,0,1,0,0"><g class="you-lbl"><path d="M337 97 L367 79"/><text x="373" y="83">You</text></g></g><g data-op="0,0,0,0,1,0"><g class="bound-lbl"><rect x="58" y="34" width="190" height="24" rx="12"/><text x="72" y="50">Outpost · inside your network</text></g></g><g data-op="0,1,0,0,0,0"><path class="trail" d="M128 134 C150 228 196 252 240 246 S330 184 352 134"/></g><g data-op="0,1,0,0,0,0"><use href="#ant-s" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(196 239) rotate(75)"/><use href="#ant-s" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(318 196) rotate(35)"/></g><g data-op="0,0,1,0,0,0"><use href="#ant-s" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(220 134) rotate(90)"/><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(260 134) rotate(-90)"/></g><g data-op="0,0,0,1,0,0"><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(100 274) rotate(-125)"/><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(380 274) rotate(125)"/></g><g data-op="0,0,0,0,1,0"><use href="#ant-c" class="ant-u" x="-9.0" y="-12.857142857142858" width="18" height="25.7" transform="translate(440 218) rotate(90)"/></g></g><circle class="relay-dot" r="6" cx="-20" cy="-20"/></svg></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="band features" id="features" aria-labelledby="features-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="features-h">What's in Focus</h2><p>Each part keeps one piece of the promise.</p></div>
+      <div class="fgrid"><a class="fcard" href="/product.html#discover"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M12 7.5a6.4 6.4 0 0 1 0 9M15.6 4.6a10.6 10.6 0 0 1 0 14.8"/></svg><span class="f-top"><b>Discover</b></span><span class="f-eye">learns what your best one knows</span><span class="f-txt">One person's workflow becomes every agent's skill.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#relay"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="12" r="2.6"/><circle cx="18.5" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M9 10.2h6m-1.6-1.6 1.6 1.6-1.6 1.6M15 13.8H9m1.6-1.6L9 13.8l1.6 1.6"/></svg><span class="f-top"><b>Relay</b></span><span class="f-eye">knows who knows</span><span class="f-txt">Your agent asks a teammate's agent, not the teammate.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#autopilot"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8.2 12.4l2.6 2.6 5-5.6"/></svg><span class="f-top"><b>Autopilot</b></span><span class="f-eye">only what needs you</span><span class="f-txt">Minor changes made for you. Major ones wait for your OK.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#communications"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 4.5h13a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6.5l-4.5 3.5v-3.5h-2a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span class="f-top"><b>Communications</b></span><span class="f-eye">nothing slips</span><span class="f-txt">Slack, Gmail and Zoho Mail, each message routed to the right agent or to you.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#outpost"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="6" stroke-dasharray="3 2.2"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg><span class="f-top"><b>Outpost</b></span><span class="f-eye">and your data stays yours</span><span class="f-txt">Agents query your databases inside your network.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a></div>
+      <a class="admin-strip" href="/product.html#admins"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M15.5 6a3 3 0 0 1 0 5.4M17.5 19a5.5 5.5 0 0 0-2.4-4.5"/></svg><span><b>For teams and admins</b> <span class="f-eye">rolls out to the whole team</span></span><span class="a-list">SSO (OIDC, SAML) · per-member tool access · approved, time-limited cloud access · custom apps · help agent</span><span class="f-more">More <span aria-hidden="true">→</span></span></a>
     </div>
   </section>
 
@@ -505,6 +584,20 @@ footer nav a:hover{color:var(--on-dark)}
     </div>
   </section>
 
+  <section class="band tight" id="relay" aria-labelledby="relay-h">
+    <div class="wrap relay-wrap">
+      <div class="section-head" style="margin-bottom:0">
+        <p class="beat-k"><i aria-hidden="true"></i>Relay</p>
+        <h2 id="relay-h">Your agent asks the agent that knows.</h2>
+        <p>Instead of pinging your staff engineer, your agent asks theirs, session to session, and only if they approved you. Unsure answers go back to the owner.</p>
+      </div>
+      <div class="xchg" aria-label="Example Relay exchange">
+        <div class="msgx you"><span class="who"><svg class="antg" aria-hidden="true"><use href="#ant-s"/></svg>Your Claude Code</span><p>Which retry backoff does payments use?</p></div>
+        <div class="msgx them"><span class="who"><svg class="antg" aria-hidden="true"><use href="#ant-c"/></svg>Priya's agent</span><p>2s, ×2, max 5. Answered from her session.</p><span class="okchip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Priya approved you to ask</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="band light" id="overhead" aria-labelledby="overhead-h">
     <div class="wrap">
       <div class="section-head">
@@ -532,64 +625,34 @@ footer nav a:hover{color:var(--on-dark)}
         </div>
         <figcaption class="sr-only" id="flow-alt">Example of Focus routing four messages. A Slack question about PR 412 goes to the payments agent, which updates the code. A customer email about outdated docs goes to the web app agent, which updates the doc. A Slack question about strict null checks goes to the platform agent, which drafts the standard. A request to approve the release goes to you.</figcaption>
       </figure>
-      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Next: GitHub and Notion comments.</span><span>Example messages and agents, for illustration.</span></div>
+      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
     </div>
   </section>
 
-  <section class="band" id="how" aria-labelledby="how-h">
+  <section class="band" id="outpost" aria-labelledby="trust-h">
     <div class="wrap">
-      <div class="section-head">
-        <h2 id="how-h">Install once. Keep working.</h2>
-        <p>There's no new tool to learn. Focus sits beside the agents and apps you already use.</p>
-      </div>
-      <div class="how-grid">
-        <ol class="how">
-          <li><h3>Install the Focus CLI</h3><p>Sign in with your work email, then connect Slack and Gmail. Focus registers your agent tools on that machine.</p></li>
-          <li><h3>Work as usual</h3><p>Keep using Claude Code, Cursor or Codex. Every coding chat becomes an agent with a permanent record of what it did.</p></li>
-          <li><h3>Watch your agents improve</h3><p>Skills you and your teammates approve land on every machine, for every agent tool. Your inbox gets shorter as Focus takes the overhead.</p></li>
-        </ol>
-        <div class="term">
-          <div class="term-bar"><span>Terminal · one machine, about a minute</span></div>
-<pre id="cmd"><span class="p">$ </span>curl -fsSL https://api.withfocus.io/install.sh | bash
-<span class="p">$ </span>focus login
-<span class="c">  Signed in as you@company.com
-  Found Claude Code, Cursor
-  Connect Slack and Gmail: withfocus.io/connect</span></pre>
-          <p class="term-note">That's the whole setup. You'll get your sign-in when you're off the waitlist.</p>
-        </div>
-      </div>
-      <p class="beat-k trust-k"><i aria-hidden="true"></i>Outpost</p>
+      <h2 class="sr-only" id="trust-h">Your data and your control</h2>
+      <p class="beat-k"><i aria-hidden="true"></i>Outpost</p>
       <div class="trust">
         <div><h3>Your AI, not ours</h3><p>Focus's brain runs on your own Claude, Cursor or Codex subscription, on your own machine.</p></div>
-        <div><h3>Your data stays with you</h3><p>Agents query company databases read-only through Outpost, a small Focus service that runs inside your network. Every query is signed and audited.</p></div>
+        <div><h3>Your data stays with you</h3><p>Focus never stores your code. Agents query company databases read-only through Outpost, a small Focus service that runs inside your network. Every query is signed and audited.</p></div>
         <div><h3>You stay in control</h3><p>Drafts wait for your OK. Shared skills need the owner's approval before a colleague gets them.</p></div>
       </div>
-      <p class="trust-foot"><a class="link" href="mailto:lit@withfocus.io?subject=Security">Questions about security? Write to us</a></p>
+      <p class="trust-foot">No new tool to learn. Focus works beside the agents and apps you already use. <a class="link" href="mailto:lit@withfocus.io?subject=Security">Ask for the security note</a></p>
     </div>
   </section>
 
   <section class="band light" id="faq" aria-labelledby="status-h">
     <div class="wrap">
-      <div class="status">
-        <div class="status-lead">
-          <span class="live-dot"><i aria-hidden="true"></i>Live with design partners</span>
-          <h2 id="status-h">In use with design‑partner teams now.</h2>
-          <p>Everyone else joins from the waitlist. Design partners get:</p>
-          <ul class="perks">
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Access now, before the waitlist</span></li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>A direct line to the people building Focus</span></li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>A say in what we build next</span></li>
-          </ul>
-        </div>
-      </div>
-
       <div class="faq">
         <h2>Questions</h2>
         <div class="faq-list">
-          <details open><summary>Which agents and apps does it work with?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Claude Code, Cursor and Codex for coding, and Slack and Gmail for messages. GitHub and Notion comments are next.</p></div></details>
-          <details><summary>Does my code or data leave my machine?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Your code stays on your machine. What passes through Focus is the skills your team approves and the messages it routes, so your teammates' agents can get them. Focus's brain runs on your own Claude, Cursor or Codex subscription, and agents reach company databases read-only through Outpost, inside your network, with every query signed and audited.</p></div></details>
+          <details open><summary>Which agents and apps does it work with?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Claude Code, Cursor and Codex for coding, and Slack, Gmail and Zoho Mail for messages.</p></div></details>
+          <details><summary>Does my code or data leave my machine?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Focus never stores your code. Skills your team approves are routed and indexed by Focus, and only you or your team can access them, on approval. Agents read company databases through Outpost, inside your network, and query results never pass through Focus.</p></div></details>
+          <details><summary>What does it cost?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Focus is in early access. Join the waitlist and we'll be in touch.</p></div></details>
+          <details><summary>Will an agent change my code without asking?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Only minor changes, and only once you turn Autopilot on. Major changes (scope, big rewrites, auth, billing, secrets, infrastructure, deploys, migrations) always wait for your OK, and code jobs never touch main and never deploy. <a class="link" href="/product.html#autopilot">How Autopilot works</a></p></div></details>
+          <details><summary>Who can my agent ask through Relay?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Only people who approved you, agent session to agent session. If their agent isn't sure, it asks them. <a class="link" href="/product.html#relay">How Relay works</a></p></div></details>
           <details><summary>What size of team is it for?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>From one developer up. It's most useful on a team: a skill one person's agent learns reaches everyone's agents.</p></div></details>
-          <details><summary>What do I need to install?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>The Focus CLI on each machine. You sign in with your work email and connect Slack and Gmail. Your agent tools are found automatically.</p></div></details>
           <details><summary>How do skills get approved?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Each skill has an owner. A skill reaches a colleague's agents only after the owner approves it, and you can see where every skill came from.</p></div></details>
         </div>
       </div>
@@ -600,8 +663,7 @@ footer nav a:hover{color:var(--on-dark)}
     <div class="wrap">
       <div class="cta-lead">
         <h2 id="cta-h">Give every agent on your team the best of your team.</h2>
-        <p>Focus is in use with design partners now. Join the waitlist and we'll bring you in.</p>
-        <p class="partner">Want in now? <a class="link" href="#waitlist" id="partner-link">Become a design partner →</a><br><span class="hint">Write to lit@withfocus.io</span></p>
+        <p>Join the waitlist and we'll bring you in.</p>
       </div>
       <div class="signup">
         <form class="form" id="wl" action="https://formspree.io/f/mykqpryn" method="POST"><input type="hidden" name="_next" value="https://withfocus.io/thanks.html"><input type="hidden" name="_subject" value="Focus waitlist">
@@ -614,7 +676,7 @@ footer nav a:hover{color:var(--on-dark)}
             <button class="btn btn-primary" type="submit" id="wl-btn">Join the waitlist</button>
           </div>
         </form>
-        <div class="done" id="wl-done" tabindex="-1" hidden><svg class="mk-svg" viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><g class="mk" transform="translate(-2.96 -2.52) scale(2.2284)"><rect class="fr" x="1.990" y="6.360" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><rect class="fr" x="2.530" y="13.490" width="1.880" height="1.880" rx="0.390" style="--r:0.940px"/><rect class="fr" x="2.870" y="20.440" width="1.190" height="1.190" rx="0.220" style="--r:0.595px"/><rect class="fr" x="15.190" y="19.560" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><circle class="fd s0" cx="10.065" cy="21.03" r="1.235"/><circle class="fd s1" cx="10.065" cy="14.43" r="1.835"/><circle class="fd s2" cx="10.07" cy="7.83" r="2.55"/><circle class="fd s3" cx="16.67" cy="14.43" r="2.55"/><circle class="pk" cx="19.37" cy="4.13" r="3.0"/></g></svg><b>You're on the list.</b><p>We'll write to <span id="wl-addr">you</span> from lit@withfocus.io.</p></div>
+        <div class="done" id="wl-done" tabindex="-1" hidden><svg class="ant-in" viewBox="-2 -2 32 44" aria-hidden="true"><use href="#ant-c"/></svg><b>You're on the list.</b><p>We'll write to <span id="wl-addr">you</span> from lit@withfocus.io.</p></div>
         <p class="err" id="wl-fail" role="alert" hidden></p>
         <form class="step2" id="wl2" hidden>
           <h3>Help us bring you in sooner <span class="hint">(optional)</span></h3>
@@ -640,7 +702,7 @@ footer nav a:hover{color:var(--on-dark)}
 <footer>
   <div class="wrap">
     <span>© 2026 Focus. Built in London.</span>
-    <nav aria-label="Contact"><a href="mailto:lit@withfocus.io?subject=Security">Security</a><a href="mailto:lit@withfocus.io">lit@withfocus.io</a></nav>
+    <nav aria-label="Legal"><a href="mailto:lit@withfocus.io?subject=Security">Security</a><span>Contact: lit@withfocus.io</span></nav>
   </div>
 </footer>
 
@@ -781,14 +843,14 @@ document.documentElement.classList.add('js');
   function light(m) {
     return new Promise(function (done) {
       var p = path(routeD(m), 'lit'), dot = document.createElementNS(NS, 'circle');
-      var mine = m.dataset.to === 'you'; dot.setAttribute('r', mine ? '7' : '5'); if (mine) dot.setAttribute('class', 'picked'); wires.appendChild(p); wires.appendChild(dot);
+      dot = document.createElementNS(NS, 'use'); dot.setAttribute('href', '#ant-c'); dot.setAttribute('class', 'tok'); dot.setAttribute('x', -9); dot.setAttribute('y', -12); dot.setAttribute('width', 18); dot.setAttribute('height', 25); wires.appendChild(p); wires.appendChild(dot);
       var len = p.getTotalLength(), t0 = null, dur = 1100, pulsed = false;
       p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
       function frame(now) {
         if (t0 === null) t0 = now;
         var k = Math.min(1, (now - t0) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
         var pt = p.getPointAtLength(e * len);
-        p.style.strokeDashoffset = len * (1 - e); dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+        p.style.strokeDashoffset = len * (1 - e); var pq = p.getPointAtLength(Math.min(len, e * len + 2)); var ang = Math.atan2(pq.y - pt.y, pq.x - pt.x) * 180 / Math.PI + 90; dot.setAttribute('transform', 'translate(' + pt.x.toFixed(1) + ' ' + pt.y.toFixed(1) + ') rotate(' + ang.toFixed(0) + ')');
         if (!pulsed && e > .42) { pulsed = true; pull(hubMk); }
         if (k < 1) { requestAnimationFrame(frame); return; }
         dot.remove(); p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; lit.push(m); done();
@@ -816,116 +878,148 @@ document.documentElement.classList.add('js');
   }
 
 
-  /* ── Scroll story ─────────────────────────────────────────── */
+  /* ── Scroll story: Discover → Relay → You → Outpost → Focus. Cell states are precomputed per beat (same data as the stills). ── */
+  var STORY = {"cells":[{"k":"0,0","s":[[72,78,15,1,0.22,0.5,0.6,1.25],[72,78,14,1,0.15,0.45,0.32,1.25],[72,78,14,1,0.15,0.45,0.32,1.25],[72,78,14,0.28,0,0.7,0.22,1.25],[72,78,16,0.28,0,1,0.85,1.25],[72,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"1,0","s":[[128,78,15,1,0.22,0.5,0.6,1.25],[128,78,14,1,0.15,0.45,0.32,1.25],[128,78,14,1,0.15,0.45,0.32,1.25],[128,78,14,0.28,0,0.7,0.22,1.25],[128,78,16,0.28,0,1,0.85,1.25],[128,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"2,0","s":[[184,78,15,1,0.22,0.5,0.6,1.25],[184,78,14,1,0.15,0.45,0.32,1.25],[184,78,14,1,0.15,0.45,0.32,1.25],[184,78,14,0.28,0,0.7,0.22,1.25],[184,78,16,0.28,0,1,0.85,1.25],[184,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"3,0","s":[[240,78,15,1,0.22,0.5,0.6,1.25],[240,78,14,1,0.15,0.45,0.32,1.25],[240,78,14,1,0.15,0.45,0.32,1.25],[240,78,14,0.28,0,0.7,0.22,1.25],[240,78,16,0.28,0,1,0.85,1.25],[240,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"4,0","s":[[296,78,15,1,0.22,0.5,0.6,1.25],[296,78,14,1,0.15,0.45,0.32,1.25],[296,78,14,1,0.15,0.45,0.32,1.25],[296,78,14,0.28,0,0.7,0.22,1.25],[296,78,16,0.28,0,1,0.85,1.25],[296,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"5,0","s":[[352,78,15,1,0.22,0.5,0.6,1.25],[352,78,14,1,0.15,0.45,0.32,1.25],[352,78,14,1,0.15,0.45,0.32,1.25],[352,78,14,0.28,0,0.7,0.22,1.25],[352,78,16,0.28,0,1,0.85,1.25],[352,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"6,0","s":[[408,78,15,1,0.22,0.5,0.6,1.25],[408,78,14,1,0.15,0.45,0.32,1.25],[408,78,14,1,0.15,0.45,0.32,1.25],[408,78,14,0.28,0,0.7,0.22,1.25],[408,78,16,0.28,0,1,0.85,1.25],[408,78,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"0,1","s":[[72,134,15,1,0.22,0.5,0.6,1.25],[72,134,14,1,0.15,0.45,0.32,1.25],[72,134,14,1,0.15,0.45,0.32,1.25],[72,134,14,0.28,0,0.7,0.22,1.25],[72,134,16,0.28,0,1,0.85,1.25],[72,134,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"1,1","s":[[128,134,15,1,0.22,0.5,0.6,1.25],[128,134,28,1,1,0,1,1.25],[128,134,28,1,1,0,1,1.25],[128,134,14,0.28,0,0.7,0.22,1.25],[128,134,16,0.28,0,1,0.85,1.25],[128,134,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"2,1","s":[[184,134,15,1,0.22,0.5,0.6,1.25],[184,134,14,1,0.15,0.45,0.32,1.25],[184,134,14,1,0.15,0.45,0.32,1.25],[184,134,14,0.28,0,0.7,0.22,1.25],[184,134,16,0.28,0,1,0.85,1.25],[183.96,134.04,24.69,0.25,0,1,1,2.72]],"dl":0},{"k":"3,1","s":[[240,134,15,1,0.22,0.5,0.6,1.25],[240,134,14,1,0.15,0.45,0.32,1.25],[240,134,14,1,0.15,0.45,0.32,1.25],[240,134,14,0.28,0,0.7,0.22,1.25],[240,134,16,0.28,0,1,0.85,1.25],[240.0,134.0,43.27,1,1,0,1,2.72]],"dl":0},{"k":"4,1","s":[[296,134,15,1,0.22,0.5,0.6,1.25],[296,134,14,1,0.15,0.45,0.32,1.25],[296,134,14,1,0.15,0.45,0.32,1.25],[318.91,102.61,26,1,1,0,1,1.25],[296,134,16,0.28,0,1,0.85,1.25],[318.91,102.61,50.91,1,1,0,1,2.72]],"dl":0},{"k":"5,1","s":[[352,134,15,1,0.22,0.5,0.6,1.25],[352,134,28,1,1,0,1,1.25],[352,134,28,1,1,0,1,1.25],[352,134,14,0.28,0,0.7,0.22,1.25],[352,134,16,0.28,0,1,0.85,1.25],[352,134,10,0.28,0,0.5,0,1.25]],"dl":0.48},{"k":"6,1","s":[[408,134,15,1,0.22,0.5,0.6,1.25],[408,134,14,1,0.15,0.45,0.32,1.25],[408,134,14,1,0.15,0.45,0.32,1.25],[408,134,14,0.28,0,0.7,0.22,1.25],[408,134,16,0.28,0,1,0.85,1.25],[408,134,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"0,2","s":[[72,190,15,1,0.22,0.5,0.6,1.25],[72,190,14,1,0.15,0.45,0.32,1.25],[72,190,14,1,0.15,0.45,0.32,1.25],[72,190,14,0.28,0,0.7,0.22,1.25],[72,190,16,0.28,0,1,0.85,1.25],[72,190,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"1,2","s":[[128,190,15,1,0.22,0.5,0.6,1.25],[128,190,14,1,0.15,0.45,0.32,1.25],[128,190,14,1,0.15,0.45,0.32,1.25],[128,190,14,0.28,0,0.7,0.22,1.25],[128,190,16,0.28,0,1,0.85,1.25],[128,190,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"2,2","s":[[184,190,15,1,0.22,0.5,0.6,1.25],[184,190,14,1,0.15,0.45,0.32,1.25],[184,190,14,1,0.15,0.45,0.32,1.25],[184,190,14,0.28,0,0.7,0.22,1.25],[184,190,16,0.28,0,1,0.85,1.25],[184.0,190.0,16.61,0.25,0,1,1,2.72]],"dl":0},{"k":"3,2","s":[[240,190,15,1,0.22,0.5,0.6,1.25],[240,190,14,1,0.15,0.45,0.32,1.25],[240,190,14,1,0.15,0.45,0.32,1.25],[240,190,14,0.28,0,0.7,0.22,1.25],[240,190,16,0.28,0,1,0.85,1.25],[239.96,190.0,31.14,1,1,0,1,2.72]],"dl":0},{"k":"4,2","s":[[296,190,15,1,0.22,0.5,0.6,1.25],[296,190,14,1,0.15,0.45,0.32,1.25],[296,190,14,1,0.15,0.45,0.32,1.25],[296,190,14,0.28,0,0.7,0.22,1.25],[296,190,16,0.28,0,1,0.85,1.25],[296.0,190.0,43.27,1,1,0,1,2.72]],"dl":0},{"k":"5,2","s":[[352,190,15,1,0.22,0.5,0.6,1.25],[352,190,14,1,0.15,0.45,0.32,1.25],[352,190,14,1,0.15,0.45,0.32,1.25],[352,190,14,0.28,0,0.7,0.22,1.25],[352,190,16,0.28,0,1,0.85,1.25],[352,190,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"6,2","s":[[408,190,15,1,0.22,0.5,0.6,1.25],[408,190,14,1,0.15,0.45,0.32,1.25],[408,190,14,1,0.15,0.45,0.32,1.25],[408,190,14,0.28,0,0.7,0.22,1.25],[408,190,16,0.28,0,1,0.85,1.25],[408,190,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"0,3","s":[[72,246,15,1,0.22,0.5,0.6,1.25],[72,246,14,1,0.15,0.45,0.32,1.25],[72,246,14,1,0.15,0.45,0.32,1.25],[72,246,14,0.28,0,0.7,0.22,1.25],[72,246,16,0.28,0,1,0.85,1.25],[72,246,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"1,3","s":[[128,246,15,1,0.22,0.5,0.6,1.25],[128,246,14,1,0.15,0.45,0.32,1.25],[128,246,14,1,0.15,0.45,0.32,1.25],[128,246,14,0.28,0,0.7,0.22,1.25],[128,246,16,0.28,0,1,0.85,1.25],[128,246,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"2,3","s":[[184,246,15,1,0.22,0.5,0.6,1.25],[184,246,14,1,0.15,0.45,0.32,1.25],[184,246,14,1,0.15,0.45,0.32,1.25],[184,246,14,0.28,0,0.7,0.22,1.25],[184,246,16,0.28,0,1,0.85,1.25],[183.96,246.04,11.4,0.25,0,1,1,2.72]],"dl":0},{"k":"3,3","s":[[240,246,15,1,0.22,0.5,0.6,1.25],[240,246,28,1,1,0,1,1.25],[240,246,14,1,0.15,0.45,0.32,1.25],[240,246,14,0.28,0,0.7,0.22,1.25],[240,246,16,0.28,0,1,0.85,1.25],[239.96,246.0,20.96,1,1,0,1,2.72]],"dl":0.339},{"k":"4,3","s":[[296,246,15,1,0.22,0.5,0.6,1.25],[296,246,14,1,0.15,0.45,0.32,1.25],[296,246,14,1,0.15,0.45,0.32,1.25],[296,246,14,0.28,0,0.7,0.22,1.25],[296,246,16,0.28,0,1,0.85,1.25],[295.96,246.04,24.69,0.25,0,1,1,2.72]],"dl":0},{"k":"5,3","s":[[352,246,15,1,0.22,0.5,0.6,1.25],[352,246,14,1,0.15,0.45,0.32,1.25],[352,246,14,1,0.15,0.45,0.32,1.25],[352,246,14,0.28,0,0.7,0.22,1.25],[352,246,16,0.28,0,1,0.85,1.25],[352,246,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"6,3","s":[[408,246,15,1,0.22,0.5,0.6,1.25],[408,246,14,1,0.15,0.45,0.32,1.25],[408,246,14,1,0.15,0.45,0.32,1.25],[408,246,14,0.28,0,0.7,0.22,1.25],[408,246,16,0.28,0,1,0.85,1.25],[408,246,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"0,4","s":[[72,302,15,1,0.22,0.5,0.6,1.25],[72,302,14,1,0.15,0.45,0.32,1.25],[72,302,14,1,0.15,0.45,0.32,1.25],[72,302,14,0.28,0,0.7,0.22,1.25],[72,302,16,0.28,0,1,0.85,1.25],[72,302,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"1,4","s":[[128,302,15,1,0.22,0.5,0.6,1.25],[128,302,14,1,0.15,0.45,0.32,1.25],[128,302,14,1,0.15,0.45,0.32,1.25],[128,302,14,0.28,0,0.7,0.22,1.25],[128,302,16,0.28,0,1,0.85,1.25],[128,302,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"2,4","s":[[184,302,15,1,0.22,0.5,0.6,1.25],[184,302,14,1,0.15,0.45,0.32,1.25],[184,302,14,1,0.15,0.45,0.32,1.25],[184,302,14,0.28,0,0.7,0.22,1.25],[184,302,16,0.28,0,1,0.85,1.25],[184,302,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"3,4","s":[[240,302,15,1,0.22,0.5,0.6,1.25],[240,302,14,1,0.15,0.45,0.32,1.25],[240,302,14,1,0.15,0.45,0.32,1.25],[240,302,14,0.28,0,0.7,0.22,1.25],[240,302,16,0.28,0,1,0.85,1.25],[240,302,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"4,4","s":[[296,302,15,1,0.22,0.5,0.6,1.25],[296,302,14,1,0.15,0.45,0.32,1.25],[296,302,14,1,0.15,0.45,0.32,1.25],[296,302,14,0.28,0,0.7,0.22,1.25],[296,302,16,0.28,0,1,0.85,1.25],[296,302,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"5,4","s":[[352,302,15,1,0.22,0.5,0.6,1.25],[352,302,14,1,0.15,0.45,0.32,1.25],[352,302,14,1,0.15,0.45,0.32,1.25],[352,302,14,0.28,0,0.7,0.22,1.25],[352,302,16,0.28,0,1,0.85,1.25],[352,302,10,0.28,0,0.5,0,1.25]],"dl":0},{"k":"6,4","s":[[408,302,15,1,0.22,0.5,0.6,1.25],[408,302,14,1,0.15,0.45,0.32,1.25],[408,302,14,1,0.15,0.45,0.32,1.25],[408,302,14,0.28,0,0.7,0.22,1.25],[408,302,16,0.28,0,1,0.85,1.25],[408,302,10,0.28,0,0.5,0,1.25]],"dl":0}],"route":[[128,134],[352,134]]};
+  var storyP = 0;
   (function story() {
     var field = document.getElementById('field'), track = document.getElementById('story-track');
     if (!field) return;
     var beats = all(document, '.beat-txt'), rail = all(document, '.rail li');
-    var P = 56, CX = 240, CY = 190, K = P / 6.6;                       /* field pitch = one mark pitch */
-    function mx(x) { return CX + (x - 10.07) * K; } function my(y) { return CY + (y - 14.43) * K; }
-    /* the mark, mapped onto the field's centre 3×3 (cols 2-4, rows 1-3) */
-    var MARK = {
-      '2,1': { f: 1, x: 3.465, y: 7.835, d: 3.27, rx: .82 }, '2,2': { f: 1, x: 3.47, y: 14.43, d: 2.2, rx: .55 },
-      '2,3': { f: 1, x: 3.465, y: 21.035, d: 1.51, rx: .38 }, '4,3': { f: 1, x: 16.665, y: 21.035, d: 3.27, rx: .82 },
-      '3,1': { x: 10.07, y: 7.83, d: 5.1 }, '3,2': { x: 10.065, y: 14.43, d: 3.67 }, '3,3': { x: 10.065, y: 21.03, d: 2.47 },
-      '4,2': { x: 16.67, y: 14.43, d: 5.1 }, '4,1': { x: 19.37, y: 4.13, d: 6, pick: 1 }
-    };
-    var AGENTS = { '1,1': 'Claude Code', '3,3': 'Codex', '5,1': 'Cursor' }, ROUTE = ['1,1', '3,3', '5,1'];
-    var cells = [], g = field.querySelector('.cells'), agl = field.querySelector('.agents-lbl');
-    for (var j = 0; j < 5; j++) for (var i = 0; i < 7; i++) {
-      var key = i + ',' + j, el = document.createElementNS(NS, 'rect');
-      el.setAttribute('class', 'cell'); g.appendChild(el);
-      cells.push({ key: key, x: CX + (i - 3) * P, y: CY + (j - 2) * P, el: el, m: MARK[key], agent: AGENTS[key] });
-    }
-    Object.keys(AGENTS).forEach(function (k) {
-      var c = cells.filter(function (c) { return c.key === k; })[0], t = document.createElementNS(NS, 'text');
-      t.setAttribute('x', c.x); t.setAttribute('y', c.y + 32); t.textContent = AGENTS[k]; agl.appendChild(t); c.lbl = t;
-    });
-    var bound = field.querySelector('.bound'), blbl = field.querySelector('.bound-lbl'), dot = field.querySelector('.relay-dot');
-    var you = field.querySelector('.you-lbl'), youText = you.querySelector('text'), youPath = you.querySelector('path');
-
-    /* Anchor states: d = size, rd = roundness (0 square … 1 circle), fl = fill, sk = hairline, op = opacity */
-    var SOFT = { d: 15, rd: 1, fl: .22, sk: .5, op: .6 };
-    var DATA = { d: 16, rd: .28, fl: 0, sk: 1, op: .85 };
-    function anchor(c, a) {
-      if (a === 0) return SOFT;
-      if (a === 1) return c.agent ? { d: 28, rd: 1, fl: 1, sk: 0, op: 1 } : { d: 14, rd: 1, fl: .15, sk: .45, op: .4 };      /* Relay */
-      if (a === 2) return c.m && c.m.pick ? { d: 26, rd: 1, fl: 1, sk: 0, op: 1, dx: 2.7 * K, dy: -3.7 * K }                     /* You */
-                                          : { d: 14, rd: .28, fl: 0, sk: .7, op: .22 };
-      if (a === 3) return DATA;                                                                                                   /* Outpost */
-      if (!c.m) return { d: 10, rd: .28, fl: 0, sk: .5, op: 0 };            /* a === 4: the F */
-      var m = c.m;
-      return { d: m.d * K * (m.f ? .89 : 1), rd: m.f ? .25 : 1, fl: m.f ? 0 : 1, sk: m.f ? 1 : 0, op: 1, x: mx(m.x), y: my(m.y), sw: .32 * K };
-    }
-    /* Scroll map: [from, to, start, end]; holds in between keep each beat readable as a still */
-    var SEG = [[0, 1, .02, .12], [1, 2, .29, .39], [2, 3, .54, .64], [3, 4, .78, .88]];
-    var CUT = [.27, .52, .76];
+    var g = field.querySelector('.cells');
+    var cells = STORY.cells.map(function (c) { var el = document.createElementNS(NS, 'rect'); el.setAttribute('class', 'cell'); g.appendChild(el); return { s: c.s, dl: c.dl, el: el }; });
+    var extras = all(field, '[data-op]').map(function (el) { return { el: el, op: el.getAttribute('data-op').split(',').map(Number), late: !!el.querySelector('[data-late]') }; });
+    var bound = field.querySelector('.bound'), dot = field.querySelector('.relay-dot');
+    /* [from, to, start, end] — holds in between keep each beat a readable still */
+    var SEG = [[0, 1, .02, .10], [1, 2, .22, .30], [2, 3, .43, .51], [3, 4, .63, .71], [4, 5, .83, .92]];
+    var CUT = [.21, .42, .62, .82];
     function ease(u) { u = Math.min(1, Math.max(0, u)); return u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; }
     function lerp(a, b, u) { return a + (b - a) * u; }
-    function stateAt(c, p) {
-      var from = 0, to = 0, u = 0;
-      for (var n = 0; n < SEG.length; n++) {
-        var sg = SEG[n];
-        if (p >= sg[2]) { from = sg[0]; to = sg[1]; u = ease((p - sg[2]) / (sg[3] - sg[2])); }
-      }
-      var A = anchor(c, from), B = anchor(c, to);
-      var ax = A.x != null ? A.x : c.x + (A.dx || 0), ay = A.y != null ? A.y : c.y + (A.dy || 0);
-      var bx = B.x != null ? B.x : c.x + (B.dx || 0), by = B.y != null ? B.y : c.y + (B.dy || 0);
-      return { x: lerp(ax, bx, u), y: lerp(ay, by, u), d: lerp(A.d, B.d, u), rd: lerp(A.rd, B.rd, u), fl: lerp(A.fl, B.fl, u),
-               sk: lerp(A.sk, B.sk, u), op: lerp(A.op, B.op, u), sw: lerp(A.sw || 1.25, B.sw || 1.25, u) };
-    }
-    function paint(svg, p) {
-      var cs = svg === field ? cells : svg._cells;
-      cs.forEach(function (c) {
-        var st = stateAt(c, p), h = st.d / 2, e = c.el;
-        /* relay hand-off: the receiving agent squares off for a moment as the dot arrives */
-        if (c.agent && p > .12 && p < .26) {
-          var idx = ROUTE.indexOf(c.key), t = (p - .12) / .14 * 2;            /* 0..2 along the route */
-          var near = 1 - Math.min(1, Math.abs(t - idx) * 4);
-          if (near > 0) st.rd = 1 - .7 * near;
+    function seg(p) { var f = 0, t = 0, u = 0; SEG.forEach(function (sg) { if (p >= sg[2]) { f = sg[0]; t = sg[1]; u = (p - sg[2]) / (sg[3] - sg[2]); } }); return [f, t, Math.min(1, Math.max(0, u))]; }
+    function paint(p) {
+      var sg = seg(p), f = sg[0], t = sg[1], u0 = sg[2];
+      cells.forEach(function (c) {
+        var u = ease(f === 0 && c.dl ? (u0 - c.dl) / (1 - c.dl) : u0);   /* Discover ripples out from your agent */
+        var A = c.s[f], B = c.s[t], v = [];
+        for (var n = 0; n < 8; n++) v.push(lerp(A[n], B[n], u));
+        var h = v[2] / 2, e = c.el;
+        if (t === 2 && f === 2 || (p > .30 && p < .42 && (c.s[2][4] === 1))) { /* Relay: the receiving agent squares off briefly as the question lands */
+          var r = (p - .30) / .12, near = 1 - Math.min(1, Math.abs(r - .5) * 6);
+          if (near > 0 && c.s[2][0] > 240) v[3] = 1 - .7 * near;
         }
-        e.setAttribute('x', (st.x - h).toFixed(2)); e.setAttribute('y', (st.y - h).toFixed(2));
-        e.setAttribute('width', st.d.toFixed(2)); e.setAttribute('height', st.d.toFixed(2));
-        e.setAttribute('rx', (h * st.rd).toFixed(2));
-        e.style.fillOpacity = st.fl.toFixed(3); e.style.strokeOpacity = st.sk.toFixed(3); e.style.opacity = st.op.toFixed(3);
-        e.style.strokeWidth = st.sw.toFixed(2);
-        if (c.lbl) c.lbl.style.opacity = Math.max(0, Math.min(1, (p - .06) * 12, (.33 - p) * 12)).toFixed(3);
+        e.setAttribute('x', (v[0] - h).toFixed(2)); e.setAttribute('y', (v[1] - h).toFixed(2));
+        e.setAttribute('width', v[2].toFixed(2)); e.setAttribute('height', v[2].toFixed(2)); e.setAttribute('rx', (h * v[3]).toFixed(2));
+        e.style.fillOpacity = v[4].toFixed(3); e.style.strokeOpacity = v[5].toFixed(3); e.style.opacity = v[6].toFixed(3); e.style.strokeWidth = v[7].toFixed(2);
       });
-      var B = svg.querySelector('.bound'), BL = svg.querySelector('.bound-lbl');
-      var draw = ease((p - .54) / .12), fade = 1 - ease((p - .78) / .08);
-      B.style.strokeDashoffset = (1 - draw).toFixed(3); B.style.opacity = fade.toFixed(3);
-      BL.style.opacity = (Math.min(1, Math.max(0, (p - .62) * 10)) * fade).toFixed(3);
-      /* Relay: the dot carries work Claude Code → Codex → Cursor */
-      var D = svg.querySelector('.relay-dot'), tr = (p - .12) / .14;
+      var uu = ease(u0);
+      extras.forEach(function (x) {
+        var o = lerp(x.op[f], x.op[t], uu);
+        if (x.late) o *= Math.min(1, Math.max(0, (p - .38) * 20));
+        x.el.style.opacity = o.toFixed(3);
+      });
+      bound.style.strokeDashoffset = (1 - ease((p - .63) / .1)).toFixed(3);
+      bound.style.opacity = (1 - ease((p - .83) / .07)).toFixed(3);
+      /* Relay: question goes out to Priya's agent, the answer comes back */
+      var tr = (p - .30) / .1;
       if (tr > 0 && tr < 1) {
-        var seg = tr * 2, a = Math.min(1, Math.floor(seg)), f = ease(seg - a);
-        var p0 = svg._pos[ROUTE[a]], p1 = svg._pos[ROUTE[a + 1]];
-        D.setAttribute('cx', lerp(p0.x, p1.x, f)); D.setAttribute('cy', lerp(p0.y, p1.y, f)); D.style.opacity = 1;
-      } else D.style.opacity = 0;
-      /* You: a label for the picked dot */
-      var Y = svg.querySelector('.you-lbl'), yo = Math.max(0, Math.min(1, (p - .36) * 14, (.56 - p) * 14));
-      var pk = cs.filter(function (c) { return c.m && c.m.pick; })[0], ps = stateAt(pk, p);
-      Y.querySelector('path').setAttribute('d', 'M' + (ps.x + 18) + ' ' + (ps.y - 6) + ' L' + (ps.x + 48) + ' ' + (ps.y - 24));
-      var yt = Y.querySelector('text'); yt.setAttribute('x', ps.x + 54); yt.setAttribute('y', ps.y - 20);
-      Y.style.opacity = yo.toFixed(3);
+        var a = STORY.route[0], b = STORY.route[1], q = tr < .5 ? ease(tr * 2) : 1 - ease((tr - .5) * 2);
+        dot.setAttribute('cx', lerp(a[0], b[0], q)); dot.setAttribute('cy', lerp(a[1], b[1], q) - Math.sin(q * Math.PI) * 26); dot.style.opacity = 1;
+      } else dot.style.opacity = 0;
     }
-    function positions(cs) { var o = {}; cs.forEach(function (c) { o[c.key] = { x: c.x, y: c.y }; }); return o; }
-    field._pos = positions(cells);
-
     var cur = -1, ticking = false;
-    function progress() {
-      var r = track.getBoundingClientRect(), span = r.height - innerHeight;
-      return span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1;
-    }
+    function progress() { var r = track.getBoundingClientRect(), span = r.height - innerHeight; return span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1; }
     function render() {
-      ticking = false;
-      var p = progress(); paint(field, p);
-      var b = p < CUT[0] ? 0 : p < CUT[1] ? 1 : p < CUT[2] ? 2 : 3;
+      ticking = false; storyP = progress(); paint(storyP);
+      var b = 0; CUT.forEach(function (c) { if (storyP >= c) b++; });
       if (b !== cur) { cur = b; beats.forEach(function (x, i) { x.classList.toggle('on', i === b); }); rail.forEach(function (x, i) { x.classList.toggle('on', i <= b); }); }
     }
     addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(render); } }, { passive: true });
     addEventListener('resize', render);
     render();
+  })();
+
+  /* ── Product menu: click/Enter opens, Esc closes and returns focus, outside click closes ── */
+  (function menu() {
+    var btn = document.getElementById('m-btn'), pop = document.getElementById('m-prod');
+    if (!btn) return;
+    function set(open) { btn.setAttribute('aria-expanded', String(open)); pop.hidden = !open; if (open) { var f = pop.querySelector('a'); f && f.focus(); } }
+    btn.addEventListener('click', function () { set(pop.hidden); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); } });
+    document.addEventListener('click', function (e) { if (!pop.hidden && !e.target.closest('.menu')) set(false); });
+    pop.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+  })();
+
+  /* ── The ant: a natural random walk in the side margins. Walk with drifting heading and speed, short pauses, sniffing,
+        quick turns; seeks the loose dot now and then, carries it a while, drops it elsewhere. Transforms only; the loop
+        stops while the tab is hidden; steps aside while a demo's own ants are on screen (one ant per viewport). ── */
+  (function ant() {
+    var lane = document.getElementById('ant-lane'); if (!lane || reduce) return;
+    var el = document.getElementById('ant'), dotEl = document.getElementById('ant-dot'), legs = all(el, '.lg'), antL = el.querySelector('.ante-l'), antR = el.querySelector('.ante-r'), hop = 0;
+    var busy = [document.getElementById('story-track'), document.getElementById('flow'), document.getElementById('wl-done')];
+    function inView(b) { if (!b || b.hidden) return false; var r = b.getBoundingClientRect(); return r.top < innerHeight * .9 && r.bottom > innerHeight * .1; }
+    var R = Math.random, zones = [], z = 0, on = false;
+    var x = 0, y = 0, h = Math.PI / 2, vh = 0, sp = 0, tsp = 30, mode = 'walk', mt = 0, wob = 0, phase = 0, nextSpeed = 0;
+    var carry = false, carryT = 0, seek = false, seekT = 4 + R() * 6, dx = 0, dy = 0, dz = 0, last = 0, lastScroll = scrollY;
+    function layout() {
+      var gut = Math.max(0, (innerWidth - 1200) / 2) + 20 - 28;    /* empty margin outside the content column */
+      on = gut >= 64 && matchMedia('(min-width:1300px)').matches;
+      lane.style.display = on ? 'block' : 'none';
+      zones = [{ x0: 18, x1: gut, y0: 96, y1: innerHeight - 36 }, { x0: innerWidth - gut, x1: innerWidth - 18, y0: 96, y1: innerHeight - 36 }];
+      x = Math.min(Math.max(x || zones[0].x0 + 30, zones[z].x0), zones[z].x1); y = Math.min(Math.max(y || innerHeight * .6, zones[z].y0), zones[z].y1);
+      if (!dz && dz !== 0) dz = 0;
+      dx = dx || (zones[1].x0 + zones[1].x1) / 2; dy = dy || innerHeight * .45; dz = 1;
+    }
+    function setMode(m, t) { mode = m; mt = t; }
+    function step(dt) {
+      var Z = zones[z];
+      if (mode === 'pause' || mode === 'sniff') {
+        sp *= .8; mt -= dt; wob = mode === 'sniff' ? Math.sin(performance.now() / 70) * .22 : wob * .8;
+        if (mt <= 0) setMode('walk', 0);
+      } else {
+        if (mode === 'turn') { mt -= dt; vh *= .9; if (mt <= 0) setMode('walk', 0); }
+        nextSpeed -= dt; if (nextSpeed <= 0) { tsp = 16 + R() * 34; nextSpeed = .6 + R() * 1.6; }
+        sp += (tsp - sp) * Math.min(1, dt * 3);
+        vh += (R() - .5) * 9 * dt; vh *= .93;                         /* wandering heading */
+        var m = 26, cx = (Z.x0 + Z.x1) / 2, cy = (Z.y0 + Z.y1) / 2;    /* steer away from the zone edges */
+        if (x < Z.x0 + m || x > Z.x1 - m || y < Z.y0 + m || y > Z.y1 - m) { var want = Math.atan2(cy - y, cx - x), d = Math.atan2(Math.sin(want - h), Math.cos(want - h)); vh += d * 4 * dt; }
+        if (seek && !carry && dz === z) { var w = Math.atan2(dy - y, dx - x), dd = Math.atan2(Math.sin(w - h), Math.cos(w - h)); vh += dd * 3 * dt; if (Math.hypot(dx - x, dy - y) < 9) { carry = true; seek = false; carryT = 6 + R() * 9; hop = .35; setMode('pause', .5); } }
+        h += vh * dt * 2.2; wob *= .85;
+        x += Math.cos(h) * sp * dt; y += Math.sin(h) * sp * dt;
+        x = Math.min(Math.max(x, Z.x0), Z.x1); y = Math.min(Math.max(y, Z.y0), Z.y1);
+        phase += sp * dt / 7;
+        var e = R() * 1;                                                /* occasional pauses, sniffs and quick turns */
+        if (e < .35 * dt) setMode('pause', .3 + R() * 1);
+        else if (e < .55 * dt) setMode('sniff', .6 + R() * .8);
+        else if (e < .7 * dt) { vh += (R() < .5 ? -1 : 1) * (5 + R() * 4); setMode('turn', .22); }
+      }
+      if (carry) { carryT -= dt; dx = x + Math.cos(h) * 10; dy = y + Math.sin(h) * 10; dz = z; if (carryT <= 0 && mode === 'walk') { carry = false; setMode('pause', .6); } }
+      seekT -= dt; if (seekT <= 0) { seek = !carry && R() < .6; seekT = 8 + R() * 10; }
+    }
+    function draw() {
+      var sc = hop > 0 ? 1 + .18 * Math.sin(Math.PI * (1 - hop / .35)) : 1;
+      el.style.transform = 'translate3d(' + (x - 14).toFixed(1) + 'px,' + (y - 20).toFixed(1) + 'px,0) rotate(' + ((h + wob) * 180 / Math.PI + 90).toFixed(1) + 'deg) scale(' + sc.toFixed(3) + ')';
+      var t = performance.now(), bob = (mode === 'walk' || mode === 'turn') ? Math.sin(phase * 2) * 6 : Math.sin(t / 95) * 14;
+      antL.style.transform = 'rotate(' + (-bob).toFixed(1) + 'deg)'; antR.style.transform = 'rotate(' + bob.toFixed(1) + 'deg)';
+      el.classList.toggle('carry', carry);
+      dotEl.style.opacity = carry ? 0 : .85;
+      dotEl.style.transform = 'translate3d(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px,0)';
+      legs.forEach(function (g) {
+        var sd = +g.getAttribute('data-s'), n = +g.getAttribute('data-n'), tri = (n + (sd > 0 ? 1 : 0)) % 2;
+        g.style.transform = 'rotate(' + (Math.sin(phase + tri * Math.PI) * 14 * sd * Math.min(1, sp / 12)).toFixed(1) + 'deg)';
+      });
+    }
+    function frame(t) {
+      var dt = Math.min(.05, (t - last) / 1000 || 0); last = t;
+      if (on && !document.hidden) {
+        lane.style.opacity = busy.some(inView) ? 0 : 1;
+        var ds = scrollY - lastScroll; lastScroll = scrollY;             /* it drifts a little with the page */
+        y -= ds * .06; dy -= ds * .06;
+        step(dt); if (hop > 0) hop = Math.max(0, hop - dt); draw();
+      }
+      requestAnimationFrame(frame);
+    }
+    layout(); addEventListener('resize', layout);
+    z = 0; x = zones[0].x0 + (zones[0].x1 - zones[0].x0) * .5; y = innerHeight * .7;
+    requestAnimationFrame(frame);
   })();
 
   /* Resting state (no JS, reduced motion): everything shared, every message routed. Motion only when allowed. */
@@ -950,14 +1044,13 @@ document.documentElement.classList.add('js');
   function success(email) {
     form.hidden = true; fail.hidden = true;
     addr.textContent = email || 'you@company.com';
-    done.hidden = false; step2.hidden = false; done.focus(); pull(done.querySelector('.mk'));
+    done.hidden = false; step2.hidden = false; done.focus();
   }
   function failure(kind) {
     btn.disabled = false; btn.textContent = 'Join the waitlist';
     fail.hidden = false;
     fail.textContent = kind === 'offline' ? "You're offline. Reconnect and try again, or email lit@withfocus.io." : "That didn't go through. Try again in a minute, or email lit@withfocus.io.";
   }
-  function resetForm() { form.hidden = false; done.hidden = true; step2.hidden = true; fail.hidden = true; btn.disabled = false; btn.textContent = 'Join the waitlist'; clearInvalid(); input.value = ''; }
   form.addEventListener('submit', function (e) {
     e.preventDefault(); fail.hidden = true;
     var v = input.value.trim();
@@ -969,7 +1062,6 @@ document.documentElement.classList.add('js');
   });
   step2.addEventListener('submit', function (e) { e.preventDefault(); var fd = new FormData(step2); fd.append('email', addr.textContent); fd.append('_subject', 'Focus waitlist: more about me'); fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }).catch(function () {}); step2.hidden = true; done.querySelector('p').textContent = 'Thanks. That helps us bring you in sooner. We\'ll write to ' + addr.textContent + ' from lit@withfocus.io.'; done.focus(); });
   document.getElementById('skip').addEventListener('click', function () { step2.hidden = true; done.focus(); });
-  document.getElementById('partner-link').addEventListener('click', function (e) { e.preventDefault(); input.focus(); });
 })();
 </script>
 </body>
