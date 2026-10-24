@@ -500,6 +500,18 @@ footer nav a:hover{color:var(--on-dark)}
 .cx-cap.end .cx-cta{pointer-events:auto;text-decoration:none}
 .cx-works{margin-top:14px;font-size:14.5px;color:var(--on-dark-mute)}
 .cx-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+
+/* ── section rhythm (UI designer): every block is its own band, no two neighbours share a ground,
+      one vertical rhythm, and every block ends with a closing line. ── */
+.band{padding-block:clamp(80px,9vw,120px)}
+.band.tight{padding-top:clamp(80px,9vw,120px)}                 /* retired: blocks never butt together */
+.band.raised{background:var(--forest-2);box-shadow:inset 0 1px 0 var(--line-dark),inset 0 -1px 0 var(--line-dark)}
+.section-head{margin-bottom:clamp(36px,4.2vw,56px)}
+.section-head .beat-k{margin-bottom:2px}
+.block-end{margin-top:clamp(32px,4vw,48px);padding-top:18px;border-top:1px solid var(--line-dark);display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between;font-size:15px}
+.light .block-end{border-top-color:var(--line-light)}
+.trust-foot.block-end{color:var(--on-dark-mute)}
+#outpost .trust{margin-top:0}
 </style>
 </head>
 <body>
@@ -547,16 +559,46 @@ footer nav a:hover{color:var(--on-dark)}
   <section class="band features" id="features" aria-labelledby="features-h">
     <div class="wrap">
       <div class="section-head"><h2 id="features-h">What's in Focus</h2><p>Each part keeps one piece of the promise.</p></div>
-      <div class="fgrid"><a class="fcard" href="/product.html#discover"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M12 7.5a6.4 6.4 0 0 1 0 9M15.6 4.6a10.6 10.6 0 0 1 0 14.8"/></svg><span class="f-top"><b>Discover</b></span><span class="f-eye">learns what your best one knows</span><span class="f-txt">One workflow that works becomes every agent's skill.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#relay"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="12" r="2.6"/><circle cx="18.5" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M9 10.2h6m-1.6-1.6 1.6 1.6-1.6 1.6M15 13.8H9m1.6-1.6L9 13.8l1.6 1.6"/></svg><span class="f-top"><b>Relay</b></span><span class="f-eye">knows who knows</span><span class="f-txt">Your agent asks the agent that already knows.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#autopilot"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8.2 12.4l2.6 2.6 5-5.6"/></svg><span class="f-top"><b>Autopilot</b></span><span class="f-eye">only what needs you</span><span class="f-txt">Minor changes made for you. Major ones wait for your OK.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#communications"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 4.5h13a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6.5l-4.5 3.5v-3.5h-2a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span class="f-top"><b>Communications</b></span><span class="f-eye">nothing slips</span><span class="f-txt">Slack, Gmail and Zoho Mail, each message routed to the right agent or to you.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="/product.html#outpost"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="6" stroke-dasharray="3 2.2"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg><span class="f-top"><b>Outpost</b></span><span class="f-eye">and your data stays yours</span><span class="f-txt">Agents query your databases inside your network.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a></div>
+      <div class="fgrid"><a class="fcard" href="#overhead"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8.2 12.4l2.6 2.6 5-5.6"/></svg><span class="f-top"><b>Autopilot</b></span><span class="f-eye">only what needs you</span><span class="f-txt">Minor changes made for you. Major ones wait for your OK.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="#overhead"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 4.5h13a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6.5l-4.5 3.5v-3.5h-2a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span class="f-top"><b>Communications</b></span><span class="f-eye">nothing slips</span><span class="f-txt">Slack, Gmail and Zoho Mail, each message routed to the right agent or to you.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="#learn"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M12 7.5a6.4 6.4 0 0 1 0 9M15.6 4.6a10.6 10.6 0 0 1 0 14.8"/></svg><span class="f-top"><b>Discover</b></span><span class="f-eye">learns what your best one knows</span><span class="f-txt">One workflow that works becomes every agent's skill.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="#relay"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="12" r="2.6"/><circle cx="18.5" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M9 10.2h6m-1.6-1.6 1.6 1.6-1.6 1.6M15 13.8H9m1.6-1.6L9 13.8l1.6 1.6"/></svg><span class="f-top"><b>Relay</b></span><span class="f-eye">knows who knows</span><span class="f-txt">Your agent asks the agent that already knows.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a><a class="fcard" href="#outpost"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="6" stroke-dasharray="3 2.2"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg><span class="f-top"><b>Outpost</b></span><span class="f-eye">and your data stays yours</span><span class="f-txt">Agents query your databases inside your network.</span><span class="f-more">More <span aria-hidden="true">→</span></span></a></div>
       <a class="admin-strip" href="/product.html#admins"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M15.5 6a3 3 0 0 1 0 5.4M17.5 19a5.5 5.5 0 0 0-2.4-4.5"/></svg><span><b>For teams and admins</b> <span class="f-eye">rolls out to the whole team</span></span><span class="a-list">SSO (OIDC, SAML) · per-member tool access · approved, time-limited cloud access · custom apps · help agent</span><span class="f-more">More <span aria-hidden="true">→</span></span></a>
     </div>
   </section>
-
-  <section class="band tight" id="learn" aria-labelledby="learn-h">
+  <section class="band light" id="overhead" aria-labelledby="overhead-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="beat-k"><i aria-hidden="true"></i>Autopilot · Communications</p>
+        <h2 id="overhead-h">Focus handles the work around the work.</h2>
+        <p>Every comment and question goes to the agent that knows the answer, and that agent does the work: it updates the code, fixes the doc or drafts the reply. Only what really needs you comes to you.</p>
+      </div>
+      <figure class="flow-frame" style="margin:0" aria-labelledby="flow-alt">
+        <button class="pause" type="button" aria-pressed="false" data-pause><svg class="i-pause" aria-hidden="true"><use href="#i-pause"/></svg><svg class="i-play" aria-hidden="true"><use href="#i-play"/></svg><span>Pause</span></button>
+        <div class="flow" id="flow" aria-hidden="true">
+          <svg class="wires" id="flow-wires"></svg>
+          <div class="flow-col flow-in"><div class="col-title">Incoming</div>
+            <div class="card msg" data-to="payments"><span class="src"><svg viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></span><span class="where">Slack · #payments</span><span class="txt">PR 412: can we use the shared retry helper here?</span></div>
+            <div class="card msg" data-to="web"><span class="src"><svg viewBox="0 0 24 24"><use href="#i-gmail"/></svg></span><span class="where">Gmail · from a customer</span><span class="txt">Your docs still show the old sign-in flow.</span></div>
+            <div class="card msg" data-to="platform"><span class="src"><svg viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></span><span class="where">Slack · #eng</span><span class="txt">Can we make strict null checks the team standard?</span></div>
+            <div class="card msg" data-to="you"><span class="src"><svg viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></span><span class="where">Slack · DM</span><span class="txt">Can you approve the release?</span></div>
+          </div>
+          <div class="flow-hub"><div class="hub" id="hub"><svg class="hub-svg" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><g class="mk" transform="translate(-4.45 -3.78) scale(3.3426)"><rect class="fr" x="1.990" y="6.360" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><rect class="fr" x="2.530" y="13.490" width="1.880" height="1.880" rx="0.390" style="--r:0.940px"/><rect class="fr" x="2.870" y="20.440" width="1.190" height="1.190" rx="0.220" style="--r:0.595px"/><rect class="fr" x="15.190" y="19.560" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><circle class="fd s0" cx="10.065" cy="21.03" r="1.235"/><circle class="fd s1" cx="10.065" cy="14.43" r="1.835"/><circle class="fd s2" cx="10.07" cy="7.83" r="2.55"/><circle class="fd s3" cx="16.67" cy="14.43" r="2.55"/><circle class="pk" cx="19.37" cy="4.13" r="3.0"/></g></svg></div></div>
+          <div class="flow-col flow-out"><div class="col-title">Goes to</div>
+            <div class="card dest dest-you filled" data-key="you"><div class="dest-top"><span class="dest-name"><i class="you-dot" aria-hidden="true"></i>You</span><span class="badge">Waiting for you</span></div><span class="dest-power">only what needs you</span></div>
+            <div class="card dest filled" data-key="payments"><div class="dest-top"><span class="dest-name">Payments agent</span><span class="badge">Updating the code</span></div><span class="dest-power">powered by Claude Code</span></div>
+            <div class="card dest filled" data-key="web"><div class="dest-top"><span class="dest-name">Web app agent</span><span class="badge">Updating the doc</span></div><span class="dest-power">powered by Codex</span></div>
+            <div class="card dest filled" data-key="platform"><div class="dest-top"><span class="dest-name">Platform agent</span><span class="badge">Drafting the standard</span></div><span class="dest-power">powered by Cursor</span></div>
+          </div>
+        </div>
+        <figcaption class="sr-only" id="flow-alt">Example of Focus routing four messages. A Slack question about PR 412 goes to the payments agent, which updates the code. A customer email about outdated docs goes to the web app agent, which updates the doc. A Slack question about strict null checks goes to the platform agent, which drafts the standard. A request to approve the release goes to you.</figcaption>
+      </figure>
+      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
+      <div class="block-end"><a class="link" href="/product.html#autopilot">How Autopilot works →</a></div>
+    </div>
+  </section>
+  <section class="band raised" id="learn" aria-labelledby="learn-h">
     <div class="wrap">
       <div class="section-head">
         <p class="beat-k"><i aria-hidden="true"></i>Discover</p>
-        <h2 id="learn-h">How your agents learn from each other</h2>
+        <h2 id="learn-h">Your agents learn from each other.</h2>
         <p>One real fix, start to finish. You correct an agent once; every agent works that way from then on.</p>
       </div>
       <div class="story">
@@ -595,10 +637,10 @@ footer nav a:hover{color:var(--on-dark)}
           <p class="beat-foot">Their agent follows the skill on its own. <b>No prompt to write.</b></p>
         </div>
       </div>
+      <div class="block-end"><a class="link" href="/product.html#discover">More about Discover →</a></div>
     </div>
   </section>
-
-  <section class="band tight" id="relay" aria-labelledby="relay-h">
+  <section class="band" id="relay" aria-labelledby="relay-h">
     <div class="wrap relay-wrap">
       <div class="section-head" style="margin-bottom:0">
         <p class="beat-k"><i aria-hidden="true"></i>Relay</p>
@@ -609,53 +651,23 @@ footer nav a:hover{color:var(--on-dark)}
         <div class="msgx you"><span class="who"><svg class="antg" aria-hidden="true"><use href="#ant-s"/></svg>Your Claude Code</span><p>Which retry backoff does payments use?</p></div>
         <div class="msgx them"><span class="who"><svg class="antg" aria-hidden="true"><use href="#ant-c"/></svg>Payments agent</span><p>2s, ×2, max 5. Answered from its session.</p><span class="okchip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Approved by its owner</span></div>
       </div>
+      <div class="block-end"><a class="link" href="/product.html#relay">More about Relay →</a></div>
     </div>
   </section>
-
-  <section class="band light" id="overhead" aria-labelledby="overhead-h">
+  <section class="band raised" id="outpost" aria-labelledby="trust-h">
     <div class="wrap">
       <div class="section-head">
-        <p class="beat-k"><i aria-hidden="true"></i>You</p>
-        <h2 id="overhead-h">Focus handles the work around the work.</h2>
-        <p>Every comment and question goes to the agent that knows the answer, and that agent does the work: it updates the code, fixes the doc or drafts the reply. Only what really needs you comes to you.</p>
+        <p class="beat-k"><i aria-hidden="true"></i>Outpost</p>
+        <h2 id="trust-h">Your data stays yours.</h2>
       </div>
-      <figure class="flow-frame" style="margin:0" aria-labelledby="flow-alt">
-        <button class="pause" type="button" aria-pressed="false" data-pause><svg class="i-pause" aria-hidden="true"><use href="#i-pause"/></svg><svg class="i-play" aria-hidden="true"><use href="#i-play"/></svg><span>Pause</span></button>
-        <div class="flow" id="flow" aria-hidden="true">
-          <svg class="wires" id="flow-wires"></svg>
-          <div class="flow-col flow-in"><div class="col-title">Incoming</div>
-            <div class="card msg" data-to="payments"><span class="src"><svg viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></span><span class="where">Slack · #payments</span><span class="txt">PR 412: can we use the shared retry helper here?</span></div>
-            <div class="card msg" data-to="web"><span class="src"><svg viewBox="0 0 24 24"><use href="#i-gmail"/></svg></span><span class="where">Gmail · from a customer</span><span class="txt">Your docs still show the old sign-in flow.</span></div>
-            <div class="card msg" data-to="platform"><span class="src"><svg viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></span><span class="where">Slack · #eng</span><span class="txt">Can we make strict null checks the team standard?</span></div>
-            <div class="card msg" data-to="you"><span class="src"><svg viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></span><span class="where">Slack · DM</span><span class="txt">Can you approve the release?</span></div>
-          </div>
-          <div class="flow-hub"><div class="hub" id="hub"><svg class="hub-svg" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><g class="mk" transform="translate(-4.45 -3.78) scale(3.3426)"><rect class="fr" x="1.990" y="6.360" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><rect class="fr" x="2.530" y="13.490" width="1.880" height="1.880" rx="0.390" style="--r:0.940px"/><rect class="fr" x="2.870" y="20.440" width="1.190" height="1.190" rx="0.220" style="--r:0.595px"/><rect class="fr" x="15.190" y="19.560" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><circle class="fd s0" cx="10.065" cy="21.03" r="1.235"/><circle class="fd s1" cx="10.065" cy="14.43" r="1.835"/><circle class="fd s2" cx="10.07" cy="7.83" r="2.55"/><circle class="fd s3" cx="16.67" cy="14.43" r="2.55"/><circle class="pk" cx="19.37" cy="4.13" r="3.0"/></g></svg></div></div>
-          <div class="flow-col flow-out"><div class="col-title">Goes to</div>
-            <div class="card dest dest-you filled" data-key="you"><div class="dest-top"><span class="dest-name"><i class="you-dot" aria-hidden="true"></i>You</span><span class="badge">Waiting for you</span></div><span class="dest-power">only what needs you</span></div>
-            <div class="card dest filled" data-key="payments"><div class="dest-top"><span class="dest-name">Payments agent</span><span class="badge">Updating the code</span></div><span class="dest-power">powered by Claude Code</span></div>
-            <div class="card dest filled" data-key="web"><div class="dest-top"><span class="dest-name">Web app agent</span><span class="badge">Updating the doc</span></div><span class="dest-power">powered by Codex</span></div>
-            <div class="card dest filled" data-key="platform"><div class="dest-top"><span class="dest-name">Platform agent</span><span class="badge">Drafting the standard</span></div><span class="dest-power">powered by Cursor</span></div>
-          </div>
-        </div>
-        <figcaption class="sr-only" id="flow-alt">Example of Focus routing four messages. A Slack question about PR 412 goes to the payments agent, which updates the code. A customer email about outdated docs goes to the web app agent, which updates the doc. A Slack question about strict null checks goes to the platform agent, which drafts the standard. A request to approve the release goes to you.</figcaption>
-      </figure>
-      <div class="triage-foot"><span><b>Nothing is sent without your OK.</b></span><span>Example messages and agents, for illustration.</span></div>
-    </div>
-  </section>
-
-  <section class="band" id="outpost" aria-labelledby="trust-h">
-    <div class="wrap">
-      <h2 class="sr-only" id="trust-h">Your data and your control</h2>
-      <p class="beat-k"><i aria-hidden="true"></i>Outpost</p>
       <div class="trust">
         <div><h3>Your AI, not ours</h3><p>Focus's brain runs on your own Claude, Cursor or Codex subscription, on your own machine.</p></div>
         <div><h3>Your data stays with you</h3><p>Focus never stores your code. Agents query company databases read-only through Outpost, a small Focus service that runs inside your network. Every query is signed and audited.</p></div>
         <div><h3>You stay in control</h3><p>Drafts wait for your OK. A shared skill reaches other agents only after its owner approves it.</p></div>
       </div>
-      <p class="trust-foot">No new tool to learn. Focus works beside the agents and apps you already use. <a class="link" href="mailto:lit@withfocus.io?subject=Security">Ask for the security note</a></p>
+      <p class="trust-foot block-end">No new tool to learn. Focus works beside the agents and apps you already use. <a class="link" href="mailto:lit@withfocus.io?subject=Security">Ask for the security note</a></p>
     </div>
   </section>
-
   <section class="band light" id="faq" aria-labelledby="status-h">
     <div class="wrap">
       <div class="faq">
@@ -1015,13 +1027,21 @@ document.documentElement.classList.add('js');
 
   /* ── camera. The page walk ends on a far three-quarter view of your ant (ENTRY pinned to its page position);
         the field opens on exactly that view, then eases in to a calm three-quarter view, and closes flat on the mark. ── */
-  var CAMK = [[.14, [-2, 34, 40], [-2, 0, 2]], [.5, [-1, 33, 41], [-1, 0, 2]], [.84, [-1.5, 34, 40], [-1.5, 0, 2]], [.95, [-1.4, 50, 2.6], [-1.4, 0, 2.6]]];
+  var CAMK = [[.08, [-2, 34, 40], [-2, 0, 2]], [.5, [-1, 33, 41], [-1, 0, 2]], [.84, [-1.5, 34, 40], [-1.5, 0, 2]], [.95, [-1.4, 50, 2.6], [-1.4, 0, 2.6]]];
   var camPos = new THREE.CatmullRomCurve3(CAMK.map(function (k) { return new THREE.Vector3(k[1][0], k[1][1], k[1][2]); }), false, 'centripetal');
   var camTgt = new THREE.CatmullRomCurve3(CAMK.map(function (k) { return new THREE.Vector3(k[2][0], k[2][1], k[2][2]); }), false, 'centripetal');
   var UP0 = new THREE.Vector3(0, 1, 0), UP1 = new THREE.Vector3(0, 0, -1), tmpP = new THREE.Vector3(), tmpT = new THREE.Vector3(), tmpE = new THREE.Vector3(), tmpF = new THREE.Vector3();
   var PITCH = 55 * Math.PI / 180, POSE = { dist: 300, fx: .06, fy: .22 };   /* the shared hand-off pose; set from the page in layout() */
   function camParam(p) { var n = CAMK.length - 1; if (p <= CAMK[0][0]) return 0; if (p >= CAMK[n][0]) return 1; var i = 0; while (p > CAMK[i + 1][0]) i++; var f = (p - CAMK[i][0]) / (CAMK[i + 1][0] - CAMK[i][0]);
     if (i === n - 1) f = smooth(f); return (i + f) / n; }
+  /* the end frame is fitted to the viewport: the whole mark (dot included) sits in the upper part, clear of the end line and CTA */
+  function fitEnd() {
+    var t = Math.tan((cam.userData.fov0 || 32) * Math.PI / 360), sz = R.getSize(new THREE.Vector2()), W = sz.x || 1280, H = sz.y || 720;
+    var fs = Math.min(34, Math.max(22, W * .03)), band = fs * 1.15 * 2 + 12 + 44 + Math.max(40, 0) + 28;   /* the end line (up to 2 lines), CTA, bottom inset, breathing room */
+    var top = Math.max(24, H * .05), avail = H - band - top;
+    /* mark half-extents with margin: 11.9 wide, 12.4 tall, centred at (0.1, -0.1). Fit it inside the space above the band. */
+    var V = Math.max(12.4 * H / (.92 * avail), 11.9 * H / (.86 * W)), yc = top + avail / 2, tz = -.1 - (yc - H / 2) * 2 * V / H;
+    camPos.points[CAMK.length - 1].set(.1, V / t, tz); camTgt.points[CAMK.length - 1].set(.1, 0, tz); }
   function topness(p) { return smooth(seg(p, .82, .95)); }
   function narrow(p) { return smooth(seg(p, .9, .96)); }
   /* a camera orbiting a ground point at a pitch and distance, with that point drawn at screen fraction (fx, fy) */
@@ -1060,7 +1080,7 @@ document.documentElement.classList.add('js');
   var geo = {}, ROLL = [];
   function tiltAt(s) { return smooth(seg(s, .025, .11)); }
   function pathAt(s) {   /* the ball's page position (px, page coords) */
-    var x = s < .12 ? lerp(geo.dot.x, geo.gutter, smooth(s / .12)) : geo.gutter;
+    var x = s < .12 ? lerp(geo.dot.x, geo.gutter, smooth(s / .12)) : s < .62 ? geo.gutter : lerp(geo.gutter, geo.xE, smooth((s - .62) / .38));   /* down the left side, then in toward the field as it arrives */
     var y = s * geo.stageTop + lerp(geo.dot.y, geo.yE, s);
     return { x: x, y: y }; }
   function layout() {
@@ -1069,8 +1089,8 @@ document.documentElement.classList.add('js');
     var svg = logo.getBoundingClientRect(), vb = 24 / svg.height;   /* lockup viewBox is 70.25 × 24 */
     geo.dot = { x: svg.left + (19.37 - 1.63) / vb, y: svg.top + scrollY + 4.13 / vb, r: 3 / vb };
     geo.K = geo.dot.r / TASK_R;                                   /* px per unit: the rolling ball is exactly the logo's dot */
-    geo.gutter = Math.max(22, svg.left * .5); geo.yE = H * .2;   /* down the left side; it meets the field here */
-    POSE.dist = H / (2 * geo.K * Math.tan(f0 * Math.PI / 360)); POSE.fx = geo.gutter / W; POSE.fy = geo.yE / H;
+    geo.gutter = Math.max(22, svg.left * .5); geo.xE = W * (W < H ? .3 : .34); geo.yE = H * .26;   /* it meets the field here, near the action */
+    POSE.dist = H / (2 * geo.K * Math.tan(f0 * Math.PI / 360)); POSE.fx = geo.xE / W; POSE.fy = geo.yE / H;
     /* precompute the roll: world motion per page px (foreshortened by the current tilt), heading, gait distance, ball orientation */
     var N = 600, q = new THREE.Quaternion(), ax = new THREE.Vector3(), dq = new THREE.Quaternion(), prev = pathAt(0), dist = 0, h = Math.PI * .75; ROLL = [];
     for (var i = 0; i <= N; i++) { var si = i / N, P = pathAt(si), pitch = lerp(Math.PI / 2, PITCH, tiltAt(si));
@@ -1143,16 +1163,16 @@ document.documentElement.classList.add('js');
       for (i = 0; i < bs.length; i++) for (j = i + 1; j < bs.length; j++) { if (!bs[i].s.vis || !bs[j].s.vis || bs[i].s.y < 0 || bs[j].s.y < 0) continue; var d3 = Math.hypot(bs[i].s.x - bs[j].s.x, bs[i].s.z - bs[j].s.z); if (d3 < bs[i].r + bs[j].r) issues.push([p.toFixed(3), 'ball', bs[i].n, bs[j].n, d3.toFixed(2)]); }
     } return issues; };
   window.__bench = function () { var gl = R.getContext(), tt = [], px = new Uint8Array(4); for (var p = 0; p <= 1.0001; p += .01) { var t0 = performance.now(); render(p); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); tt.push(performance.now() - t0); } tt.sort(function (a, b) { return a - b; }); return { median: +tt[tt.length >> 1].toFixed(2), p95: +tt[Math.floor(tt.length * .95)].toFixed(2), max: +tt[tt.length - 1].toFixed(2) }; };
-  window.__png = function (p) { R.setPixelRatio(1); R.setSize(1280, 720, false); cam.aspect = 16 / 9; cam.userData.fov0 = 32; cam.updateProjectionMatrix(); render(p); var u = R.domElement.toDataURL('image/png'); R.setPixelRatio(DPR); size(); return u; };
+  window.__png = function (p) { R.setPixelRatio(1); R.setSize(1280, 720, false); cam.aspect = 16 / 9; cam.userData.fov0 = 32; cam.updateProjectionMatrix(); fitEnd(); render(p); var u = R.domElement.toDataURL('image/png'); R.setPixelRatio(DPR); size(); return u; };
 
   /* ── stills (phones, reduced motion, and the notes) ── */
-  function size() { var w = stage.clientWidth, h = stage.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.fov = cam.userData.fov0 = w < h ? 46 : 32; cam.updateProjectionMatrix(); }
+  function size() { var w = stage.clientWidth, h = stage.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.fov = cam.userData.fov0 = w < h ? 46 : 32; cam.updateProjectionMatrix(); fitEnd(); }
   var STILLS = [[.0, 'Your task arrives', '', 'The field opens flat, seen from straight above: eight square holes and your ant, outlined in pale green, carrying the logo\'s small dot.'],
                 [.3, 'Handled where it fits', BEATS[0], 'Your task has dropped into a hole: handled. More ants roll balls in from the edges, and two more drop into holes on the left.'],
                 [.62, 'Waiting for you', BEATS[1], 'Bigger balls rest on top of four holes too small for them, each with a pause mark, waiting for you, while the ants walk away.'],
                 [1, 'One thing in focus', LINES.orig, 'Seen from straight above: four solid circles form an F beside four square holes, and one dot sits at the top right. It is the Focus logo.']];
   try {
-    R.setSize(1280, 720, false); cam.aspect = 16 / 9; cam.updateProjectionMatrix(); var shots = [];
+    R.setSize(1280, 720, false); cam.aspect = 16 / 9; cam.updateProjectionMatrix(); fitEnd(); var shots = [];
     STILLS.forEach(function (s) { render(s[0]); shots.push(R.domElement.toDataURL('image/jpeg', .9)); });
     var st = document.getElementById('cx-still'); st.src = shots[3]; st.alt = STILLS[3][3]; if (!live) { capEl.textContent = LINES.orig; capWrap.classList.add('on', 'end'); ctaEl.tabIndex = 0; }
     for (var wp = 0; wp <= 1.0001; wp += .02) render(wp);   /* pre-warm every beat: no first-draw hitch mid-scroll */
@@ -1164,6 +1184,7 @@ document.documentElement.classList.add('js');
   var HOLD = .5, N = 6;
   size(); layout();
   var yS = scrollY, vS = 0, last = performance.now(), lastKey = '';
+  window.__snap = function () { yS = scrollY; vS = 0; lastKey = ''; };   /* test hook: skip the spring */
   function stageP(y) { var span = proto.offsetHeight - innerHeight; return span > 0 ? clamp((y - geo.stageTop) / span * (N + HOLD) / N) : 0; }
   (function loop(now) {
     var dt = Math.min(.1, Math.max(0, (now - last) / 1000)); last = now; var target = scrollY, W = 9;
