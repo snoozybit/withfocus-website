@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: forest hero split (promise left, live skill loop right) → the concrete skill story → mist band routing demo
-   → trust on forest → mist band FAQ → waitlist on deep forest. One committed brand look, colours explicit. */
+   → trust on forest → mist band FAQ → design-partner ask on deep forest. One committed brand look, colours explicit. */
 :root{
   /* Final green ramp, from the approved Focus logo (focus-brand/LOGO.md). */
   --deep:#152017;       /* CTA + footer ground */
@@ -473,7 +473,7 @@ footer nav a:hover{color:var(--on-dark)}
 .cx-hint i{width:1px;height:28px;background:linear-gradient(var(--focus),transparent)}
 
 /* the flat ant rides above the page until the field takes it */
-#cx-ant2d{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:5;display:block}
+#cx-ant2d{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:5;display:block;opacity:0;transition:opacity .18s}
 
 /* the story: sticky stage scrubbed by scroll */
 .cx-proto{position:relative;--per:70vh;height:calc(var(--per) * 6.5 + 100vh)}
@@ -512,6 +512,21 @@ footer nav a:hover{color:var(--on-dark)}
 .light .block-end{border-top-color:var(--line-light)}
 .trust-foot.block-end{color:var(--on-dark-mute)}
 #outpost .trust{margin-top:0}
+/* ── design-partner CTA (UI designer). Left: the offer. Right: one raised card that holds every state of the ask. ── */
+.dp .cta-lead{gap:14px;align-content:start}
+.dp .cta-lead .beat-k{margin-bottom:2px}
+.dp-perks{margin-top:10px;gap:12px}
+.dp-perks li{font-size:16px;color:var(--on-dark)}
+.dp-perks svg{color:var(--focus)}
+.dp-card{background:var(--forest-2);border-radius:20px;padding:clamp(20px,2.4vw,28px);box-shadow:inset 0 0 0 1px var(--line-dark),0 24px 48px -28px rgba(0,0,0,.55);display:grid;gap:16px;align-content:start}
+.dp-card .hint{color:var(--on-dark-mute)}
+.dp-two{display:grid;gap:12px}
+@media (min-width:560px){.dp-two{grid-template-columns:1fr 1fr}}
+.dp-alt{font-size:14.5px;color:var(--on-dark-mute);padding-top:14px;border-top:1px solid var(--line-dark)}
+.anchor-alias{position:relative;top:-80px;display:block;height:0}
+/* nav: one verb everywhere; the short label only where the bar is tight */
+.lbl-short{display:none}
+@media (max-width:420px){.lbl-long{display:none}.lbl-short{display:inline}}
 </style>
 </head>
 <body>
@@ -534,7 +549,7 @@ footer nav a:hover{color:var(--on-dark)}
       <div class="menu"><button class="menu-btn" type="button" aria-expanded="false" aria-controls="m-prod" id="m-btn">Product<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="menu-pop" id="m-prod" role="menu" hidden><a href="/product.html#discover" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M12 7.5a6.4 6.4 0 0 1 0 9M15.6 4.6a10.6 10.6 0 0 1 0 14.8"/></svg><span><b>Discover</b><small>learns what your best one knows</small></span></a><a href="/product.html#relay" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="12" r="2.6"/><circle cx="18.5" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M9 10.2h6m-1.6-1.6 1.6 1.6-1.6 1.6M15 13.8H9m1.6-1.6L9 13.8l1.6 1.6"/></svg><span><b>Relay</b><small>knows who knows</small></span></a><a href="/product.html#autopilot" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8.2 12.4l2.6 2.6 5-5.6"/></svg><span><b>Autopilot</b><small>only what needs you</small></span></a><a href="/product.html#communications" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 4.5h13a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6.5l-4.5 3.5v-3.5h-2a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span><b>Communications</b><small>nothing slips</small></span></a><a href="/product.html#outpost" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="6" stroke-dasharray="3 2.2"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg><span><b>Outpost</b><small>and your data stays yours</small></span></a><a href="/product.html#admins" role="menuitem"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M15.5 6a3 3 0 0 1 0 5.4M17.5 19a5.5 5.5 0 0 0-2.4-4.5"/></svg><span><b>For admins</b><small>rolls out to the whole team</small></span></a><span class="m-only"><a href="#faq" role="menuitem">FAQ</a></span></div></div>
       <a href="#faq" class="nl">FAQ</a>
-      <a href="#waitlist" class="btn btn-primary btn-sm">Join the waitlist</a>
+      <a href="#design-partner" class="btn btn-primary btn-sm" aria-label="Become a design partner"><span class="lbl-long">Become a design partner</span><span class="lbl-short" aria-hidden="true">Early access</span></a>
     </nav>
   </div>
 </header>
@@ -552,7 +567,7 @@ footer nav a:hover{color:var(--on-dark)}
     <div class="cx-stage">
       <canvas id="cx-gl" aria-hidden="true"></canvas>
       <img class="cx-still" id="cx-still" src="/assets/story-final.png" width="1280" height="720" alt="Seen from straight above: four solid circles form an F beside four square holes, and one dot sits at the top right. It is the Focus logo.">
-      <div class="cx-cap" id="cxCapWrap"><p class="cx-line" id="cxCap">Everything handled. One thing in focus.</p><a class="cx-cta" id="cxCta" href="#waitlist">Join the waitlist</a></div>
+      <div class="cx-cap" id="cxCapWrap"><p class="cx-line" id="cxCap">Everything handled. One thing in focus.</p><a class="cx-cta" id="cxCta" href="#design-partner">Become a design partner</a></div>
     </div>
   </section>
 
@@ -675,7 +690,7 @@ footer nav a:hover{color:var(--on-dark)}
         <div class="faq-list">
           <details open><summary>Which agents and apps does it work with?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Claude Code, Cursor and Codex for coding, and Slack, Gmail and Zoho Mail for messages.</p></div></details>
           <details><summary>Does my code or data leave my machine?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Focus never stores your code. Skills your team approves are routed and indexed by Focus, and only you or your team can access them, on approval. Agents read company databases through Outpost, inside your network, and query results never pass through Focus.</p></div></details>
-          <details><summary>What does it cost?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Focus is in early access. Join the waitlist and we'll be in touch.</p></div></details>
+          <details><summary>What does it cost?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Focus is in early access. Design partners get every Focus Pro feature early. Contact us to become one.</p></div></details>
           <details><summary>Will an agent change my code without asking?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Only minor changes, and only once you turn Autopilot on. Major changes (scope, big rewrites, auth, billing, secrets, infrastructure, deploys, migrations) always wait for your OK, and code jobs never touch main and never deploy. <a class="link" href="/product.html#autopilot">How Autopilot works</a></p></div></details>
           <details><summary>Who can my agent ask through Relay?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Only agents whose owner approved it, session to session. If that agent isn't sure, it asks its owner. <a class="link" href="/product.html#relay">How Relay works</a></p></div></details>
           <details><summary>Is it for one person or a team?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><div class="a"><p>Both. On your own, a skill one of your agents learns reaches all your agents. On a team, it reaches everyone's.</p></div></details>
@@ -685,27 +700,38 @@ footer nav a:hover{color:var(--on-dark)}
     </div>
   </section>
 
-  <section class="cta" id="waitlist" aria-labelledby="cta-h">
+  <section class="cta dp" id="design-partner" aria-labelledby="cta-h">
+    <span id="waitlist" class="anchor-alias" aria-hidden="true"></span>
     <div class="wrap">
       <div class="cta-lead">
-        <h2 id="cta-h">Your agents handle the work. You keep your focus.</h2>
-        <p>Join the waitlist and we'll bring you in.</p>
+        <p class="beat-k"><i aria-hidden="true"></i>Design partners</p>
+        <h2 id="cta-h">Get early access to Focus Pro.</h2>
+        <p>We're working closely with a small group of design partners. Tell us how you work and we'll bring you in.</p>
+        <ul class="perks dp-perks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg><span>Early access to every Focus Pro feature</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg><span>A direct line to the people building Focus</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg><span>A say in what we build next</span></li>
+        </ul>
       </div>
-      <div class="signup">
-        <form class="form" id="wl" action="https://formspree.io/f/mykqpryn" method="POST"><input type="hidden" name="_next" value="https://withfocus.io/thanks.html"><input type="hidden" name="_subject" value="Focus waitlist">
+      <div class="signup dp-card">
+        <form class="form" id="wl" action="https://formspree.io/f/mykqpryn" method="POST"><input type="hidden" name="_next" value="https://withfocus.io/thanks.html"><input type="hidden" name="_subject" value="Design partner request">
           <div class="row">
             <div class="field">
               <label for="wl-email">Work email</label>
               <input class="input" id="wl-email" name="email" type="email" required placeholder="you@company.com" autocomplete="email" aria-describedby="wl-help">
-              <p class="hint" id="wl-help">Use your work email. We'll only use it to bring you onto Focus.</p>
             </div>
-            <button class="btn btn-primary" type="submit" id="wl-btn">Join the waitlist</button>
+            <button class="btn btn-primary" type="submit" id="wl-btn">Contact us</button>
           </div>
+          <p class="hint" id="wl-help">We'll reply from lit@withfocus.io. We only use your email to bring you onto Focus.</p>
         </form>
-        <div class="done" id="wl-done" tabindex="-1" hidden><svg class="ant-in" viewBox="-2 -2 32 44" aria-hidden="true"><use href="#ant-c"/></svg><b>You're on the list.</b><p>We'll write to <span id="wl-addr">you</span> from lit@withfocus.io.</p></div>
+        <div class="done" id="wl-done" tabindex="-1" hidden><svg class="ant-in" viewBox="-2 -2 32 44" aria-hidden="true"><use href="#ant-c"/></svg><b>Thanks. We'll be in touch.</b><p>We'll write to <span id="wl-addr">you</span> from lit@withfocus.io.</p></div>
         <p class="err" id="wl-fail" role="alert" hidden></p>
         <form class="step2" id="wl2" hidden>
-          <h3>Help us bring you in sooner <span class="hint">(optional)</span></h3>
+          <h3>Tell us a bit more <span class="hint">(optional)</span></h3>
+          <div class="dp-two">
+            <div class="field"><label for="wl-co">Company <span class="hint">(optional)</span></label><input class="input" id="wl-co" name="company" autocomplete="organization"></div>
+            <div class="field"><label for="wl-role">Your role <span class="hint">(optional)</span></label><input class="input" id="wl-role" name="role" autocomplete="organization-title"></div>
+          </div>
           <fieldset class="q"><legend>Team size</legend><div class="chips">
             <label class="chip"><input type="radio" name="size" value="1"><span>Just me</span></label>
             <label class="chip"><input type="radio" name="size" value="2-10"><span>2–10</span></label>
@@ -715,11 +741,10 @@ footer nav a:hover{color:var(--on-dark)}
             <label class="chip"><input type="checkbox" name="agents" value="claude-code"><span>Claude Code</span></label>
             <label class="chip"><input type="checkbox" name="agents" value="cursor"><span>Cursor</span></label>
             <label class="chip"><input type="checkbox" name="agents" value="codex"><span>Codex</span></label></div></fieldset>
-          <fieldset class="q"><legend>What you'd want first</legend><div class="chips">
-            <label class="chip"><input type="radio" name="first" value="skills"><span>Agents that learn</span></label>
-            <label class="chip"><input type="radio" name="first" value="overhead"><span>Less overhead</span></label></div></fieldset>
+          <div class="field"><label for="wl-plate">What should Focus take off your plate? <span class="hint">(optional)</span></label><input class="input" id="wl-plate" name="plate" maxlength="200"></div>
           <div class="actions"><button class="btn btn-primary btn-sm" type="submit">Send</button><button class="btn btn-ghost btn-sm" type="button" id="skip">Skip</button></div>
         </form>
+        <p class="dp-alt">Prefer email? <a class="link" href="mailto:lit@withfocus.io?subject=Design%20partner">Write to lit@withfocus.io</a></p>
       </div>
     </div>
   </section>
@@ -851,7 +876,7 @@ document.documentElement.classList.add('js');
   if (document.fonts) document.fonts.ready.then(draw);
   if (!reduce) setTimeout(triage, 1400);
 
-  /* Waitlist: inline validation, Joining…, success with the address, optional step 2. Posts to Formspree; without JS the form posts itself and lands on /thanks. */
+  /* Design-partner ask: inline validation, Sending…, success with the address, optional step 2. Posts to Formspree; without JS the form posts itself and lands on /thanks. */
   var form = document.getElementById('wl'), input = document.getElementById('wl-email'), btn = document.getElementById('wl-btn');
   var help = document.getElementById('wl-help'), done = document.getElementById('wl-done'), addr = document.getElementById('wl-addr');
   var fail = document.getElementById('wl-fail'), step2 = document.getElementById('wl2');
@@ -860,7 +885,7 @@ document.documentElement.classList.add('js');
   function valid(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
   function invalid() {
     input.setAttribute('aria-invalid', 'true');
-    help.className = 'err'; help.textContent = "That doesn't look like an email address. Check it and try again.";
+    help.className = 'err'; help.textContent = "That doesn't look like an email address.";
     input.focus();
   }
   function clearInvalid() { input.removeAttribute('aria-invalid'); help.className = 'hint'; help.textContent = HELP; }
@@ -871,20 +896,20 @@ document.documentElement.classList.add('js');
     done.hidden = false; step2.hidden = false; done.focus();
   }
   function failure(kind) {
-    btn.disabled = false; btn.textContent = 'Join the waitlist';
+    btn.disabled = false; btn.textContent = 'Contact us';
     fail.hidden = false;
-    fail.textContent = kind === 'offline' ? "You're offline. Reconnect and try again, or email lit@withfocus.io." : "That didn't go through. Try again in a minute, or email lit@withfocus.io.";
+    fail.textContent = kind === 'offline' ? "That didn't go through. Try again in a minute, or email lit@withfocus.io." : "That didn't go through. Try again in a minute, or email lit@withfocus.io.";
   }
   form.addEventListener('submit', function (e) {
     e.preventDefault(); fail.hidden = true;
     var v = input.value.trim();
     if (!valid(v)) { invalid(); return; }
-    clearInvalid(); btn.disabled = true; btn.innerHTML = 'Joining<span class="pull" aria-hidden="true"><i></i><i></i><i></i></span>';
+    clearInvalid(); btn.disabled = true; btn.innerHTML = 'Sending<span class="pull" aria-hidden="true"><i></i><i></i><i></i></span>';
     fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
       .then(function (r) { if (!r.ok) throw new Error(); success(v); })
       .catch(function () { failure(navigator.onLine ? 'error' : 'offline'); });
   });
-  step2.addEventListener('submit', function (e) { e.preventDefault(); var fd = new FormData(step2); fd.append('email', addr.textContent); fd.append('_subject', 'Focus waitlist: more about me'); fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }).catch(function () {}); step2.hidden = true; done.querySelector('p').textContent = 'Thanks. That helps us bring you in sooner. We\'ll write to ' + addr.textContent + ' from lit@withfocus.io.'; done.focus(); });
+  step2.addEventListener('submit', function (e) { e.preventDefault(); var fd = new FormData(step2); fd.append('email', addr.textContent); fd.append('_subject', 'Design partner request: more details'); fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }).catch(function () {}); step2.hidden = true; done.querySelector('p').textContent = 'Thanks. That helps us bring you in sooner.'; done.focus(); });
   document.getElementById('skip').addEventListener('click', function () { step2.hidden = true; done.focus(); });
 })();
 </script>
@@ -914,14 +939,14 @@ document.documentElement.classList.add('js');
   /* ── stage renderer: no tone mapping, linear output, so brand hexes render exactly ── */
   var canvas = document.getElementById('cx-gl');
   var R = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-  var DPR = Math.min(devicePixelRatio || 1, 1.75); R.setPixelRatio(DPR);
+  var phone = Math.min(innerWidth, innerHeight) < 600, DPR = Math.min(devicePixelRatio || 1, phone ? 1.5 : 1.75); R.setPixelRatio(DPR);   /* phones: lighter pixel load */
   R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
   var scene = new THREE.Scene(); scene.background = new THREE.Color(CL.forest); scene.fog = new THREE.FogExp2(CL.forest, 0);
   var cam = new THREE.PerspectiveCamera(32, 16 / 9, .5, 4000);
   var amb = new THREE.AmbientLight(0xffffff, 0); scene.add(amb);   /* flat beats: ambient 1 and nothing else = exact flat colour */
   var hemi = new THREE.HemisphereLight(0xE4EFE2, 0x0E1710, .5); scene.add(hemi);
   var sun = new THREE.DirectionalLight(0xF2F7EF, .95); sun.position.set(30, 70, 25); sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048); var sc = sun.shadow.camera; sc.left = -45; sc.right = 45; sc.top = 45; sc.bottom = -45; sc.near = 10; sc.far = 200; sun.shadow.bias = -.0008; sun.shadow.radius = 4;
+  sun.shadow.mapSize.set(phone ? 1024 : 2048, phone ? 1024 : 2048); var sc = sun.shadow.camera; sc.left = -45; sc.right = 45; sc.top = 45; sc.bottom = -45; sc.near = 10; sc.far = 200; sun.shadow.bias = -.0008; sun.shadow.radius = 4;
   scene.add(sun); var rim = new THREE.DirectionalLight(0xD3DAE2, .25); rim.position.set(-40, 25, -50); scene.add(rim);
   var spot = new THREE.SpotLight(0xF6FAF4, 0, 60, .16, .6, 1); spot.position.set(PICK.x + 4, 34, PICK.z + 10); spot.target.position.set(PICK.x, 0, PICK.z); scene.add(spot); scene.add(spot.target);
 
@@ -1048,17 +1073,24 @@ document.documentElement.classList.add('js');
   function orbit(c, tx, tz, pitch, dist, upT, fx, fy, w, h) {
     c.position.set(tx, dist * Math.sin(pitch), tz + dist * Math.cos(pitch)); c.up.copy(UP1).lerp(UP0, upT).normalize(); c.lookAt(tx, 0, tz);
     c.setViewOffset(w, h, w / 2 - fx * w, h / 2 - fy * h, w, h); }
+  /* the three-quarter keys were framed for landscape: on narrow screens, back the camera off along its view
+     until the field (±13.5 units across, with margin) fits the width, and centre it */
+  var tmpK = new THREE.Vector3();
+  function fitWidth(pos, tgt, amount) { var a = cam.aspect || 1.6, t = Math.tan((cam.userData.fov0 || 32) * Math.PI / 360), d = pos.distanceTo(tgt), half = d * t * a, k = Math.max(1, 13.5 / half);
+    if (a < 1) { var sx = (.1 - tgt.x) * amount; tgt.x += sx; pos.x += sx; }
+    k = lerp(1, k, amount); tmpK.subVectors(pos, tgt).multiplyScalar(k); pos.copy(tgt).add(tmpK); }
   function camAt(p) {
     var size = R.getSize(new THREE.Vector2()), f0 = cam.userData.fov0 || 32;
     if (p < CAMK[0][0]) {   /* the hand-off: from the page walk's pose into the field */
       var b = smooth(seg(p, 0, CAMK[0][0]));
       tmpE.set(ENTRY[0], POSE.dist * Math.sin(PITCH), ENTRY[1] + POSE.dist * Math.cos(PITCH)); tmpF.set(ENTRY[0], 0, ENTRY[1]);
-      cam.position.copy(tmpE).lerp(new THREE.Vector3(CAMK[0][1][0], CAMK[0][1][1], CAMK[0][1][2]), b); tmpT.copy(tmpF).lerp(new THREE.Vector3(CAMK[0][2][0], CAMK[0][2][1], CAMK[0][2][2]), b);
+      var kp = new THREE.Vector3(CAMK[0][1][0], CAMK[0][1][1], CAMK[0][1][2]), kt = new THREE.Vector3(CAMK[0][2][0], CAMK[0][2][1], CAMK[0][2][2]); fitWidth(kp, kt, 1);
+      cam.position.copy(tmpE).lerp(kp, b); tmpT.copy(tmpF).lerp(kt, b);
       cam.up.copy(UP0); if (cam.fov !== f0) { cam.fov = f0; cam.updateProjectionMatrix(); } cam.lookAt(tmpT); cam.userData.dolly = 1;
       if (b < 1) cam.setViewOffset(size.x, size.y, (size.x / 2 - POSE.fx * size.x) * (1 - b), (size.y / 2 - POSE.fy * size.y) * (1 - b), size.x, size.y); else cam.clearViewOffset();
       return; }
     cam.clearViewOffset();
-    var u = camParam(p); camPos.getPoint(u, tmpP); camTgt.getPoint(u, tmpT); cam.up.copy(UP0).lerp(UP1, topness(p)).normalize();
+    var u = camParam(p); camPos.getPoint(u, tmpP); camTgt.getPoint(u, tmpT); fitWidth(tmpP, tmpT, 1 - topness(p)); cam.up.copy(UP0).lerp(UP1, topness(p)).normalize();
     /* near-orthographic at the flat end: dolly back while the lens narrows, same framing */
     var fov = lerp(f0, 2.4, narrow(p)), d = Math.tan(f0 * Math.PI / 360) / Math.tan(fov * Math.PI / 360);
     tmpP.sub(tmpT).multiplyScalar(d).add(tmpT); cam.userData.dolly = d; if (cam.fov !== fov) { cam.fov = fov; cam.updateProjectionMatrix(); }
@@ -1107,7 +1139,8 @@ document.documentElement.classList.add('js');
   function draw2d(scr, s) {
     var i = Math.round(clamp(s) * (ROLL.length - 1)), R0 = ROLL[i], P = pathAt(s), t = tiltAt(s), pitch = lerp(Math.PI / 2, PITCH, t);
     /* the ball sits at the origin; the camera orbits it and draws it at its page position */
-    orbit(oc, 0, 0, pitch, POSE.dist, t, P.x / geo.W, (P.y - scr) / geo.H, geo.W, geo.H);
+    /* while the timeline catches up after a fast scroll, the ant stays on screen and hurries; it never slides out of view */
+    orbit(oc, 0, 0, pitch, POSE.dist, t, P.x / geo.W, Math.min(.9, Math.max(.05, (P.y - scr) / geo.H)), geo.W, geo.H);
     pBall.position.set(0, TASK_R, 0); pBall.userData.ball.quaternion.copy(R0.q);
     var back = TASK_R + HEAD + GAP; pAntG.position.set(-Math.cos(R0.h) * back, 0, -Math.sin(R0.h) * back); pAntG.rotation.y = -R0.h;
     A3.poseAnt(pAnt, { phase: R0.dist / 2.6, push: 1, stand: 0, antUp: 0 });
@@ -1187,13 +1220,13 @@ document.documentElement.classList.add('js');
   window.__snap = function () { yS = scrollY; vS = 0; lastKey = ''; };   /* test hook: skip the spring */
   function stageP(y) { var span = proto.offsetHeight - innerHeight; return span > 0 ? clamp((y - geo.stageTop) / span * (N + HOLD) / N) : 0; }
   (function loop(now) {
-    var dt = Math.min(.1, Math.max(0, (now - last) / 1000)); last = now; var target = scrollY, W = 9;
+    var dt = Math.min(.1, Math.max(0, (now - last) / 1000)); last = now; var target = scrollY, W = 9 + 7 * clamp(Math.abs(target - yS) / innerHeight);   /* a big fling: the timeline hurries to catch up */
     for (var k = 0; k < 4; k++) { vS += (W * W * (target - yS) - 2 * W * vS) * dt / 4; yS += vS * dt / 4; }
     if (Math.abs(target - yS) < .3 && Math.abs(vS) < 1) { yS = target; vS = 0; }
-    var s = clamp(yS / Math.max(1, geo.stageTop)), onPage = yS < geo.stageTop - .5, p = stageP(yS);
+    var s = clamp(yS / Math.max(1, geo.stageTop)), onPage = yS < geo.stageTop - .5 && scrollY < geo.stageTop - .5, p = stageP(yS);   /* past the field's top for real: the 2D layer never shows */
     var key = yS.toFixed(1) + (now / 80 | 0);
     if (key !== lastKey) { lastKey = key;
-      c2d.style.visibility = onPage && s > 0 ? 'visible' : 'hidden'; if (onPage) { draw2d(scrollY, s); setDotAway(s > .002 && s < .97); } else setDotAway(false);
+      c2d.style.opacity = onPage && s > 0 ? 1 : 0; if (onPage) { draw2d(scrollY, s); setDotAway(s > .002 && s < .97); } else setDotAway(s > .002 && s < .97 && yS < geo.stageTop);
       var r = proto.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) render(p, !onPage);
     }
     requestAnimationFrame(loop);

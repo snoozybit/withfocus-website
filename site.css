@@ -538,3 +538,7 @@ footer nav a:hover{color:var(--on-dark)}
 .q-row i{width:18px;height:1.5px;background:var(--focus)}
 .q-sql{font:13px/1.6 var(--mono);color:var(--on-dark);overflow-wrap:anywhere}
 .q-meta{font-size:13px;color:var(--focus)}
+
+/* nav: one verb everywhere; the short label only where the bar is tight */
+.lbl-short{display:none}
+@media (max-width:420px){.lbl-long{display:none}.lbl-short{display:inline}}
