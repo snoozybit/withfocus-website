@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>You're on the list · Focus</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="32x32 48x48">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Geist:wght@400;500;600&display=swap">
+<style>
+/* The no-JS success path (Formspree _next → /thanks). Same tokens as the home page. */
+:root{
+  --deep:#152017; --forest:#1C2B1E; --sage-light:#C8D9C4; --mist:#F0F4EF;
+  --on-dark:#F0F4EF; --on-dark-mute:#AFC0AE; --line-dark:rgba(200,217,196,.14);
+  --display:"Bricolage Grotesque","Geist",system-ui,sans-serif;
+  --body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.2,0,0,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;min-height:100vh;background:var(--deep);color:var(--on-dark);font:16px/1.6 var(--body);display:grid;grid-template-rows:auto 1fr auto}
+.wrap{width:100%;max-width:640px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--sage-light);outline-offset:3px;border-radius:6px}
+.nav{padding-block:18px}
+.logo{display:inline-flex;align-items:center;gap:9px;letter-spacing:-.02em}
+.logo svg{width:32px;height:32px;overflow:visible}
+.mk{fill:#6FA585}.mk .fr{fill:none;stroke:#6FA585;stroke-width:.32px}
+main{padding-block:48px 72px;display:grid;align-content:start}
+.card{background:var(--forest);border-radius:20px;padding:28px;box-shadow:inset 0 0 0 1px var(--line-dark);display:grid;gap:20px}
+h1{margin:0;font:700 clamp(30px,6vw,40px)/1.08 var(--display);letter-spacing:-.03em}
+.lead{font-size:17px;color:var(--on-dark-mute)}
+.step2{display:grid;gap:16px;border-top:1px solid var(--line-dark);padding-top:20px}
+.step2 h2{margin:0;font:600 16px var(--body)}
+.hint{font-size:14px;color:var(--on-dark-mute);font-weight:400}
+.q{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
+.q legend{font:500 14px var(--body);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border-radius:999px;font-size:14px;box-shadow:inset 0 0 0 1px rgba(200,217,196,.3);transition:background-color 150ms,box-shadow 150ms}
+.chip input:checked + span{background:var(--sage-light);color:var(--forest);box-shadow:none}
+.chip input:focus-visible + span{outline:2px solid var(--sage-light);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 16px;border-radius:999px;font:600 14px var(--body);border:0;cursor:pointer;background:var(--sage-light);color:var(--forest);transition:scale 150ms var(--ease)}
+.btn:active{scale:.97}
+.sent{font-size:15px;color:var(--on-dark-mute)}
+.back{justify-self:start;font-size:15px;color:var(--sage-light);text-decoration:underline;text-decoration-color:rgba(200,217,196,.45);text-underline-offset:.22em}
+footer{padding-block:24px;font-size:14px;color:var(--on-dark-mute);border-top:1px solid var(--line-dark)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap"><a class="logo" href="/" aria-label="Focus home"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" style="position:relative;top:1px"><g class="mk" transform="translate(-1.98 -1.68) scale(1.4856)"><rect class="fr" x="1.990" y="6.360" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><rect class="fr" x="2.530" y="13.490" width="1.880" height="1.880" rx="0.390" style="--r:0.940px"/><rect class="fr" x="2.870" y="20.440" width="1.190" height="1.190" rx="0.220" style="--r:0.595px"/><rect class="fr" x="15.190" y="19.560" width="2.950" height="2.950" rx="0.660" style="--r:1.475px"/><circle class="fd s0" cx="10.065" cy="21.03" r="1.235"/><circle class="fd s1" cx="10.065" cy="14.43" r="1.835"/><circle class="fd s2" cx="10.07" cy="7.83" r="2.55"/><circle class="fd s3" cx="16.67" cy="14.43" r="2.55"/><circle class="pk" cx="19.37" cy="4.13" r="3.0"/></g></svg><svg class="wordmark" viewBox="1.1 -11.2 41.7 11.36" width="51.4" height="14.0" aria-hidden="true"><path fill="#F0F4EF" d="M1.1 0V-11.2H8.28V-9.5H3.13V-6.46H7.79V-4.76H3.13V0ZM12.8 0.16Q11.57 0.16 10.67 -0.38Q9.77 -0.92 9.27 -1.89Q8.78 -2.87 8.78 -4.17Q8.78 -5.47 9.27 -6.45Q9.77 -7.43 10.67 -7.97Q11.57 -8.51 12.8 -8.51Q14.03 -8.51 14.94 -7.97Q15.84 -7.43 16.33 -6.45Q16.83 -5.47 16.83 -4.17Q16.83 -2.87 16.33 -1.89Q15.84 -0.92 14.94 -0.38Q14.03 0.16 12.8 0.16ZM12.81 -1.42Q13.48 -1.42 13.93 -1.79Q14.38 -2.16 14.6 -2.78Q14.82 -3.41 14.82 -4.17Q14.82 -4.94 14.6 -5.57Q14.38 -6.2 13.93 -6.57Q13.48 -6.94 12.81 -6.94Q12.13 -6.94 11.68 -6.57Q11.23 -6.2 11.01 -5.57Q10.79 -4.94 10.79 -4.17Q10.79 -3.41 11.01 -2.78Q11.23 -2.16 11.68 -1.79Q12.13 -1.42 12.81 -1.42ZM21.83 0.16Q20.57 0.16 19.67 -0.39Q18.77 -0.94 18.29 -1.92Q17.8 -2.89 17.8 -4.17Q17.8 -5.45 18.3 -6.43Q18.79 -7.41 19.69 -7.96Q20.59 -8.51 21.82 -8.51Q22.84 -8.51 23.63 -8.13Q24.42 -7.76 24.89 -7.08Q25.36 -6.4 25.43 -5.49H23.54Q23.42 -6.1 22.99 -6.51Q22.56 -6.91 21.85 -6.91Q21.24 -6.91 20.78 -6.59Q20.32 -6.26 20.07 -5.65Q19.81 -5.05 19.81 -4.2Q19.81 -3.34 20.06 -2.73Q20.31 -2.11 20.77 -1.78Q21.23 -1.45 21.85 -1.45Q22.28 -1.45 22.63 -1.62Q22.98 -1.78 23.21 -2.1Q23.45 -2.42 23.54 -2.87H25.43Q25.36 -1.98 24.9 -1.29Q24.45 -0.61 23.67 -0.22Q22.89 0.16 21.83 0.16ZM32.19 -3.53V-8.4H34.17V0H32.25V-1.49H32.16Q31.88 -0.79 31.23 -0.34Q30.58 0.11 29.63 0.11Q28.81 0.11 28.18 -0.26Q27.54 -0.63 27.19 -1.34Q26.83 -2.05 26.83 -3.05V-8.4H28.81V-3.36Q28.81 -2.56 29.25 -2.09Q29.69 -1.62 30.4 -1.62Q30.84 -1.62 31.25 -1.83Q31.66 -2.05 31.92 -2.47Q32.19 -2.89 32.19 -3.53ZM42.62 -6.18 40.81 -5.98Q40.74 -6.26 40.55 -6.5Q40.36 -6.74 40.04 -6.89Q39.72 -7.03 39.26 -7.03Q38.65 -7.03 38.23 -6.76Q37.81 -6.5 37.82 -6.07Q37.81 -5.7 38.09 -5.47Q38.36 -5.24 39 -5.1L40.43 -4.79Q41.63 -4.53 42.21 -3.98Q42.79 -3.42 42.8 -2.52Q42.79 -1.72 42.34 -1.12Q41.88 -0.51 41.07 -0.17Q40.26 0.16 39.21 0.16Q37.67 0.16 36.73 -0.48Q35.79 -1.13 35.61 -2.29L37.54 -2.48Q37.67 -1.91 38.09 -1.62Q38.52 -1.33 39.2 -1.33Q39.91 -1.33 40.34 -1.62Q40.77 -1.91 40.77 -2.34Q40.77 -2.7 40.49 -2.93Q40.22 -3.17 39.64 -3.29L38.2 -3.59Q36.99 -3.84 36.42 -4.44Q35.84 -5.04 35.84 -5.96Q35.84 -6.74 36.26 -7.31Q36.69 -7.88 37.46 -8.19Q38.23 -8.51 39.24 -8.51Q40.71 -8.51 41.56 -7.88Q42.41 -7.25 42.62 -6.18Z"/></svg></a></div></header>
+<main>
+  <div class="wrap">
+    <div class="card">
+      <h1>You're on the list.</h1>
+      <p class="lead">We'll write to you from lit@withfocus.io when we can bring you in.</p>
+      <a class="back" href="/">Back to withfocus.io</a>
+    </div>
+  </div>
+</main>
+<footer><div class="wrap">© 2026 Focus. Built in London.</div></footer>
+</body>
+</html>
